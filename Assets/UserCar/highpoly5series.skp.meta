@@ -1,0 +1,1125 @@
+fileFormatVersion: 2
+guid: 2fa15042e8f22414283890a8699b063b
+timeCreated: 1453595878
+licenseType: Free
+SketchUpImporter:
+  generateBackFace: 0
+  mergeCoplanarFaces: 0
+  selectedNodes: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a0000001b0000001c0000001d0000001e0000001f000000200000002100000022000000230000002400000025000000260000002700000028000000290000002a0000002b0000002c0000002d0000002e0000002f000000300000003100000032000000330000003400000035000000360000003700000038000000390000003a0000003b0000003c0000003d0000003e0000003f000000400000004100000042000000430000004400000045000000460000004700000048000000490000004a0000004b0000004c0000004d0000004e0000004f000000500000005100000052000000530000005400000055000000560000005700000058000000590000005a0000005b0000005c0000005d0000005e0000005f000000600000006100000062000000630000006400000065000000660000006700000068000000690000006a0000006b0000006c0000006d0000006e0000006f000000700000007100000072000000730000007400000075000000760000007700000078000000790000007a0000007b0000007c0000007d0000007e0000007f000000800000008100000082000000830000008400000085000000860000008700000088000000890000008a0000008b0000008c0000008d0000008e0000008f000000900000009100000092000000930000009400000095000000960000009700000098000000990000009a0000009b0000009c0000009d0000009e0000009f000000a0000000a1000000a2000000a3000000a4000000a5000000a6000000a7000000a8000000a9000000aa000000ab000000ac000000ad000000ae000000af000000b0000000b1000000b2000000b3000000b4000000b5000000b6000000b7000000b8000000b9000000ba000000bb000000bc000000bd000000be000000bf000000c0000000c1000000c2000000c3000000c4000000c5000000c6000000c7000000c8000000c9000000ca000000cb000000cc000000cd000000ce000000cf000000d0000000d1000000d2000000d3000000d4000000d5000000d6000000d7000000d8000000d9000000da000000db000000dc000000dd000000de000000df000000e0000000e1000000e2000000e3000000e4000000e5000000e6000000e7000000e8000000e9000000ea000000eb000000ec000000ed000000ee000000ef000000f0000000f1000000f2000000f3000000f4000000f5000000f6000000f7000000f8000000f9000000fa000000fb000000fc000000fd000000fe000000ff000000000100000101000002010000030100000401000005010000060100000701000008010000090100000a0100000b0100000c0100000d0100000e0100000f010000100100001101000012010000130100001401000015010000160100001701000018010000190100001a0100001b0100001c0100001d0100001e0100001f010000200100002101000022010000230100002401000025010000260100002701000028010000290100002a0100002b0100002c0100002d0100002e0100002f010000300100003101000032010000330100003401000035010000360100003701000038010000390100003a0100003b0100003c0100003d0100003e0100003f010000400100004101000042010000430100004401000045010000460100004701000048010000490100004a0100004b0100004c0100004d0100004e0100004f010000500100005101000052010000530100005401000055010000560100005701000058010000590100005a0100005b0100005c0100005d0100005e0100005f010000600100006101000062010000630100006401000065010000660100006701000068010000690100006a0100006b0100006c0100006d0100006e0100006f010000700100007101000072010000730100007401000075010000760100007701000078010000790100007a0100007b0100007c0100007d0100007e0100007f010000800100008101000082010000830100008401000085010000860100008701000088010000890100008a0100008b0100008c0100008d0100008e0100008f010000900100009101000092010000930100009401000095010000960100009701000098010000990100009a0100009b0100009c0100009d0100009e0100009f010000a0010000a1010000a2010000a3010000a4010000a5010000a6010000a7010000a8010000a9010000aa010000ab010000ac010000ad010000ae010000af010000b0010000b1010000b2010000b3010000b4010000b5010000b6010000b7010000b8010000b9010000ba010000bb010000bc010000bd010000be010000bf010000c0010000c1010000c2010000c3010000c4010000c5010000c6010000c7010000c8010000
+  assetHash:
+    serializedVersion: 2
+    Hash: e30dda4d1e5fb12acb2854355b028ef3
+  longitude: -105.283
+  latitude: 40.017
+  northCorrection: -0
+  fileUnit: 0
+  sketchUpImportData:
+    defaultCamera:
+      position: {x: -5.0082664, y: 0.9302811, z: -0.685439}
+      lookAt: {x: 2.4419112, y: 0.7406274, z: 1.1834096}
+      up: {x: 0.023941983, y: 0.9996953, z: 0.0060057547}
+      fov: 45
+      aspectRatio: 0
+      orthoSize: 65.19306
+      isPerspective: 0
+    scenes: []
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: badge_mirr
+    100002: BAER_6R_3_low_detail
+    100004: BAER_6R_3_low_detail 1
+    100006: BAER_6R_3_low_detail 2
+    100008: BAER_6R_3_low_detail 3
+    100010: black_body
+    100012: black_he01
+    100014: black_he01 1
+    100016: black_hood
+    100018: black_mi01
+    100020: black_mirr
+    100022: black_sk01
+    100024: black_skir
+    100026: black_ta01
+    100028: black_ta01 1
+    100030: BMW logo
+    100032: BMW logo 1
+    100034: BMW logo 2
+    100036: BMW logo 3
+    100038: BMW logo 4
+    100040: BMW logo 5
+    100042: BMW logo 6
+    100044: BMW M5 F10 2012
+    100046: body_2_bod
+    100048: body_hooda
+    100050: body_mirro
+    100052: body_mirro 1
+    100054: body_ski01
+    100056: body_skirt
+    100058: body_trunk
+    100060: bump_fro01
+    100062: bump_fro02
+    100064: bump_lea01
+    100066: bump_rea01
+    100068: bump_rea01 1
+    100070: chrome_exh
+    100072: chrome_exh 1
+    100074: chrome_h01
+    100076: chrome_h01 1
+    100078: chrome_mir
+    100080: chrome_mir 1
+    100082: chrome_s01
+    100084: chrome_sea
+    100086: cloth_inte
+    100088: cloth_se01
+    100090: cloth_seat
+    100092: Component#1
+    100094: Component#1 1
+    100096: detail_g01
+    100098: detail_g01 1
+    100100: detail_g03
+    100102: detail_g03 1
+    100104: detail_g05
+    100106: detail_g05 1
+    100108: detail_g06
+    100110: detail_g06 1
+    100112: detail_g07
+    100114: detail_g07 1
+    100116: digital_ga
+    100118: emblem_bod
+    100120: emblem_bod 1
+    100122: emblem_bum
+    100124: emblem_tru
+    100126: frame_body
+    100128: gauge_emis
+    100130: gauge_need
+    100132: glass_gl01
+    100134: glass_gl01 1
+    100136: glass_inte
+    100138: Group 1
+    100140: Group 103
+    100142: Group 105
+    100144: Group 107
+    100146: Group 109
+    100148: Group 11
+    100150: Group 113
+    100152: Group 115
+    100154: Group 117
+    100156: Group 119
+    100158: Group 12
+    100160: Group 121
+    100162: Group 124
+    100164: Group 126
+    100166: Group 127
+    100168: Group 128
+    100170: Group 130
+    100172: Group 131
+    100174: Group 14
+    100176: Group 141
+    100178: Group 143
+    100180: Group 145
+    100182: Group 147
+    100184: Group 151
+    100186: Group 153
+    100188: Group 155
+    100190: Group 157
+    100192: Group 159
+    100194: Group 16
+    100196: Group 163
+    100198: Group 165
+    100200: Group 173
+    100202: Group 175
+    100204: Group 177
+    100206: Group 179
+    100208: Group 18
+    100210: Group 181
+    100212: Group 183
+    100214: Group 185
+    100216: Group 187
+    100218: Group 189
+    100220: Group 192
+    100222: Group 20
+    100224: Group 200
+    100226: Group 202
+    100228: Group 204
+    100230: Group 206
+    100232: Group 208
+    100234: Group 210
+    100236: Group 212
+    100238: Group 214
+    100240: Group 216
+    100242: Group 218
+    100244: Group 22
+    100246: Group 220
+    100248: Group 228
+    100250: Group 230
+    100252: Group 232
+    100254: Group 234
+    100256: Group 236
+    100258: Group 238
+    100260: Group 24
+    100262: Group 240
+    100264: Group 242
+    100266: Group 244
+    100268: Group 247
+    100270: Group 255
+    100272: Group 257
+    100274: Group 259
+    100276: Group 26
+    100278: Group 261
+    100280: Group 263
+    100282: Group 265
+    100284: Group 267
+    100286: Group 269
+    100288: Group 271
+    100290: Group 273
+    100292: Group 275
+    100294: Group 28
+    100296: Group 315
+    100298: Group 355
+    100300: Group 417
+    100302: Group 70
+    100304: Group 73
+    100306: Group 75
+    100308: Group 8
+    100310: Group 86
+    100312: Group 88
+    100314: Group 89
+    100316: Group 9
+    100318: Group 90
+    100320: Group 92
+    100322: Group 93
+    100324: Group#25
+    100326: Group#25 1
+    100328: Group#25 2
+    100330: Group#25 3
+    100332: Group#25 4
+    100334: Group#25 5
+    100336: Group#25 6
+    100338: Gruppe#14
+    100340: Gruppe#14 1
+    100342: Gruppe#20
+    100344: Gruppe#20 1
+    100346: Gruppe#20 2
+    100348: Gruppe#20 3
+    100350: Gruppe#25
+    100352: Gruppe#25 1
+    100354: Gruppe#27
+    100356: Gruppe#27 1
+    100358: Gruppe#38
+    100360: Gruppe#38 1
+    100362: Gruppe#45
+    100364: Gruppe#45 1
+    100366: head_lig01
+    100368: head_lig01 1
+    100370: //RootNode
+    100372: Image 72
+    100374: inner_rim_
+    100376: inner_rim_ 1
+    100378: inner_rim_ 2
+    100380: inner_rim_ 3
+    100382: Komponente#1
+    100384: Komponente#1 1
+    100386: leather_se
+    100388: leather_se 1
+    100390: metal_inte
+    100392: metal_stee
+    100394: mirrorMidd
+    100396: misc_body_
+    100398: misc_body_ 1
+    100400: mottled_in
+    100402: plastic201
+    100404: plastic202
+    100406: plastic203
+    100408: plastic203 1
+    100410: plastic2_m
+    100412: plastic2_m 1
+    100414: plastic_01
+    100416: plastic_in
+    100418: plastic_se
+    100420: plastic_st
+    100422: rearbumper
+    100424: rearbumper 1
+    100426: reflecto01
+    100428: reflecto01 1
+    100430: reflecto03
+    100432: reflecto03 1
+    100434: reflecto03#1
+    100436: reverse_li
+    100438: reverse_li 1
+    100440: rim_wheel_
+    100442: rim_wheel_ 1
+    100444: rim_wheel_ 2
+    100446: rim_wheel_ 3
+    100448: rubber_int
+    100450: rubber_t02
+    100452: rubber_t02 1
+    100454: rubber_tri
+    100456: tail_lig02
+    100458: tail_lig02 1
+    100460: tail_light
+    100462: textured03
+    100464: textured03 1
+    100466: textured05
+    100468: textured05 1
+    100470: textured06
+    100472: textured06 1
+    100474: tire_wheel
+    100476: tire_wheel 1
+    100478: tire_wheel 2
+    100480: tire_wheel 3
+    100482: undercarri
+    100484: weatherstr
+    100486: window_bod
+    100488: window_g01
+    100490: window_g01 1
+    100492: window_g02
+    100494: window_g02 1
+    100496: window_g03
+    100498: window_g03 1
+    100500: window_g04
+    100502: window_gla
+    400000: badge_mirr
+    400002: BAER_6R_3_low_detail
+    400004: BAER_6R_3_low_detail 1
+    400006: BAER_6R_3_low_detail 2
+    400008: BAER_6R_3_low_detail 3
+    400010: black_body
+    400012: black_he01
+    400014: black_he01 1
+    400016: black_hood
+    400018: black_mi01
+    400020: black_mirr
+    400022: black_sk01
+    400024: black_skir
+    400026: black_ta01
+    400028: black_ta01 1
+    400030: BMW logo
+    400032: BMW logo 1
+    400034: BMW logo 2
+    400036: BMW logo 3
+    400038: BMW logo 4
+    400040: BMW logo 5
+    400042: BMW logo 6
+    400044: BMW M5 F10 2012
+    400046: body_2_bod
+    400048: body_hooda
+    400050: body_mirro
+    400052: body_mirro 1
+    400054: body_ski01
+    400056: body_skirt
+    400058: body_trunk
+    400060: bump_fro01
+    400062: bump_fro02
+    400064: bump_lea01
+    400066: bump_rea01
+    400068: bump_rea01 1
+    400070: chrome_exh
+    400072: chrome_exh 1
+    400074: chrome_h01
+    400076: chrome_h01 1
+    400078: chrome_mir
+    400080: chrome_mir 1
+    400082: chrome_s01
+    400084: chrome_sea
+    400086: cloth_inte
+    400088: cloth_se01
+    400090: cloth_seat
+    400092: Component#1
+    400094: Component#1 1
+    400096: detail_g01
+    400098: detail_g01 1
+    400100: detail_g03
+    400102: detail_g03 1
+    400104: detail_g05
+    400106: detail_g05 1
+    400108: detail_g06
+    400110: detail_g06 1
+    400112: detail_g07
+    400114: detail_g07 1
+    400116: digital_ga
+    400118: emblem_bod
+    400120: emblem_bod 1
+    400122: emblem_bum
+    400124: emblem_tru
+    400126: frame_body
+    400128: gauge_emis
+    400130: gauge_need
+    400132: glass_gl01
+    400134: glass_gl01 1
+    400136: glass_inte
+    400138: Group 1
+    400140: Group 103
+    400142: Group 105
+    400144: Group 107
+    400146: Group 109
+    400148: Group 11
+    400150: Group 113
+    400152: Group 115
+    400154: Group 117
+    400156: Group 119
+    400158: Group 12
+    400160: Group 121
+    400162: Group 124
+    400164: Group 126
+    400166: Group 127
+    400168: Group 128
+    400170: Group 130
+    400172: Group 131
+    400174: Group 14
+    400176: Group 141
+    400178: Group 143
+    400180: Group 145
+    400182: Group 147
+    400184: Group 151
+    400186: Group 153
+    400188: Group 155
+    400190: Group 157
+    400192: Group 159
+    400194: Group 16
+    400196: Group 163
+    400198: Group 165
+    400200: Group 173
+    400202: Group 175
+    400204: Group 177
+    400206: Group 179
+    400208: Group 18
+    400210: Group 181
+    400212: Group 183
+    400214: Group 185
+    400216: Group 187
+    400218: Group 189
+    400220: Group 192
+    400222: Group 20
+    400224: Group 200
+    400226: Group 202
+    400228: Group 204
+    400230: Group 206
+    400232: Group 208
+    400234: Group 210
+    400236: Group 212
+    400238: Group 214
+    400240: Group 216
+    400242: Group 218
+    400244: Group 22
+    400246: Group 220
+    400248: Group 228
+    400250: Group 230
+    400252: Group 232
+    400254: Group 234
+    400256: Group 236
+    400258: Group 238
+    400260: Group 24
+    400262: Group 240
+    400264: Group 242
+    400266: Group 244
+    400268: Group 247
+    400270: Group 255
+    400272: Group 257
+    400274: Group 259
+    400276: Group 26
+    400278: Group 261
+    400280: Group 263
+    400282: Group 265
+    400284: Group 267
+    400286: Group 269
+    400288: Group 271
+    400290: Group 273
+    400292: Group 275
+    400294: Group 28
+    400296: Group 315
+    400298: Group 355
+    400300: Group 417
+    400302: Group 70
+    400304: Group 73
+    400306: Group 75
+    400308: Group 8
+    400310: Group 86
+    400312: Group 88
+    400314: Group 89
+    400316: Group 9
+    400318: Group 90
+    400320: Group 92
+    400322: Group 93
+    400324: Group#25
+    400326: Group#25 1
+    400328: Group#25 2
+    400330: Group#25 3
+    400332: Group#25 4
+    400334: Group#25 5
+    400336: Group#25 6
+    400338: Gruppe#14
+    400340: Gruppe#14 1
+    400342: Gruppe#20
+    400344: Gruppe#20 1
+    400346: Gruppe#20 2
+    400348: Gruppe#20 3
+    400350: Gruppe#25
+    400352: Gruppe#25 1
+    400354: Gruppe#27
+    400356: Gruppe#27 1
+    400358: Gruppe#38
+    400360: Gruppe#38 1
+    400362: Gruppe#45
+    400364: Gruppe#45 1
+    400366: head_lig01
+    400368: head_lig01 1
+    400370: //RootNode
+    400372: Image 72
+    400374: inner_rim_
+    400376: inner_rim_ 1
+    400378: inner_rim_ 2
+    400380: inner_rim_ 3
+    400382: Komponente#1
+    400384: Komponente#1 1
+    400386: leather_se
+    400388: leather_se 1
+    400390: metal_inte
+    400392: metal_stee
+    400394: mirrorMidd
+    400396: misc_body_
+    400398: misc_body_ 1
+    400400: mottled_in
+    400402: plastic201
+    400404: plastic202
+    400406: plastic203
+    400408: plastic203 1
+    400410: plastic2_m
+    400412: plastic2_m 1
+    400414: plastic_01
+    400416: plastic_in
+    400418: plastic_se
+    400420: plastic_st
+    400422: rearbumper
+    400424: rearbumper 1
+    400426: reflecto01
+    400428: reflecto01 1
+    400430: reflecto03
+    400432: reflecto03 1
+    400434: reflecto03#1
+    400436: reverse_li
+    400438: reverse_li 1
+    400440: rim_wheel_
+    400442: rim_wheel_ 1
+    400444: rim_wheel_ 2
+    400446: rim_wheel_ 3
+    400448: rubber_int
+    400450: rubber_t02
+    400452: rubber_t02 1
+    400454: rubber_tri
+    400456: tail_lig02
+    400458: tail_lig02 1
+    400460: tail_light
+    400462: textured03
+    400464: textured03 1
+    400466: textured05
+    400468: textured05 1
+    400470: textured06
+    400472: textured06 1
+    400474: tire_wheel
+    400476: tire_wheel 1
+    400478: tire_wheel 2
+    400480: tire_wheel 3
+    400482: undercarri
+    400484: weatherstr
+    400486: window_bod
+    400488: window_g01
+    400490: window_g01 1
+    400492: window_g02
+    400494: window_g02 1
+    400496: window_g03
+    400498: window_g03 1
+    400500: window_g04
+    400502: window_gla
+    2300000: badge_mirr
+    2300002: black_body
+    2300004: black_he01
+    2300006: black_he01 1
+    2300008: black_hood
+    2300010: black_mi01
+    2300012: black_mirr
+    2300014: black_sk01
+    2300016: black_skir
+    2300018: black_ta01
+    2300020: black_ta01 1
+    2300022: BMW logo
+    2300024: BMW logo 1
+    2300026: BMW logo 2
+    2300028: BMW logo 3
+    2300030: BMW logo 4
+    2300032: BMW logo 5
+    2300034: BMW logo 6
+    2300036: body_2_bod
+    2300038: body_hooda
+    2300040: body_mirro
+    2300042: body_mirro 1
+    2300044: body_ski01
+    2300046: body_skirt
+    2300048: bump_fro02
+    2300050: bump_lea01
+    2300052: bump_rea01
+    2300054: bump_rea01 1
+    2300056: chrome_exh
+    2300058: chrome_exh 1
+    2300060: chrome_h01
+    2300062: chrome_h01 1
+    2300064: chrome_mir
+    2300066: chrome_mir 1
+    2300068: chrome_s01
+    2300070: chrome_sea
+    2300072: cloth_inte
+    2300074: cloth_se01
+    2300076: cloth_seat
+    2300078: Component#1
+    2300080: Component#1 1
+    2300082: detail_g01
+    2300084: detail_g01 1
+    2300086: detail_g03
+    2300088: detail_g03 1
+    2300090: detail_g05
+    2300092: detail_g05 1
+    2300094: detail_g06
+    2300096: detail_g06 1
+    2300098: detail_g07
+    2300100: detail_g07 1
+    2300102: digital_ga
+    2300104: emblem_bod
+    2300106: emblem_bod 1
+    2300108: frame_body
+    2300110: gauge_emis
+    2300112: gauge_need
+    2300114: glass_gl01
+    2300116: glass_gl01 1
+    2300118: glass_inte
+    2300120: Group 1
+    2300122: Group 103
+    2300124: Group 105
+    2300126: Group 107
+    2300128: Group 109
+    2300130: Group 113
+    2300132: Group 115
+    2300134: Group 117
+    2300136: Group 119
+    2300138: Group 12
+    2300140: Group 121
+    2300142: Group 124
+    2300144: Group 128
+    2300146: Group 131
+    2300148: Group 14
+    2300150: Group 141
+    2300152: Group 143
+    2300154: Group 145
+    2300156: Group 147
+    2300158: Group 151
+    2300160: Group 153
+    2300162: Group 155
+    2300164: Group 157
+    2300166: Group 159
+    2300168: Group 16
+    2300170: Group 173
+    2300172: Group 175
+    2300174: Group 177
+    2300176: Group 179
+    2300178: Group 18
+    2300180: Group 181
+    2300182: Group 183
+    2300184: Group 185
+    2300186: Group 187
+    2300188: Group 189
+    2300190: Group 20
+    2300192: Group 200
+    2300194: Group 202
+    2300196: Group 204
+    2300198: Group 206
+    2300200: Group 208
+    2300202: Group 210
+    2300204: Group 212
+    2300206: Group 214
+    2300208: Group 216
+    2300210: Group 22
+    2300212: Group 228
+    2300214: Group 230
+    2300216: Group 232
+    2300218: Group 234
+    2300220: Group 236
+    2300222: Group 238
+    2300224: Group 24
+    2300226: Group 240
+    2300228: Group 242
+    2300230: Group 244
+    2300232: Group 255
+    2300234: Group 257
+    2300236: Group 259
+    2300238: Group 26
+    2300240: Group 261
+    2300242: Group 263
+    2300244: Group 265
+    2300246: Group 267
+    2300248: Group 269
+    2300250: Group 271
+    2300252: Group 28
+    2300254: Group 355
+    2300256: Group 417
+    2300258: Group 70
+    2300260: Group 73
+    2300262: Group 75
+    2300264: Group 86
+    2300266: Group 9
+    2300268: Group 90
+    2300270: Group 93
+    2300272: Gruppe#25
+    2300274: Gruppe#25 1
+    2300276: Gruppe#27
+    2300278: Gruppe#27 1
+    2300280: Gruppe#38
+    2300282: Gruppe#38 1
+    2300284: head_lig01
+    2300286: head_lig01 1
+    2300288: Image 72
+    2300290: inner_rim_
+    2300292: inner_rim_ 1
+    2300294: inner_rim_ 2
+    2300296: inner_rim_ 3
+    2300298: leather_se
+    2300300: leather_se 1
+    2300302: metal_inte
+    2300304: metal_stee
+    2300306: mirrorMidd
+    2300308: misc_body_
+    2300310: misc_body_ 1
+    2300312: mottled_in
+    2300314: plastic201
+    2300316: plastic202
+    2300318: plastic203
+    2300320: plastic203 1
+    2300322: plastic2_m
+    2300324: plastic2_m 1
+    2300326: plastic_01
+    2300328: plastic_se
+    2300330: plastic_st
+    2300332: rearbumper
+    2300334: rearbumper 1
+    2300336: reflecto01
+    2300338: reflecto01 1
+    2300340: reflecto03
+    2300342: reflecto03 1
+    2300344: reflecto03#1
+    2300346: reverse_li
+    2300348: reverse_li 1
+    2300350: rim_wheel_
+    2300352: rim_wheel_ 1
+    2300354: rim_wheel_ 2
+    2300356: rim_wheel_ 3
+    2300358: rubber_int
+    2300360: rubber_t02
+    2300362: rubber_t02 1
+    2300364: rubber_tri
+    2300366: tail_lig02
+    2300368: tail_lig02 1
+    2300370: tail_light
+    2300372: textured03
+    2300374: textured03 1
+    2300376: textured05
+    2300378: textured05 1
+    2300380: textured06
+    2300382: textured06 1
+    2300384: tire_wheel
+    2300386: tire_wheel 1
+    2300388: tire_wheel 2
+    2300390: tire_wheel 3
+    2300392: weatherstr
+    2300394: window_bod
+    2300396: window_g01
+    2300398: window_g01 1
+    2300400: window_g02
+    2300402: window_g02 1
+    2300404: window_g03
+    2300406: window_g03 1
+    2300408: window_g04
+    2300410: window_gla
+    3300000: badge_mirr
+    3300002: black_body
+    3300004: black_he01
+    3300006: black_he01 1
+    3300008: black_hood
+    3300010: black_mi01
+    3300012: black_mirr
+    3300014: black_sk01
+    3300016: black_skir
+    3300018: black_ta01
+    3300020: black_ta01 1
+    3300022: BMW logo
+    3300024: BMW logo 1
+    3300026: BMW logo 2
+    3300028: BMW logo 3
+    3300030: BMW logo 4
+    3300032: BMW logo 5
+    3300034: BMW logo 6
+    3300036: body_2_bod
+    3300038: body_hooda
+    3300040: body_mirro
+    3300042: body_mirro 1
+    3300044: body_ski01
+    3300046: body_skirt
+    3300048: bump_fro02
+    3300050: bump_lea01
+    3300052: bump_rea01
+    3300054: bump_rea01 1
+    3300056: chrome_exh
+    3300058: chrome_exh 1
+    3300060: chrome_h01
+    3300062: chrome_h01 1
+    3300064: chrome_mir
+    3300066: chrome_mir 1
+    3300068: chrome_s01
+    3300070: chrome_sea
+    3300072: cloth_inte
+    3300074: cloth_se01
+    3300076: cloth_seat
+    3300078: Component#1
+    3300080: Component#1 1
+    3300082: detail_g01
+    3300084: detail_g01 1
+    3300086: detail_g03
+    3300088: detail_g03 1
+    3300090: detail_g05
+    3300092: detail_g05 1
+    3300094: detail_g06
+    3300096: detail_g06 1
+    3300098: detail_g07
+    3300100: detail_g07 1
+    3300102: digital_ga
+    3300104: emblem_bod
+    3300106: emblem_bod 1
+    3300108: frame_body
+    3300110: gauge_emis
+    3300112: gauge_need
+    3300114: glass_gl01
+    3300116: glass_gl01 1
+    3300118: glass_inte
+    3300120: Group 1
+    3300122: Group 103
+    3300124: Group 105
+    3300126: Group 107
+    3300128: Group 109
+    3300130: Group 113
+    3300132: Group 115
+    3300134: Group 117
+    3300136: Group 119
+    3300138: Group 12
+    3300140: Group 121
+    3300142: Group 124
+    3300144: Group 128
+    3300146: Group 131
+    3300148: Group 14
+    3300150: Group 141
+    3300152: Group 143
+    3300154: Group 145
+    3300156: Group 147
+    3300158: Group 151
+    3300160: Group 153
+    3300162: Group 155
+    3300164: Group 157
+    3300166: Group 159
+    3300168: Group 16
+    3300170: Group 173
+    3300172: Group 175
+    3300174: Group 177
+    3300176: Group 179
+    3300178: Group 18
+    3300180: Group 181
+    3300182: Group 183
+    3300184: Group 185
+    3300186: Group 187
+    3300188: Group 189
+    3300190: Group 20
+    3300192: Group 200
+    3300194: Group 202
+    3300196: Group 204
+    3300198: Group 206
+    3300200: Group 208
+    3300202: Group 210
+    3300204: Group 212
+    3300206: Group 214
+    3300208: Group 216
+    3300210: Group 22
+    3300212: Group 228
+    3300214: Group 230
+    3300216: Group 232
+    3300218: Group 234
+    3300220: Group 236
+    3300222: Group 238
+    3300224: Group 24
+    3300226: Group 240
+    3300228: Group 242
+    3300230: Group 244
+    3300232: Group 255
+    3300234: Group 257
+    3300236: Group 259
+    3300238: Group 26
+    3300240: Group 261
+    3300242: Group 263
+    3300244: Group 265
+    3300246: Group 267
+    3300248: Group 269
+    3300250: Group 271
+    3300252: Group 28
+    3300254: Group 355
+    3300256: Group 417
+    3300258: Group 70
+    3300260: Group 73
+    3300262: Group 75
+    3300264: Group 86
+    3300266: Group 9
+    3300268: Group 90
+    3300270: Group 93
+    3300272: Gruppe#25
+    3300274: Gruppe#25 1
+    3300276: Gruppe#27
+    3300278: Gruppe#27 1
+    3300280: Gruppe#38
+    3300282: Gruppe#38 1
+    3300284: head_lig01
+    3300286: head_lig01 1
+    3300288: Image 72
+    3300290: inner_rim_
+    3300292: inner_rim_ 1
+    3300294: inner_rim_ 2
+    3300296: inner_rim_ 3
+    3300298: leather_se
+    3300300: leather_se 1
+    3300302: metal_inte
+    3300304: metal_stee
+    3300306: mirrorMidd
+    3300308: misc_body_
+    3300310: misc_body_ 1
+    3300312: mottled_in
+    3300314: plastic201
+    3300316: plastic202
+    3300318: plastic203
+    3300320: plastic203 1
+    3300322: plastic2_m
+    3300324: plastic2_m 1
+    3300326: plastic_01
+    3300328: plastic_se
+    3300330: plastic_st
+    3300332: rearbumper
+    3300334: rearbumper 1
+    3300336: reflecto01
+    3300338: reflecto01 1
+    3300340: reflecto03
+    3300342: reflecto03 1
+    3300344: reflecto03#1
+    3300346: reverse_li
+    3300348: reverse_li 1
+    3300350: rim_wheel_
+    3300352: rim_wheel_ 1
+    3300354: rim_wheel_ 2
+    3300356: rim_wheel_ 3
+    3300358: rubber_int
+    3300360: rubber_t02
+    3300362: rubber_t02 1
+    3300364: rubber_tri
+    3300366: tail_lig02
+    3300368: tail_lig02 1
+    3300370: tail_light
+    3300372: textured03
+    3300374: textured03 1
+    3300376: textured05
+    3300378: textured05 1
+    3300380: textured06
+    3300382: textured06 1
+    3300384: tire_wheel
+    3300386: tire_wheel 1
+    3300388: tire_wheel 2
+    3300390: tire_wheel 3
+    3300392: weatherstr
+    3300394: window_bod
+    3300396: window_g01
+    3300398: window_g01 1
+    3300400: window_g02
+    3300402: window_g02 1
+    3300404: window_g03
+    3300406: window_g03 1
+    3300408: window_g04
+    3300410: window_gla
+    4300000: Mesh Group 1
+    4300002: Mesh Component#1
+    4300004: Mesh Group 9
+    4300006: Mesh Group 12
+    4300008: Mesh Group 14
+    4300010: Mesh Group 16
+    4300012: Mesh Group 18
+    4300014: Mesh Group 20
+    4300016: Mesh Group 22
+    4300018: Mesh Group 24
+    4300020: Mesh Group 26
+    4300022: Mesh Group 28
+    4300024: Mesh bump_lea01
+    4300026: Mesh rubber_int
+    4300028: Mesh reflecto03#1
+    4300030: Mesh BMW logo
+    4300032: Mesh chrome_s01
+    4300034: Mesh chrome_sea
+    4300036: Mesh cloth_inte
+    4300038: Mesh cloth_se01
+    4300040: Mesh cloth_seat
+    4300042: Mesh digital_ga
+    4300044: Mesh gauge_emis
+    4300046: Mesh gauge_need
+    4300048: Mesh glass_inte
+    4300050: Mesh leather_se
+    4300052: Mesh metal_inte
+    4300054: Mesh metal_stee
+    4300056: Mesh mirrorMidd
+    4300058: Mesh mottled_in
+    4300060: Mesh plastic_01
+    4300062: Mesh Group 70
+    4300064: Mesh Group 70
+    4300066: Mesh Group 73
+    4300068: Mesh Group 75
+    4300070: Mesh Gruppe#25
+    4300072: Mesh plastic_se
+    4300074: Mesh plastic_st
+    4300076: Mesh Group 86
+    4300078: Mesh Group 90
+    4300080: Mesh Group 93
+    4300082: Mesh window_g01
+    4300084: Mesh window_g02
+    4300086: Mesh window_g03
+    4300088: Mesh emblem_bod
+    4300090: Mesh Group 103
+    4300092: Mesh Group 105
+    4300094: Mesh Group 107
+    4300096: Mesh Group 109
+    4300098: Mesh misc_body_
+    4300100: Mesh Group 113
+    4300102: Mesh Group 115
+    4300104: Mesh Group 117
+    4300106: Mesh Group 119
+    4300108: Mesh Group 121
+    4300110: Mesh rim_wheel_
+    4300112: Mesh tire_wheel
+    4300114: Mesh inner_rim_
+    4300116: Mesh Group 173
+    4300118: Mesh Group 175
+    4300120: Mesh Group 177
+    4300122: Mesh Group 179
+    4300124: Mesh Group 181
+    4300126: Mesh Group 183
+    4300128: Mesh Group 185
+    4300130: Mesh Group 187
+    4300132: Mesh Group 189
+    4300134: Mesh detail_g01
+    4300136: Mesh detail_g07
+    4300138: Mesh head_lig01
+    4300140: Mesh plastic203
+    4300142: Mesh black_he01
+    4300144: Mesh detail_g03
+    4300146: Mesh detail_g05
+    4300148: Mesh detail_g06
+    4300150: Mesh chrome_h01
+    4300152: Mesh black_ta01
+    4300154: Mesh reflecto01
+    4300156: Mesh reflecto03
+    4300158: Mesh reverse_li
+    4300160: Mesh rubber_t02
+    4300162: Mesh tail_lig02
+    4300164: Mesh textured03
+    4300166: Mesh textured05
+    4300168: Mesh textured06
+    4300170: Mesh glass_gl01
+    4300172: Mesh Group 355
+    4300174: Mesh BMW logo
+    4300176: Mesh black_body
+    4300178: Mesh plastic201
+    4300180: Mesh plastic202
+    4300182: Mesh weatherstr
+    4300184: Mesh window_bod
+    4300186: Mesh window_g04
+    4300188: Mesh window_gla
+    4300190: Mesh badge_mirr
+    4300192: Mesh black_mi01
+    4300194: Mesh black_mirr
+    4300196: Mesh black_sk01
+    4300198: Mesh black_skir
+    4300200: Mesh chrome_mir
+    4300202: Mesh body_ski01
+    4300204: Mesh body_skirt
+    4300206: Mesh body_2_bod
+    4300208: Mesh body_mirro
+    4300210: Mesh plastic2_m
+    4300212: Mesh rubber_tri
+    4300214: Mesh tail_light
+    4300216: Mesh frame_body
+    4300218: Mesh black_hood
+    4300220: Mesh body_hooda
+    4300222: Mesh Group 417
+    4300224: Mesh Gruppe#27
+    4300226: Mesh rearbumper
+    4300228: Mesh bump_rea01
+    4300230: Mesh chrome_exh
+    4300232: Mesh Gruppe#38
+    4300234: Mesh bump_fro02
+  materials:
+    importMaterials: 1
+    materialName: 2
+    materialSearch: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.0254
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
