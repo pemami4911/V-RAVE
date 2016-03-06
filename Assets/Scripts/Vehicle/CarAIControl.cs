@@ -22,7 +22,7 @@ namespace VRAVE
 
 		// "wandering" is used to give the cars a more human, less robotic feel. They can waver slightly
 		// in speed and direction while driving towards their target.
-
+		[SerializeField] private Transform m_centerOfMass; 			  						      // the true CoM of the vehicle
 		[SerializeField] [Range(0, 1)] private float m_CautiousSpeedFactor = 0.05f;               // percentage of max speed to use when being maximally cautious
 		[SerializeField] [Range(0, 180)] private float m_CautiousMaxAngle = 50f;                  // angle of approaching corner to treat as warranting maximum caution
 		[SerializeField] private float m_CautiousMaxDistance = 100f;                              // distance at which distance-based cautiousness begins
@@ -39,7 +39,11 @@ namespace VRAVE
 		[SerializeField] private bool m_StopWhenTargetReached;                                    // should we stop driving when we reach the target?
 		[SerializeField] private float m_ReachTargetThreshold = 2;                                // proximity to target to consider we 'reached' it, and stop driving.
 		[SerializeField] private WaypointCircuit circuit;										  // A reference to the waypoint-based route we should follow
-		[SerializeField] private bool m_isCircuit = false; 
+		[SerializeField] private bool m_isCircuit = false; 										  // Denotes whether the waypoint-based route wraps around
+		[SerializeField] private float m_sensorLength = 10f;								      // Length of sensor beams
+		[SerializeField] private float m_frontSensorStartPoint = 1f;							  // front offset 			  
+		[SerializeField] private float m_frontSensorSideOffset = 1f;							  // lateral distance between vehicle sensors in front sensor array
+		[SerializeField] private float m_hardStopThreshold = 20f;
 
 		private float m_RandomPerlin;             // A random value for the car to base its wander on (so that AI cars don't all wander in the same pattern)
 		private CarController m_CarController;    // Reference to actual car controller we are controlling
@@ -50,6 +54,7 @@ namespace VRAVE
 		private Transform m_Target;
 		private int progressNum; 
 		private VisualSteeringWheelController m_SteeringWheel; //SteeringWheelController
+		private Vector3[] frontSensorArray; 
 
 		private void Awake()
 		{
@@ -62,6 +67,9 @@ namespace VRAVE
 
 			progressNum = 0;
 			//Debug.Log (progressNum);
+
+			// Front facing sensor array
+			frontSensorArray = new Vector3[3];
 
 			SetTarget (circuit.Waypoints[progressNum]);
 		}
@@ -77,6 +85,12 @@ namespace VRAVE
 			}
 			else
 			{
+				RaycastHit hit;
+				if (Sensors (out hit)) 
+				{				
+					handleObstacle (hit);
+				}
+
 				Vector3 fwd = transform.forward;
 				if (m_Rigidbody.velocity.magnitude > m_CarController.MaxSpeed*0.1f)
 				{
@@ -243,6 +257,46 @@ namespace VRAVE
 		{
 			m_Target = target;
 			m_Driving = true;
+		}
+
+		// Sensors for collision avoidance
+		// Lets keep it simple and just have a sensor array 
+		// on each side of the vehicle (front + back + both sides)
+		public bool Sensors(out RaycastHit hit)
+		{
+			hit = new RaycastHit ();
+
+			// Front sensors 
+			frontSensorArray[0] = m_centerOfMass.position;
+			frontSensorArray[0] += m_centerOfMass.forward * m_frontSensorStartPoint;
+
+			frontSensorArray [1] = frontSensorArray [0];
+			frontSensorArray [2] = frontSensorArray [0];
+
+			// Left sensor
+			frontSensorArray[1] += m_centerOfMass.right * -m_frontSensorSideOffset;
+			// Right sensor
+			frontSensorArray[2] += m_centerOfMass.right * m_frontSensorSideOffset;
+
+			foreach (Vector3 pos in frontSensorArray) 
+			{
+				if (Physics.Raycast (pos, m_centerOfMass.forward, out hit, m_sensorLength)) 
+				{
+					Debug.DrawLine (pos, hit.point, Color.yellow);
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public void handleObstacle(RaycastHit obstacle)
+		{
+			if (obstacle.collider.CompareTag("Obstacle") && m_CarController.CurrentSpeed > m_hardStopThreshold && m_BrakeCondition != BrakeCondition.TargetDistance)
+			{
+				SetTarget(obstacle.transform);
+				m_StopWhenTargetReached = true;
+			}
 		}
 	}
 }
