@@ -20088,8 +20088,8 @@ Transform:
   m_PrefabParentObject: {fileID: 448832, guid: 4eccccdbaa47ec0408ad38a97043fd2c, type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1160351887}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.364, y: 2.605, z: 1.82}
+  m_LocalRotation: {x: 0.05051646, y: 0.12236113, z: 0.010363824, w: 0.991145}
+  m_LocalPosition: {x: 2.3639994, y: 2.6049995, z: 1.8206058}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2079637433}
@@ -22369,7 +22369,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1272031130}
-  m_LocalRotation: {x: 0.52819234, y: -0.47067335, z: -0.069689326, w: 0.7032943}
+  m_LocalRotation: {x: 0.5281924, y: -0.47067338, z: -0.06968933, w: 0.70329434}
   m_LocalPosition: {x: 83.4, y: 103, z: 67.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -29577,7 +29577,7 @@ GameObject:
   - 33: {fileID: 1772332251}
   - 23: {fileID: 1772332250}
   m_Layer: 0
-  m_Name: chrome_mir
+  m_Name: Left_Side_Mirror
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29606,7 +29606,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 86b9a20c1324d1146a702f04339dc095, type: 2}
+  - {fileID: 2100000, guid: df4b14bc58b5bf24f9c912eeee2af287, type: 2}
   - {fileID: 2100000, guid: 76d256cb91d57f34caa1178defc6a2a2, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
@@ -34366,7 +34366,7 @@ GameObject:
   - 33: {fileID: 2027991406}
   - 23: {fileID: 2027991405}
   m_Layer: 0
-  m_Name: chrome_mir 1
+  m_Name: Right_Side_Mirror
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34395,7 +34395,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 86b9a20c1324d1146a702f04339dc095, type: 2}
+  - {fileID: 2100000, guid: df4b14bc58b5bf24f9c912eeee2af287, type: 2}
   - {fileID: 2100000, guid: 76d256cb91d57f34caa1178defc6a2a2, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
@@ -35398,9 +35398,8 @@ GameObject:
   - 4: {fileID: 2079637433}
   - 33: {fileID: 2079637437}
   - 23: {fileID: 2079637436}
-  - 114: {fileID: 2079637435}
   - 114: {fileID: 2079637434}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: mirrorMidd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35432,26 +35431,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DisablePixelLights: 1
-  m_TextureSize: 256
-  m_ClipPlaneOffset: 0.07
-  m_ReflectLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
---- !u!114 &2079637435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11445644, guid: 4eccccdbaa47ec0408ad38a97043fd2c,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2079637432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a59749331ea7edf44982024e398c5cd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_DisablePixelLights: 1
-  m_TextureSize: 2048
-  m_ClipPlaneOffset: 0.7
+  m_TextureSize: 1024
+  m_ClipPlaneOffset: 0.5
   m_ReflectLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -35469,7 +35450,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: df4b14bc58b5bf24f9c912eeee2af287, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
+  m_UseLightProbes: 0
   m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
