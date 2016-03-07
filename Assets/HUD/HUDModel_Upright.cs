@@ -49,12 +49,12 @@ public class HUDModel_Upright : HUDModel {
 		leftImagePosition = new Vector3(2,0, 0 );
 		leftImageScale = new Vector3 (0.1280507f, 0, 0.1280507f);
 		isLeftImageEnabled = true;
-		leftBackingMaterial = Resources.Load("alert2", typeof(Material)) as Material;
+		leftBackingMaterial = Resources.Load("alert", typeof(Material)) as Material;
 
 		rightImagePosition = new Vector3(0,0, 0 );
 		rightImageScale = new Vector3 (0.5f, 0.5f, 0.5f);
 		isRightImageEnabled = false;
-		rightBackingMaterial = Resources.Load("alert2", typeof(Material)) as Material;
+		rightBackingMaterial = Resources.Load("alert", typeof(Material)) as Material;
 
 	}
 }
