@@ -68,7 +68,7 @@ public class HUDModel {
 		leftText = ">Hi, Dave.";
 		rightText = "Vehicle:\n100%";
 		topText = "TOP";
-		bottomText = "TOP";
+		bottomText = "BOTTOM";
 
 		centerCharSize = 0.005f;
 		leftCharSize = 0.0025f;

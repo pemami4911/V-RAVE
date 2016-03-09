@@ -50,7 +50,7 @@ GameObject:
   - 82: {fileID: 8265038}
   - 114: {fileID: 11482018}
   m_Layer: 0
-  m_Name: HUD3
+  m_Name: HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
