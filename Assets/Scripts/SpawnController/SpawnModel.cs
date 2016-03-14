@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+namespace VRAVE {
+
 public class SpawnModel {
 
 	//Stores the mapping between the Resource string and a mapping of coordinates to rotation
@@ -33,4 +35,6 @@ public class SpawnModel {
 		return spawnMap [resource];
 
 	}
+}
+
 }

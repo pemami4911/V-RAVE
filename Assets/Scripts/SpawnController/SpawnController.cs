@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace VRAVE {
+	
 public class SpawnController : MonoBehaviour {
 
 	public SpawnModel spawnModel;
@@ -10,8 +12,7 @@ public class SpawnController : MonoBehaviour {
 		spawnModel = new SpawnModel ();
 	}
 
-	void enterScenario0() {
-		spawnModel = new SpawnModel ();
+	void enterScenario(SpawnModel spawnModel) {
 
 		ICollection<string> resources = spawnModel.getResourceStrings ();
 		foreach (string resource in resources) {
@@ -26,4 +27,5 @@ public class SpawnController : MonoBehaviour {
 			}
 		}
 	}
+}
 }
