@@ -12,7 +12,7 @@ namespace VRAVE {
 			spawnModel = new SpawnModel ();
 		}
 
-		void enterScenario() {
+		public void enterScenario() {
 			
 			ICollection<string> resources = spawnModel.getResourceStrings ();
 			foreach (string resource in resources) {
@@ -28,7 +28,7 @@ namespace VRAVE {
 			}
 		}
 			
-		void exitScenario() {
+		public void exitScenario() {
 			//will need this method... someday
 		}
 
