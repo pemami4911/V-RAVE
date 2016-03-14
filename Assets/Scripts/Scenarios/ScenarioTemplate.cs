@@ -7,7 +7,9 @@
 	public class ScenarioTemplate : StateBehaviour {
 
 		// Each scenario will want a reference to the user car
-		public GameObject UserCar; 
+		[SerializeField] private GameObject UserCar; 
+
+		private SpawnController manufacturer; 
 
 		// You'll need to specify all of the states for your scenario here
 		// I recommend drawing an FSM to give you an idea about how state transitions
@@ -27,6 +29,8 @@
 			Initialize<States> ();
 			//Instantiate (UserCar, new Vector3 (21.11f, 0.14f, 14.4f), Quaternion.identity);
 			UserCar.SetActive (false);
+
+			manufacturer = GetComponent<SpawnController> ();
 
 			// Set the initial state here
 			ChangeState (States.AIDriving);
