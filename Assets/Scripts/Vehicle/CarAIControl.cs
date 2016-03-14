@@ -66,6 +66,11 @@ namespace VRAVE
 			SetTarget (circuit.Waypoints[progressNum]);
 		}
 
+        private void onEnable()
+        {   
+            //When switched to UserControl mode, expand steeringAngle
+            m_CarController.setMaxSteeringAngle(35);
+        }
 
 		private void FixedUpdate()
 		{

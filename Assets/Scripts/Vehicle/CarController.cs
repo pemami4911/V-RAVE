@@ -51,6 +51,7 @@ namespace VRAVE
         private const float k_ReversingThreshold = 0.01f;
 
         public bool Skidding { get; private set; }
+        //public float MaxSteeringAngle { get { return m_MaximumSteerAngle; } set(m_MaximumSteerAngle){ } }
         public float BrakeInput { get; private set; }
         public float CurrentSteerAngle{ get { return m_SteerAngle; }}
         public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; }}
@@ -372,5 +373,10 @@ namespace VRAVE
             }
             return false;
         }*/
+
+        public void setMaxSteeringAngle(float maxSteeringAngle)
+        {
+            m_MaximumSteerAngle = maxSteeringAngle;
+        }
     }
 }
