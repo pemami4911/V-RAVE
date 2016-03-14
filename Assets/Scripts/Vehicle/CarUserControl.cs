@@ -17,8 +17,15 @@ namespace VRAVE
             // get the car controller
             m_Car = GetComponent<CarController>();
 
+
             //get the steering wheel controller
             m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController>();
+        }
+
+        private void onEnable()
+        {
+            //When switched to UserControl mode, expand steeringAngle
+            m_Car.setMaxSteeringAngle(60);
         }
 
 
