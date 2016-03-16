@@ -51,7 +51,6 @@ public class HUDController : MonoBehaviour {
 		topText = topTextField.GetComponent<TextMesh>();
 		bottomText = bottomTextField.GetComponent<TextMesh>();
 
-
 	}
 	
 	// Update is called once per frame
@@ -76,6 +75,7 @@ public class HUDController : MonoBehaviour {
 		if (h) {
 			isHUDTextEnabled = !isHUDTextEnabled;
 		}
+			
 	}
 
 	void updateCenterImageField() {

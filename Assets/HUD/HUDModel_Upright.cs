@@ -14,9 +14,12 @@ public class HUDModel_Upright : HUDModel {
 		leftTextPosition = new Vector3(3.04f,0.131f, -1.049f );
 		rightTextPosition = new Vector3(-1.71f,0.131f, -0.89f);
 
+		isLeftImageEnabled = false;
+		isRightTextEnabled = false;
+
 		centerCharSize = 0.005f;
-		leftCharSize = 0.0025f;
-		rightCharSize = 0.0025f;
+		leftCharSize = 0.005f;
+		rightCharSize = 0.005f;
 		topCharSize = 0.005f;
 		bottomCharSize = 0.005f;
 
