@@ -1,7 +1,7 @@
 ﻿Shader "FX/MirrorReflection"
 {
 	Properties
-	{q
+	{
 		_MainTex("Base (RGB)", 2D) = "white" {}
 	[HideInInspector] _ReflectionTex("", 2D) = "white" {}
 	}

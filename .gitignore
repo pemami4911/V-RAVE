@@ -3,6 +3,7 @@ Unity generated
 ===============
 Temp/
 Library/
+*/ProjectVersion.txt
 
 =====================================
 Visual Studio / MonoDevelop generated
@@ -39,3 +40,9 @@ Binaries
 .blend
 .max
 .3ds
+
+Mirror.mat
+Lobby.unity
+ProjectSettings.asset
+ProjectVersion.txt
+
