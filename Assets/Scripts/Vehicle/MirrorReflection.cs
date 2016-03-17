@@ -44,7 +44,7 @@ public class MirrorReflection : MonoBehaviour
 
         // find out the reflection plane: position and normal in world space
         Vector3 pos = transform.position;
-        Vector3 normal = transform.up;
+        Vector3 normal = transform.forward;
 
         // Optionally disable pixel lights for reflection
         int oldPixelLightCount = QualitySettings.pixelLightCount;
@@ -85,6 +85,18 @@ public class MirrorReflection : MonoBehaviour
         {
             if (mat.HasProperty("_ReflectionTex"))
                 mat.SetTexture("_ReflectionTex", m_ReflectionTexture);
+        }
+
+        // Set matrix on the shader that transforms UVs from object space into screen
+        // space. We want to just project reflection texture on screen.
+        Matrix4x4 scaleOffset = Matrix4x4.TRS(
+            new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, new Vector3(0.5f, 0.5f, 0.5f));
+        Vector3 scale = transform.lossyScale;
+        Matrix4x4 mtx = transform.localToWorldMatrix * Matrix4x4.Scale(new Vector3(1.0f / scale.x, 1.0f / scale.y, 1.0f / scale.z));
+        mtx = scaleOffset * cam.projectionMatrix * cam.worldToCameraMatrix * mtx;
+        foreach (Material mat in materials)
+        {
+            mat.SetMatrix("_ProjMatrix", mtx);
         }
 
         // Restore pixel light count

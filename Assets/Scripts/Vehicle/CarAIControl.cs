@@ -30,8 +30,8 @@ namespace VRAVE
 		[SerializeField] private float m_SteerSensitivity = 0.05f;                                // how sensitively the AI uses steering input to turn to the desired direction
 		[SerializeField] private float m_AccelSensitivity = 0.04f;                                // How sensitively the AI uses the accelerator to reach the current desired speed
 		[SerializeField] private float m_BrakeSensitivity = 1f;                                   // How sensitively the AI uses the brake to reach the current desired speed
-		[SerializeField] private float m_LateralWanderDistance = 3f;                              // how far the car will wander laterally towards its target
-		[SerializeField] private float m_LateralWanderSpeed = 0.1f;                               // how fast the lateral wandering will fluctuate
+		[SerializeField] private float m_LateralWanderDistance = 0f;                              // how far the car will wander laterally towards its target
+		[SerializeField] private float m_LateralWanderSpeed = 0f;                                 // how fast the lateral wandering will fluctuate
 		[SerializeField] [Range(0, 1)] private float m_AccelWanderAmount = 0.1f;                  // how much the cars acceleration will wander
 		[SerializeField] private float m_AccelWanderSpeed = 0.1f;                                 // how fast the cars acceleration wandering will fluctuate
 		[SerializeField] private BrakeCondition m_BrakeCondition = BrakeCondition.TargetDistance; // what should the AI consider when accelerating/braking?
@@ -66,6 +66,11 @@ namespace VRAVE
 			SetTarget (circuit.Waypoints[progressNum]);
 		}
 
+        private void onEnable()
+        {   
+            //When switched to UserControl mode, expand steeringAngle
+            m_CarController.setMaxSteeringAngle(35);
+        }
 
 		private void FixedUpdate()
 		{
@@ -94,16 +99,19 @@ namespace VRAVE
 
 						// check out the angle of our target compared to the current direction of the car
 						float approachingCornerAngle = Vector3.Angle(m_Target.forward, fwd);
-
+                            //Debug.Log("Approaching Corner Angle: " + approachingCornerAngle);
 						// also consider the current amount we're turning, multiplied up and then compared in the same way as an upcoming corner angle
 						float spinningAngle = m_Rigidbody.angularVelocity.magnitude*m_CautiousAngularVelocityFactor;
+                            //Debug.Log("Spinning Angle: " + spinningAngle);
 
-						// if it's different to our current angle, we need to be cautious (i.e. slow down) a certain amount
-						float cautiousnessRequired = Mathf.InverseLerp(0, m_CautiousMaxAngle,
+                        // if it's different to our current angle, we need to be cautious (i.e. slow down) a certain amount
+                        float cautiousnessRequired = Mathf.InverseLerp(0, m_CautiousMaxAngle,
 							Mathf.Max(spinningAngle,
 								approachingCornerAngle));
-						desiredSpeed = Mathf.Lerp(m_CarController.MaxSpeed, m_CarController.MaxSpeed*m_CautiousSpeedFactor,
+                            //Debug.Log("Cautiousness Required: " + cautiousnessRequired);
+                        desiredSpeed = Mathf.Lerp(m_CarController.MaxSpeed, m_CarController.MaxSpeed*m_CautiousSpeedFactor,
 							cautiousnessRequired);
+                            //Debug.Log("Approaching Corner Angle\tSpinningAngle" + approachingCornerAngle"DesiredSpeed: " + desiredSpeed);
 						break;
 					}
 
@@ -194,11 +202,15 @@ namespace VRAVE
 					} 
 					else 
 					{
-						if (progressNum == circuit.Waypoints.Length - 1) 
-						{
-							m_StopWhenTargetReached = true;
-						}
-						SetTarget (circuit.Waypoints[++progressNum]);
+                        if (progressNum == circuit.Waypoints.Length - 1)
+                        {
+                            m_StopWhenTargetReached = true;
+                        }
+                        else
+                        {
+                            SetTarget(circuit.Waypoints[++progressNum]);
+                        }
+						
 					}
 				}
 
