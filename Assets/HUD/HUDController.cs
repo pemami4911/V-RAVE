@@ -66,10 +66,10 @@ public class HUDController : MonoBehaviour {
 		updateBottomTextField ();
 		updateTopTextField ();
 
-		bool g = CrossPlatformInputManager.GetButtonDown ("HUDImageEnable");
+	/*	bool g = CrossPlatformInputManager.GetButtonDown ("HUDImageEnable");
 		if (g) {
 			isHUDImageEnabled = !isHUDImageEnabled;
-		}
+		}*/
 
 		bool h = CrossPlatformInputManager.GetButtonDown ("HUDTextEnable");
 		if (h) {

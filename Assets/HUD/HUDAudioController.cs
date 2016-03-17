@@ -15,9 +15,9 @@ public class HUDAudioController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		bool h = CrossPlatformInputManager.GetButtonDown ("HUDAudioEnable");
+		/*bool h = CrossPlatformInputManager.GetButtonDown ("HUDAudioEnable");
 		if (h) {
 			dave.Play ();
-		}
+		}*/
 	}
 }
