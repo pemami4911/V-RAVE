@@ -40,10 +40,6 @@ namespace VRAVE
 		[SerializeField] private float m_ReachTargetThreshold = 2;                                // proximity to target to consider we 'reached' it, and stop driving.
 		[SerializeField] private WaypointCircuit circuit;										  // A reference to the waypoint-based route we should follow
 		[SerializeField] private bool m_isCircuit = false; 										  // Denotes whether the waypoint-based route wraps around
-		[SerializeField] private float m_sensorLength = 10f;								      // Length of sensor beams
-		[SerializeField] private float m_frontSensorStartPoint = 1f;							  // front offset 			  
-		[SerializeField] private float m_frontSensorSideOffset = 1f;							  // lateral distance between vehicle sensors in front sensor array
-		[SerializeField] private float m_hardStopThreshold = 20f;
 
 		private float m_RandomPerlin;             // A random value for the car to base its wander on (so that AI cars don't all wander in the same pattern)
 		private CarController m_CarController;    // Reference to actual car controller we are controlling
@@ -54,24 +50,22 @@ namespace VRAVE
 		private Transform m_Target;
 		private int progressNum; 
 		private VisualSteeringWheelController m_SteeringWheel; //SteeringWheelController
-		private Vector3[] frontSensorArray; 
+
+		// Obstacle avoidance
+		private Sensors m_Sensors;
 
 		private void Awake()
 		{
 			m_CarController = GetComponent<CarController> ();
+			m_Rigidbody = GetComponent<Rigidbody>();
+			m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController>();
+			m_Sensors = GetComponent<Sensors> ();
+
 			// give the random perlin a random value
 			m_RandomPerlin = Random.value*100;
 
-			m_Rigidbody = GetComponent<Rigidbody>();
-			m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController>();
-
 			progressNum = 0;
-			//Debug.Log (progressNum);
-
-			// Front facing sensor array
-			frontSensorArray = new Vector3[3];
-
-			SetTarget (circuit.Waypoints[progressNum]);
+			SetTarget (circuit.Waypoints[progressNum], false);
 		}
 
         private void onEnable()
@@ -91,9 +85,9 @@ namespace VRAVE
 			else
 			{
 				RaycastHit hit;
-				if (Sensors (out hit)) 
+				if (m_Sensors.Scan (out hit)) 
 				{				
-					handleObstacle (hit);
+					ObstacleHandler.handleObstacle (this, hit, m_CarController.CurrentSpeed, m_BrakeCondition);
 				}
 
 				Vector3 fwd = transform.forward;
@@ -212,7 +206,7 @@ namespace VRAVE
 					if (m_isCircuit) 
 					{
 
-						SetTarget (circuit.Waypoints [++progressNum % circuit.Waypoints.Length]);
+						SetTarget (circuit.Waypoints [++progressNum % circuit.Waypoints.Length], false);
 					} 
 					else 
 					{
@@ -222,7 +216,7 @@ namespace VRAVE
                         }
                         else
                         {
-                            SetTarget(circuit.Waypoints[++progressNum]);
+                            SetTarget(circuit.Waypoints[++progressNum], false);
                         }
 						
 					}
@@ -263,52 +257,13 @@ namespace VRAVE
 				}
 			}
 		}
-
-
-		public void SetTarget(Transform target)
+			
+		public void SetTarget(Transform target, bool stopWhenTargetReached)
 		{
 			m_Target = target;
 			m_Driving = true;
+			m_StopWhenTargetReached = stopWhenTargetReached;
 		}
-
-		// Sensors for collision avoidance
-		// Lets keep it simple and just have a sensor array 
-		// on each side of the vehicle (front + back + both sides)
-		public bool Sensors(out RaycastHit hit)
-		{
-			hit = new RaycastHit ();
-
-			// Front sensors 
-			frontSensorArray[0] = m_centerOfMass.position;
-			frontSensorArray[0] += m_centerOfMass.forward * m_frontSensorStartPoint;
-
-			frontSensorArray [1] = frontSensorArray [0];
-			frontSensorArray [2] = frontSensorArray [0];
-
-			// Left sensor
-			frontSensorArray[1] += m_centerOfMass.right * -m_frontSensorSideOffset;
-			// Right sensor
-			frontSensorArray[2] += m_centerOfMass.right * m_frontSensorSideOffset;
-
-			foreach (Vector3 pos in frontSensorArray) 
-			{
-				if (Physics.Raycast (pos, m_centerOfMass.forward, out hit, m_sensorLength)) 
-				{
-					Debug.DrawLine (pos, hit.point, Color.yellow);
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		public void handleObstacle(RaycastHit obstacle)
-		{
-			if (obstacle.collider.CompareTag("Obstacle") && m_CarController.CurrentSpeed > m_hardStopThreshold && m_BrakeCondition != BrakeCondition.TargetDistance)
-			{
-				SetTarget(obstacle.transform);
-				m_StopWhenTargetReached = true;
-			}
-		}
+			
 	}
 }
