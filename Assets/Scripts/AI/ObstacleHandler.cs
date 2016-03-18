@@ -6,14 +6,21 @@ namespace VRAVE
 	public static class ObstacleHandler : object {
 
 		// Defines how a vehicle should react to an obstacle hit
-		public static void handleObstacle(CarAIControl controller, UnityEngine.RaycastHit obstacle, float currentSpeed, CarAIControl.BrakeCondition brakeCondition)
+		public static void handleObstacle(CarAIControl controller, UnityEngine.RaycastHit obstacle, 
+			UnityEngine.RaycastHit farObstacle,
+			OBSTACLE_TYPE type,
+			float currentSpeed,
+			CarAIControl.BrakeCondition brakeCondition)
 		{
-			if (obstacle.collider.CompareTag("Obstacle") && 
-				(currentSpeed / 2) > (obstacle.transform.position - controller.transform.position).magnitude  &&
-				brakeCondition != CarAIControl.BrakeCondition.TargetDistance)
+			if (type == OBSTACLE_TYPE.UNAVOIDABLE &&
+			    brakeCondition != CarAIControl.BrakeCondition.TargetDistance) 
 			{
 				handleUnavoidableObstacle (controller, obstacle);
-			}
+			} 
+			else if (type == OBSTACLE_TYPE.AVOIDABLE) 
+			{
+				handleAvoidableObstacle (controller, farObstacle);
+			} 
 		}
 
 		private static void handleUnavoidableObstacle(CarAIControl controller, UnityEngine.RaycastHit obstacle)
@@ -21,8 +28,9 @@ namespace VRAVE
 			controller.SetTarget (obstacle.transform, true);
 		}
 
-		private static void handleAvoidableObstacle()
+		private static void handleAvoidableObstacle(CarAIControl controller, UnityEngine.RaycastHit obstacle)
 		{
+			
 		}
 }
 }

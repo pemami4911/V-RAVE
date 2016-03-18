@@ -84,10 +84,13 @@ namespace VRAVE
 			}
 			else
 			{
-				RaycastHit hit;
-				if (m_Sensors.Scan (out hit)) 
+				RaycastHit shortRangeSensorsHit;
+				RaycastHit longRangeSensorsHit;
+				OBSTACLE_TYPE type;
+				if (m_Sensors.Scan (out shortRangeSensorsHit, out longRangeSensorsHit, out type)) 
 				{				
-					ObstacleHandler.handleObstacle (this, hit, m_CarController.CurrentSpeed, m_BrakeCondition);
+					ObstacleHandler.handleObstacle (this, shortRangeSensorsHit, longRangeSensorsHit, type,
+						m_CarController.CurrentSpeed, m_BrakeCondition);
 				}
 
 				Vector3 fwd = transform.forward;
@@ -201,7 +204,8 @@ namespace VRAVE
 				if (m_StopWhenTargetReached && localTarget.magnitude < m_ReachTargetThreshold) 
 				{
 					m_Driving = false;
-				} else if (!m_StopWhenTargetReached && localTarget.magnitude < m_ReachTargetThreshold) 
+				} 
+				else if (!m_StopWhenTargetReached && localTarget.magnitude < m_ReachTargetThreshold) 
 				{
 					if (m_isCircuit) 
 					{
