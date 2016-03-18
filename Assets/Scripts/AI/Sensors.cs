@@ -7,10 +7,14 @@ namespace VRAVE
 
 		// adjustable values
 		[SerializeField] private float m_sensorsStart = 1f;
-		[Range(-120f, 120f)][SerializeField] private float m_leftLongSensorAngle = -45f;
-		[Range(-120f, 120f)][SerializeField] private float m_rightLongSensorAngle = 45f;
+		[Range(10f, 60f)][SerializeField] private float m_longSensorAngleDelta = 45f;
+		[Range(10f, 60f)][SerializeField] private float m_shortSensorAngleDelta = 25f;
 		[SerializeField] private float m_longSensorLength = 16f;
 		[SerializeField] private float m_shortSensorLength = 8f;
+		[SerializeField] private float m_sensorHeight = 0.5f;
+		[SerializeField] private bool m_shortRangeSensorsEnable = true;
+		[SerializeField] private bool m_longRangeSensorsEnable = true;
+
 
 		private readonly int numLongRangeSensors = 3;
 		// 2 arrays of 13, each 10' apart for total of 120'
@@ -28,71 +32,75 @@ namespace VRAVE
 
 		public bool Scan(out RaycastHit hit) 
 		{
+			Vector3 sensorsStart = transform.position; 
+			sensorsStart.y += m_sensorHeight;
+
 			hit = new RaycastHit ();
 
-			// set short range sensors
-			for (int i = 0; i < 2; ++i) 
-			{
-				int angle = -60;
-				int idx = 0;
-				int direction;
+			if (m_shortRangeSensorsEnable) {
+				// set short range sensors
+				for (int i = 0; i < 2; ++i) {
+					float delta = m_shortSensorAngleDelta / (numShortRangeSensors / 2);
+					float angle = -(m_shortSensorAngleDelta / 2);
+					int idx = 0;
+					int direction;
 
-				if (i == 0) {
-					direction = 1;
-				} else {
-					direction = -1;
+					if (i == 0) {
+						direction = -1;
+					} else {
+						direction = 1;
+					}
+
+					while (true) {
+						if (idx == (numShortRangeSensors / 2)) {
+							break;
+						} 
+							
+						Quaternion deviation = Quaternion.AngleAxis (angle, new Vector3 (0, 1, 0));
+						shortRangeSensorsArray [(i * numShortRangeSensors / 2) + idx] = deviation * transform.forward * direction;
+
+						++idx;
+						angle = angle + delta;
+					}
 				}
 
-				while (true) 
-				{
-					if (idx == (numShortRangeSensors / 2))
-					{
-						break;
-					} 
-						
-					Quaternion deviation = Quaternion.AngleAxis (angle, new Vector3 (0, 1, 0));
-					shortRangeSensorsArray [(i * numLongRangeSensors / 2) + idx] = deviation * transform.forward * direction;
-					//shortRangeSensorsArray [(i * numLongRangeSensors / 2) + idx] += transform.forward * m_sensorsStart;
+				// Scan for hits, starting with short range sensors
+				// returns the first object hit with a short range sensor
+				foreach (Vector3 scan in shortRangeSensorsArray) {
+	
+					Debug.DrawRay (sensorsStart, scan * m_shortSensorLength, Color.green);
 
-					++idx;
-					angle = angle + 10;
-				}
+					if (Physics.Raycast (sensorsStart, scan, out hit, m_shortSensorLength)) {
+						Debug.Log ("Short range sensor obstacle detection");
+						Debug.DrawLine (sensorsStart, hit.point, Color.yellow);
+						return true;
+					}
+				}	
 			}
 
-			// long range sensors
-			longRangeSensorsArray[0] = transform.position;
-			//longRangeSensorsArray [0] += transform.forward * m_sensorsStart;
-
-			longRangeSensorsArray [1] = longRangeSensorsArray [0];
-			longRangeSensorsArray [2] = longRangeSensorsArray [0];
-
-			// left angled
-			longRangeSensorsArray[1] = Quaternion.AngleAxis (m_leftLongSensorAngle, new Vector3(0, 1, 0)) * longRangeSensorsArray [1];
-			// Right angled
-			longRangeSensorsArray[2] = Quaternion.AngleAxis (m_rightLongSensorAngle, new Vector3(0, 1, 0)) * longRangeSensorsArray[2];
-
-			// Scan for hits, starting with short range sensors
-			// returns the first object hit with a short range sensor
-			foreach (Vector3 scan in shortRangeSensorsArray) 
+			if (m_longRangeSensorsEnable) 
 			{
-				Debug.DrawRay (transform.position * m_sensorsStart, scan, Color.green);
+				// long range sensors
+				longRangeSensorsArray [0] = transform.forward * m_sensorsStart;
+				//longRangeSensorsArray [0] += transform.forward * m_sensorsStart;
 
-				if (Physics.Raycast (scan, transform.forward, out hit, m_shortSensorLength)) 
-				{
-					Debug.Log ("Short range sensor obstacle detection");
-					Debug.DrawLine (scan, hit.point, Color.yellow);
-					return true;
-				}
-			}		
+				longRangeSensorsArray [1] = longRangeSensorsArray [0];
+				longRangeSensorsArray [2] = longRangeSensorsArray [0];
 
-			// long sensors
-			foreach (Vector3 scan in longRangeSensorsArray) 
-			{
-				if (Physics.Raycast (scan, transform.forward, out hit, m_longSensorLength)) 
-				{
-					Debug.Log ("Long sensor obstacle detection");
-					Debug.DrawLine (scan, hit.point, Color.yellow);
-					return true;
+				// left angled
+				longRangeSensorsArray [1] = Quaternion.AngleAxis (-m_longSensorAngleDelta / 2, new Vector3 (0, 1, 0)) * longRangeSensorsArray [1];
+				// Right angled
+				longRangeSensorsArray [2] = Quaternion.AngleAxis (m_longSensorAngleDelta / 2, new Vector3 (0, 1, 0)) * longRangeSensorsArray [2];
+
+				// long sensors
+				foreach (Vector3 scan in longRangeSensorsArray) {
+					Debug.DrawRay (sensorsStart, scan * m_longSensorLength, Color.red);
+
+					if (Physics.Raycast (sensorsStart, scan, out hit, m_longSensorLength)) {
+						Debug.Log ("Long sensor obstacle detection");
+						Debug.DrawLine (sensorsStart, hit.point, Color.yellow);
+						return true;
+					}
 				}
 			}
 
