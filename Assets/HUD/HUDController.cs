@@ -5,29 +5,29 @@ using UnityStandardAssets.CrossPlatformInput;
 public class HUDController : MonoBehaviour {
 
 
-	public Transform centerTextField;
-	public Transform leftTextField;
-	public Transform rightTextField;
-	public Transform topTextField;
-	public Transform bottomTextField;
+	private Transform centerTextField;
+	private Transform leftTextField;
+	private Transform rightTextField;
+	private Transform topTextField;
+	private Transform bottomTextField;
 
-	public Transform centerImageField;
-	public Transform leftImageField;
-	public Transform rightImageField;
+	private Transform centerImageField;
+	private Transform leftImageField;
+	private Transform rightImageField;
 
-	public TextMesh centerText;
-	public TextMesh leftText;
-	public TextMesh rightText;
-	public TextMesh topText;
-	public TextMesh bottomText;
+	private TextMesh centerText;
+	private TextMesh leftText;
+	private TextMesh rightText;
+	private TextMesh topText;
+	private TextMesh bottomText;
 
 	private bool isHUDImageEnabled = true;
 	private bool isHUDTextEnabled = true;
 
 
-	public TextMesh newMesh;
+	private TextMesh newMesh;
 
-	private HUDModel model;
+	private HUDModel model { get; set;}
 
 	// Use this for initialization
 	void Start () {
@@ -139,4 +139,5 @@ public class HUDController : MonoBehaviour {
 		topText.fontSize = model.topFontSize;
 		topTextField.GetComponent<MeshRenderer> ().enabled = model.isTopTextEnabled && isHUDTextEnabled;
 	}
+		
 }
