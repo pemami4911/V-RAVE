@@ -32,7 +32,8 @@ public class HUDController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		model = new HUDModel_Upright ();
+		model = new HUDModel_Upright (); //This is the layout that we decided we liked best. The other ones still exist
+		//just in case we want to use them. 
 		transform.eulerAngles = model.HUDRotation;
 
 		centerImageField = transform.Find ("HUDImage_Center");
