@@ -7,8 +7,10 @@ namespace VRAVE {
 	public class SpawnController : MonoBehaviour {
 
 		private SpawnModel spawnModel {get; set;}
+		private List<GameObject> loadedResources;
 
 		public SpawnController() {
+			loadedResources = new List<GameObject> ();
 			spawnModel = new SpawnModel ();
 		}
 
@@ -25,6 +27,12 @@ namespace VRAVE {
 						
 					Instantiate (spawnObject, positionPair.Key, positionPair.Value);
 				}
+			}
+
+			List<SpawnTriple> spawns = spawnModel.initialSpawns;
+			spawnModel.initialSpawns = new List<SpawnTriple> ();
+
+			foreach(SpawnTriple spawn in spawns) {
 			}
 		}
 			
