@@ -39,9 +39,11 @@ namespace VRAVE
 		[SerializeField] private bool m_StopWhenTargetReached;                                    // should we stop driving when we reach the target?
 		[SerializeField] private float m_ReachTargetThreshold = 2;                                // proximity to target to consider we 'reached' it, and stop driving.
 		[SerializeField] private WaypointCircuit circuit;										  // A reference to the waypoint-based route we should follow
-		[SerializeField] private bool m_isCircuit = false; 
+		[SerializeField] private bool m_isCircuit = false;
+        [SerializeField] private bool m_isUser = false;
+ 
 
-		private float m_RandomPerlin;             // A random value for the car to base its wander on (so that AI cars don't all wander in the same pattern)
+        private float m_RandomPerlin;             // A random value for the car to base its wander on (so that AI cars don't all wander in the same pattern)
 		private CarController m_CarController;    // Reference to actual car controller we are controlling
 		private float m_AvoidOtherCarTime;        // time until which to avoid the car we recently collided with
 		private float m_AvoidOtherCarSlowdown;    // how much to slow down due to colliding with another car, whilst avoiding
@@ -50,15 +52,39 @@ namespace VRAVE
 		private Transform m_Target;
 		private int progressNum; 
 		private VisualSteeringWheelController m_SteeringWheel; //SteeringWheelController
+        public bool isUser
+        {
+            set
+            {
+                if (value)
+                {
+                    if (m_SteeringWheel == null)
+                    {
+                        m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController>();
+                    } 
+                }
+    
+                m_isUser = value;
+            }
+            get
+            {
+                return m_isUser;
+            }
+        }
 
-		private void Awake()
+
+        private void Awake()
 		{
 			m_CarController = GetComponent<CarController> ();
 			// give the random perlin a random value
 			m_RandomPerlin = Random.value*100;
 
+            if(m_isUser)
+            {
+                isUser = true;
+            }
+
 			m_Rigidbody = GetComponent<Rigidbody>();
-			m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController>();
 
 			progressNum = 0;
 			//Debug.Log (progressNum);
@@ -186,8 +212,12 @@ namespace VRAVE
 
 				// feed input to the car controller.
 				m_CarController.Move(steer, accel, accel, 0f);
-				// turn the steering wheel 
-				m_SteeringWheel.turnSteeringWheel((float)steer, m_CarController.CurrentSteerAngle);
+
+                if (m_isUser)
+                {
+                    // turn the steering wheel 
+                    m_SteeringWheel.turnSteeringWheel((float)steer, m_CarController.CurrentSteerAngle);
+                }
 
 				// if appropriate, stop driving when we're close enough to the target.
 				if (m_StopWhenTargetReached && localTarget.magnitude < m_ReachTargetThreshold) 
@@ -249,7 +279,6 @@ namespace VRAVE
 				}
 			}
 		}
-
 
 		public void SetTarget(Transform target)
 		{
