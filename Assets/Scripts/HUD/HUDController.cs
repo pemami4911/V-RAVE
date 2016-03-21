@@ -32,6 +32,27 @@ public class HUDController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		/* Example use case for your code (should be in the scenario class or somewhere)
+		 * 
+		 * MyScenarioClass {
+		 * 	HUDModel myHud = new MyHUDModel(); //<- a HUD model initialized w/ your HUD strings, images
+		 * 									   // this model should extend HUDModel_Upright (for upright angles)
+		 *									   // it must extend HUDModel
+		 * 
+		 * 	HUDController.model = myHud;
+		 * 
+		 * 	// to change hud models
+		 * 
+		 * HUDController.model = newModel;
+		 *
+		 * //or do
+		 *
+		 * myHud.centerText = "new center text";
+		 * myHud.centerBackingMaterial = myImageMaterial;
+		 * myHud.isCenterImageEnabled = true;
+		 *
+		 * */
+
 		model = new HUDModel_Upright (); //This is the layout that we decided we liked best. The other ones still exist
 		//just in case we want to use them. 
 		transform.eulerAngles = model.HUDRotation;

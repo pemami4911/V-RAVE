@@ -1,23 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityStandardAssets.CrossPlatformInput;
 
 public class HUDAudioController : MonoBehaviour {
 
-	//private bool playAudio = false;
-	AudioSource dave;
+	public HUDAudioModel audioModel { get; set; }
 
-	// Use this for initialization
 	void Start () {
-		dave = GetComponent<AudioSource>();
-	
+		audioModel = new HUDAudioModel ();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		/*bool h = CrossPlatformInputManager.GetButtonDown ("HUDAudioEnable");
+
+	void Update() {
+		bool h = CrossPlatformInputManager.GetButtonDown ("HUDTextEnable");
 		if (h) {
-			dave.Play ();
-		}*/
+			playAudio (0);
+		}
+	}
+
+	void playAudio(int index) {
+		List<AudioSource> sources = audioModel.audioSources;
+		AudioSource audio = sources [index];
+		audio.Play ();
+	}
+
+	void playAudio(AudioSource audio) {
+		audio.Play ();
 	}
 }
