@@ -30,7 +30,7 @@ namespace VRAVE
 
 		private static void handleAvoidableObstacle(CarAIControl controller, UnityEngine.RaycastHit obstacle)
 		{
-			
+			// Add logic for telling the AI Controller how to avoid "avoidable" obstacles here
 		}
 }
 }

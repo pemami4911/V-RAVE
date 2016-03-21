@@ -197,6 +197,7 @@ namespace VRAVE
 
 				// feed input to the car controller.
 				m_CarController.Move(steer, accel, accel, 0f);
+
 				// turn the steering wheel 
 				m_SteeringWheel.turnSteeringWheel((float)steer, m_CarController.CurrentSteerAngle);
 
@@ -267,6 +268,12 @@ namespace VRAVE
 			m_Target = target;
 			m_Driving = true;
 			m_StopWhenTargetReached = stopWhenTargetReached;
+
+			// set this really high to ensure the car doesn't collide with the obstacle
+			if (m_StopWhenTargetReached)
+			{
+				m_ReachTargetThreshold = 12f;
+			}
 		}
 			
 	}
