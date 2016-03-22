@@ -272,7 +272,7 @@ namespace VRAVE
 			// set this really high to ensure the car doesn't collide with the obstacle
 			if (m_StopWhenTargetReached)
 			{
-				m_ReachTargetThreshold = 12f;
+				m_ReachTargetThreshold = 15f;
 			}
 		}
 			

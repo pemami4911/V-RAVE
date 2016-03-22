@@ -26,7 +26,7 @@ namespace VRAVE
 		private readonly float shortRangeSensorsHeight = 0.25f;
 		private readonly float longRangeSensorsHeight = 0.6f;
 		private readonly int numLongRangeSensors = 3;
-		private readonly int numShortRangeSensors = 12;
+		private readonly int numShortRangeSensors = 6;
 
 		private Vector3[] longRangeSensorsArray; 
 		private Vector3[] shortRangeSensorsArray;
