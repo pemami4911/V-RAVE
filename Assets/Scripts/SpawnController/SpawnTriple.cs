@@ -5,9 +5,9 @@ namespace VRAVE
 {
 	public class SpawnTriple
 	{
-		private string resourceString { get;}
-		private Vector3 position { get;}
-		private Quaternion rotation { get; }
+		public string resourceString { get; private set;}
+		public Vector3 position { get; private set;}
+		public Quaternion rotation { get; private set;}
 
 		public SpawnTriple (string resourceString, Vector3 position, Quaternion rotation)
 		{

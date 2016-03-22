@@ -3,11 +3,16 @@ using System.Collections.Generic;
 
 namespace VRAVE {
 
+	//Extend this class with your own spawn model - it will contain the position & rotations of all the items you want to spawn
+	//Set the SpawnModel in SpawnController to use your SpawnModel for your scenario
+	//initial spawn items are spawned on scenario enter (call enterScenario() in SpawnController)
+	//on demand spawn items are spawned by index
+
 	public class SpawnModel {
 
 		//Stores the mapping between the Resource string and a mapping of coordinates to rotation
-		private List<SpawnTriple> initialSpawns { get; private set;}
-		private List<SpawnTriple> onDemandSpawns { get; }
+		public List<SpawnTriple> initialSpawns { get; private set;}
+		public List<SpawnTriple> onDemandSpawns { get; private set;}
 
 		//the name of the resource to use. 
 		//NOTE: the resource must be stored in the Resources folder
@@ -15,6 +20,7 @@ namespace VRAVE {
 
 		public static Quaternion default_quaternion = Quaternion.Euler(0, 0, 0);
 
+		//an example SpawnModel
 		public SpawnModel() {
 			SpawnTriple aiCar0 = new SpawnTriple (AI_car_resource, new Vector3 (0, 0, 0), default_quaternion); 
 			SpawnTriple aiCar1 = new SpawnTriple (AI_car_resource, new Vector3 (1, 1, 1), default_quaternion); 
@@ -28,9 +34,6 @@ namespace VRAVE {
 			onDemandSpawns.Add (aiCar2);
 			onDemandSpawns.Add (aiCar3);
 		}
-
-		public void addOnDemandSpawn(SpawnTriple spawn) {
-			onDemandSpawns.Add (spawn);
-		}
+			
 	}
 }
