@@ -10,8 +10,10 @@ public class HUDAudioModel {
 	public List<AudioClip> audioClips { get; set; }
 	// Use this for initialization
 	public HUDAudioModel() {
+		//example of what your HUDAudioModel should look like
+		/*
 		audioClips = new List<AudioClip> ();
 		AudioClip dave = Resources.Load("Hey Dave", typeof(AudioClip)) as AudioClip;
-		audioClips.Add (dave);
+		audioClips.Add (dave);*/
 	}
 }
