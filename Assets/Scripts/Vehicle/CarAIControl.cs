@@ -94,7 +94,7 @@ namespace VRAVE
 
         private void onEnable()
         {   
-            //When switched to UserControl mode, expand steeringAngle
+            //When switched to AIControl, constrict steering angle
             m_CarController.setMaxSteeringAngle(35);
         }
 
