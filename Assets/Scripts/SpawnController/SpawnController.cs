@@ -21,19 +21,22 @@ namespace VRAVE {
 			List<SpawnTriple> spawns = spawnModel.initialSpawns;
 
 			foreach(SpawnTriple spawn in spawns) {
-				addSpawnObject (spawn);
+				spawnObject (spawn);
 			}
 		}
 
+
+
+		//for spawning directly with the controller; this method does not use the SpawnModel
 		public void spawn(string resourceName, Vector3 position, Quaternion rotation) {
-			addSpawnObject(new SpawnTriple(resourceName, position, rotation));
+			spawnObject(new SpawnTriple(resourceName, position, rotation));
 		}
 
 		public void spawnOnDemand(int index) {
 			SpawnTriple spawn = spawnModel.onDemandSpawns [index];
 		}
 
-		private void addSpawnObject(SpawnTriple spawn) {
+		private void spawnObject(SpawnTriple spawn) {
 			GameObject spawnObject;
 
 			if (!loadedResources.ContainsKey (spawn.resourceString)) {

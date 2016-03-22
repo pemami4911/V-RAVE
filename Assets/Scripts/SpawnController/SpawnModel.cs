@@ -22,6 +22,8 @@ namespace VRAVE {
 
 		//an example SpawnModel
 		public SpawnModel() {
+			//example of what your SpawnModel deriving class would look like...
+			/*
 			SpawnTriple aiCar0 = new SpawnTriple (AI_car_resource, new Vector3 (0, 0, 0), default_quaternion); 
 			SpawnTriple aiCar1 = new SpawnTriple (AI_car_resource, new Vector3 (1, 1, 1), default_quaternion); 
 
@@ -32,7 +34,7 @@ namespace VRAVE {
 			initialSpawns.Add (aiCar1);
 
 			onDemandSpawns.Add (aiCar2);
-			onDemandSpawns.Add (aiCar3);
+			onDemandSpawns.Add (aiCar3); */
 		}
 			
 	}
