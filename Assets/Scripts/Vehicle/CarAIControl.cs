@@ -32,8 +32,8 @@ namespace VRAVE
 		[SerializeField] private float m_BrakeSensitivity = 1f;                                   // How sensitively the AI uses the brake to reach the current desired speed
 		[SerializeField] private float m_LateralWanderDistance = 0f;                              // how far the car will wander laterally towards its target
 		[SerializeField] private float m_LateralWanderSpeed = 0f;                                 // how fast the lateral wandering will fluctuate
-		[SerializeField] [Range(0, 1)] private float m_AccelWanderAmount = 0.1f;                  // how much the cars acceleration will wander
-		[SerializeField] private float m_AccelWanderSpeed = 0.1f;                                 // how fast the cars acceleration wandering will fluctuate
+		[SerializeField] [Range(0, 1)] private float m_AccelWanderAmount = 0.0f;                  // how much the cars acceleration will wander
+		[SerializeField] private float m_AccelWanderSpeed = 0.0f;                                 // how fast the cars acceleration wandering will fluctuate
 		[SerializeField] private BrakeCondition m_BrakeCondition = BrakeCondition.TargetDistance; // what should the AI consider when accelerating/braking?
 		[SerializeField] private bool m_Driving;                                                  // whether the AI is currently actively driving or stopped.
 		[SerializeField] private bool m_StopWhenTargetReached;                                    // should we stop driving when we reach the target?
