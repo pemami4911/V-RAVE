@@ -47,9 +47,10 @@ public class HUDController : MonoBehaviour {
 		 *
 		 * //or do
 		 *
-		 * myHud.centerText = "new center text";
-		 * myHud.centerBackingMaterial = myImageMaterial;
-		 * myHud.isCenterImageEnabled = true;
+		 * myHud.centerText = "new center text"; //to change text
+		 * myHud.centerBackingMaterial = myImageMaterial; //to change images
+		 * myHud.isCenterImageEnabled = true; //to enable/disable image or text fields
+		 * 
 		 *
 		 * */
 

@@ -5,26 +5,25 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class HUDAudioController : MonoBehaviour {
 
-	public HUDAudioModel audioModel { get; set; }
+	public HUDAudioModel audioModel { get; set; } //set this property with your own HUDAudioModel
+	private AudioSource hudAudioSource; //the component that plays the sound
 
 	void Start () {
 		audioModel = new HUDAudioModel ();
+		hudAudioSource = GetComponent<AudioSource>();
 	}
 
-	void Update() {
-		bool h = CrossPlatformInputManager.GetButtonDown ("HUDTextEnable");
-		if (h) {
-			playAudio (0);
-		}
+	//plays audio from the HUDAudioModel
+	public void playAudio(int index) {
+		List<AudioClip> clips = audioModel.audioClips;
+		AudioClip audio = clips [index];
+		hudAudioSource.clip = audio;
+		hudAudioSource.Play ();
 	}
 
-	void playAudio(int index) {
-		List<AudioSource> sources = audioModel.audioSources;
-		AudioSource audio = sources [index];
-		audio.Play ();
-	}
-
-	void playAudio(AudioSource audio) {
-		audio.Play ();
+	//plays audio from parameter
+	public void playAudio(AudioClip audio) {
+		hudAudioSource.clip = audio;
+		hudAudioSource.Play ();
 	}
 }
