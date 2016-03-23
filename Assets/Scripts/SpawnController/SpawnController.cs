@@ -3,30 +3,55 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace VRAVE {
-	
+
+	//Use this class with a SpawnModel, which holds spawning info for entering scenarios
+	//you can also spawn with the spawn() method
 	public class SpawnController : MonoBehaviour {
 
-		private SpawnModel spawnModel {get; set;}
+		public SpawnModel spawnModel {get; set;}
+		private Dictionary<string, GameObject> loadedResources;
 
 		public SpawnController() {
+			loadedResources = new Dictionary<string, GameObject> ();
 			spawnModel = new SpawnModel ();
 		}
 
 		public void enterScenario() {
-			
-			ICollection<string> resources = spawnModel.getResourceStrings ();
-			foreach (string resource in resources) {
-				GameObject spawnObject = Resources.Load (resource, typeof(GameObject)) as GameObject;
-					
-				ICollection<KeyValuePair<Vector3, Quaternion>> positionPairs = spawnModel.getCoordinateRotationPairs (resource);
 
-				//get coordinates at which to spawn this resource
-				foreach (KeyValuePair<Vector3, Quaternion> positionPair in positionPairs) {
-						
-					Instantiate (spawnObject, positionPair.Key, positionPair.Value);
-				}
+			List<SpawnTriple> spawns = spawnModel.initialSpawns;
+
+			foreach(SpawnTriple spawn in spawns) {
+				spawnObject (spawn);
 			}
 		}
+
+
+
+		//for spawning directly with the controller; this method does not use the SpawnModel
+		public void spawn(string resourceName, Vector3 position, Quaternion rotation) {
+			spawnObject(new SpawnTriple(resourceName, position, rotation));
+		}
+
+		public void spawnOnDemand(int index) {
+			SpawnTriple spawn = spawnModel.onDemandSpawns [index];
+		}
+
+		private void spawnObject(SpawnTriple spawn) {
+			GameObject spawnObject;
+
+			if (!loadedResources.ContainsKey (spawn.resourceString)) {
+				//if spawn.resourceString does not exist in loaded resource, load resource
+				spawnObject = Resources.Load (spawn.resourceString, typeof(GameObject)) as GameObject;
+				loadedResources.Add (spawn.resourceString, spawnObject);
+			}
+			else //use already loaded resource
+				spawnObject = loadedResources[spawn.resourceString];
+
+			//spawn @ position & rotation
+			Instantiate (spawnObject, spawn.position, spawn.rotation);
+		}
+
+
 			
 		public void exitScenario() {
 			//will need this method... someday
