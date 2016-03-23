@@ -27,10 +27,10 @@ public class HUDController : MonoBehaviour {
 
 	private TextMesh newMesh;
 
-	private HUDModel model { get; set;}
+	public HUDModel model { get; set;}
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 
 		/* Example use case for your code (should be in the scenario class or somewhere)
 		 * 
