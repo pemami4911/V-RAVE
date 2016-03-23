@@ -6,7 +6,7 @@ namespace VRAVE {
 public class VisualSteeringWheelController : MonoBehaviour {
 
     //Need to be serialized?
-    [SerializeField] private float maxSteerAngle = 60;
+    //[SerializeField] private float maxSteerAngle = 60;
 
     // Use this for initialization
     void Start () {
