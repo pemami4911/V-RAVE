@@ -24,7 +24,6 @@ public class HUDController : MonoBehaviour {
 	private bool isHUDImageEnabled = true;
 	private bool isHUDTextEnabled = true;
 
-
 	private TextMesh newMesh;
 
 	public HUDModel model;

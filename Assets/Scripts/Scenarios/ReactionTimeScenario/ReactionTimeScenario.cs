@@ -31,14 +31,12 @@
 		{
 			Initialize<States> ();
 
-			UserCar.GetComponent<CarAIControl> ().enabled = false;
+			UserCar.GetComponent<CarAIControl> ().enabled = true;
 			UserCar.GetComponent<CarUserControl> ().enabled = false;
 
 			manufacturer = GetComponent<SpawnController>();
 			hudController = UserCar.GetComponentInChildren<HUDController>();
 			audioController = UserCar.GetComponent<HUDAudioController>();
-
-			hudController.model = new DefaultHUD ();
 
 			ChangeState(States.IntersectionScenarioBriefing);
 		}
@@ -51,12 +49,15 @@
 			switch (id) 
 			{
 			case 0: 
+				ChangeState (States.IntersectionFinish);
 				break;
 			}
 		}
 
-		public void IntersectionScenarioBriefing_Enter()
+		public void IntersectionFinish_Enter()
 		{
+			hudController.model = new DefaultHUD();
+
 		}
 
 	}

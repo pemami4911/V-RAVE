@@ -4655,6 +4655,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cecae2b885b3b1e43b28fe272f393918, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &323867651 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 179078, guid: 953ad9160cb3b2843ba82f8c7bea7bdf, type: 2}
+  m_PrefabInternal: {fileID: 2125185708}
 --- !u!1001 &327616226
 Prefab:
   m_ObjectHideFlags: 0
@@ -8798,6 +8802,22 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cecae2b885b3b1e43b28fe272f393918, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &640913269 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 130004, guid: 3c796ade70df3c64ab2455105e13be13, type: 2}
+  m_PrefabInternal: {fileID: 722336135}
+--- !u!114 &640913270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 640913269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0dc57db60f18f54fb213ac5e9af1515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UserCar: {fileID: 323867651}
 --- !u!4 &645224779 stripped
 Transform:
   m_PrefabParentObject: {fileID: 414990, guid: cecae2b885b3b1e43b28fe272f393918, type: 2}
@@ -9677,7 +9697,8 @@ Prefab:
       propertyPath: m_Name
       value: ReactionTimeScenario
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11404112, guid: 3c796ade70df3c64ab2455105e13be13, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 3c796ade70df3c64ab2455105e13be13, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &723808811
@@ -10710,6 +10731,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 470120, guid: f35ee9592b02a41578eabd42628dfaed, type: 2}
       propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2315686, guid: f35ee9592b02a41578eabd42628dfaed, type: 2}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -15247,12 +15272,6 @@ Transform:
 Transform:
   m_PrefabParentObject: {fileID: 440064, guid: 364addd3382891840b7e0a85bb6d0ed6, type: 2}
   m_PrefabInternal: {fileID: 540659156}
---- !u!114 &1167019599 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11404112, guid: 3c796ade70df3c64ab2455105e13be13,
-    type: 2}
-  m_PrefabInternal: {fileID: 722336135}
-  m_Script: {fileID: 11500000, guid: 64b393c397d162f4783821314289f9a0, type: 3}
 --- !u!1001 &1167070759
 Prefab:
   m_ObjectHideFlags: 0
@@ -15460,8 +15479,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerID: 0
-  scenario: {fileID: 1167019599}
-  objectTag: 
+  scenario: {fileID: 640913270}
+  objectTag: Player
 --- !u!4 &1173412969 stripped
 Transform:
   m_PrefabParentObject: {fileID: 414990, guid: cecae2b885b3b1e43b28fe272f393918, type: 2}
@@ -29707,6 +29726,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 11463252, guid: 953ad9160cb3b2843ba82f8c7bea7bdf, type: 2}
+      propertyPath: circuit
+      value: 
+      objectReference: {fileID: 31359835}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 953ad9160cb3b2843ba82f8c7bea7bdf, type: 2}
   m_IsPrefabParent: 0
