@@ -38,11 +38,11 @@
 			hudController = UserCar.GetComponentInChildren<HUDController>();
 			audioController = UserCar.GetComponent<HUDAudioController>();
 
-			hudController.Model = new DefaultHUD ();
+			hudController.model = new DefaultHUD ();
 
 			ChangeState(States.IntersectionScenarioBriefing);
 		}
-
+			
 		// Extend abstract method "ChangeState(uint id)
 		//
 		// This is used for reacting to "OnTriggerEnter" events, called by WaypointTrigger scripts
@@ -55,6 +55,9 @@
 			}
 		}
 
+		public void IntersectionScenarioBriefing_Enter()
+		{
+		}
 
 	}
 	}
