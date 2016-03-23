@@ -17,7 +17,6 @@ namespace VRAVE
             // get the car controller
             m_Car = GetComponent<CarController>();
 
-
             //get the steering wheel controller
             m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController>();
         }

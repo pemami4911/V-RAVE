@@ -12,13 +12,13 @@ namespace VRAVE
 			// The scenario which contains this trigger
 			[SerializeField] private StateBehaviour scenario; 
 			// Tag of GameObject colliding with this collider 
-			[SerializeField] private string tag; 
+			[SerializeField] private string objectTag; 
 
 			// If this script is attached to a GameObject with a collider
 			// that has "isTrigger" selected, this callback will fire upon collision. 
 			void OnTriggerEnter(Collider other)
 			{
-				if (!other.CompareTag(tag))
+				if (!other.CompareTag(objectTag))
 				{
 					return;
 				}

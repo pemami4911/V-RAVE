@@ -27,7 +27,8 @@ public class HUDController : MonoBehaviour {
 
 	private TextMesh newMesh;
 
-	private HUDModel model { get; set;}
+	private HUDModel model;
+	public HUDModel Model { get; set; }
 
 	// Use this for initialization
 	void Start () {
