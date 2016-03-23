@@ -1,0 +1,1118 @@
+fileFormatVersion: 2
+guid: a3448fb02e78b9d418e98168f94bb191
+timeCreated: 1458582746
+licenseType: Free
+SketchUpImporter:
+  generateBackFace: 0
+  mergeCoplanarFaces: 0
+  selectedNodes: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a0000001b0000001c0000001d0000001e0000001f000000200000002100000022000000230000002400000025000000260000002700000028000000290000002a0000002b0000002c0000002d0000002e0000002f000000300000003100000032000000330000003400000035000000360000003700000038000000390000003a0000003b0000003c0000003d0000003e0000003f000000400000004100000042000000430000004400000045000000460000004700000048000000490000004a0000004b0000004c0000004d0000004e0000004f000000500000005100000052000000530000005400000055000000560000005700000058000000590000005a0000005b0000005c0000005d0000005e0000005f000000600000006100000062000000630000006400000065000000660000006700000068000000690000006a0000006b0000006c0000006d0000006e0000006f000000700000007100000072000000730000007400000075000000760000007700000078000000790000007a0000007b0000007c0000007d0000007e0000007f000000800000008100000082000000830000008400000085000000860000008700000088000000890000008a0000008b0000008c0000008d0000008e0000008f000000900000009100000092000000930000009400000095000000960000009700000098000000990000009a0000009b0000009c0000009d0000009e0000009f000000a0000000a1000000a2000000a3000000a4000000a5000000a6000000a7000000a8000000a9000000aa000000ab000000ac000000ad000000ae000000af000000b0000000b1000000b2000000b3000000b4000000b5000000b6000000b7000000b8000000b9000000ba000000bb000000bc000000bd000000be000000bf000000c0000000c1000000c2000000c3000000c4000000c5000000c6000000c7000000c8000000c9000000ca000000cb000000cc000000cd000000ce000000cf000000d0000000d1000000d2000000d3000000d4000000d5000000d6000000d7000000d8000000d9000000da000000db000000dc000000dd000000de000000df000000e0000000e1000000e2000000e3000000e4000000e5000000e6000000e7000000e8000000e9000000ea000000eb000000ec000000ed000000ee000000ef000000f0000000f1000000f2000000f3000000f4000000f5000000f6000000f7000000f8000000f9000000fa000000fb000000fc000000fd000000fe000000ff000000000100000101000002010000030100000401000005010000060100000701000008010000090100000a0100000b0100000c0100000d0100000e0100000f010000100100001101000012010000130100001401000015010000160100001701000018010000190100001a0100001b0100001c0100001d0100001e0100001f010000200100002101000022010000230100002401000025010000260100002701000028010000290100002a0100002b0100002c0100002d0100002e0100002f010000300100003101000032010000330100003401000035010000360100003701000038010000390100003a0100003b0100003c0100003d0100003e0100003f010000400100004101000042010000430100004401000045010000460100004701000048010000490100004a0100004b0100004c0100004d0100004e0100004f010000500100005101000052010000530100005401000055010000560100005701000058010000590100005a0100005b0100005c0100005d0100005e0100005f010000600100006101000062010000630100006401000065010000660100006701000068010000690100006a0100006b0100006c0100006d0100006e0100006f010000700100007101000072010000730100007401000075010000760100007701000078010000790100007a0100007b0100007c0100007d0100007e0100007f010000800100008101000082010000830100008401000085010000860100008701000088010000890100008a0100008b0100008c0100008d0100008e0100008f010000900100009101000092010000930100009401000095010000960100009701000098010000990100009a0100009b0100009c0100009d0100009e0100009f010000a0010000a1010000a2010000a3010000a4010000a5010000a6010000a7010000a8010000a9010000aa010000ab010000ac010000ad010000ae010000af010000b0010000b1010000b2010000b3010000b4010000b5010000b6010000b7010000b8010000b9010000ba010000bb010000bc010000
+  assetHash:
+    serializedVersion: 2
+    Hash: 1c990068760ecc99d02cc6aa7ad85c13
+  longitude: -105.283
+  latitude: 40.017
+  northCorrection: -0
+  fileUnit: 0
+  sketchUpImportData:
+    defaultCamera:
+      position: {x: -0.7020985, y: 1.2914461, z: -2.6894584}
+      lookAt: {x: 1.2549502, y: 0.7309584, z: 2.6553645}
+      up: {x: 0.03369497, y: 0.9951866, z: 0.09202308}
+      fov: 45
+      aspectRatio: 0
+      orthoSize: 76.9462
+      isPerspective: 0
+    scenes: []
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Bemo_logo
+    100004: Bemo_logo 1
+    100006: black_02#1
+    100008: black_04
+    100010: black_05#1
+    100012: blue_03
+    100014: BMW logo
+    100016: BMW logo 1
+    100018: BMW logo 2
+    100020: BMW logo 3
+    100022: BMW logo 4
+    100024: BMW logo 5
+    100026: BMW M4 F30
+    100028: body#4
+    100030: body#4 1
+    100032: body_01_pi
+    100034: body_02_pi
+    100036: body_03_pi
+    100038: body_04_pi
+    100040: body_05_pi
+    100042: body_06_pi#1
+    100044: body_08_pi
+    100046: body_08_pi 1
+    100048: body_10_pi
+    100050: body_11_pi
+    100052: chrome#3
+    100054: chrome#3 1
+    100056: chrome_03
+    100058: chrome_04
+    100060: chrome_05
+    100062: chrome_05 1
+    100064: chrome_06
+    100066: chrome_06 1
+    100068: chrome_07
+    100070: chrome_07 1
+    100072: chrome_08_
+    100074: chrome_08_ 1
+    100076: chrome_09
+    100078: chrome_09 1
+    100080: chrome_10
+    100082: chrome_10 1
+    100084: chrome_11_
+    100086: chrome_11_ 1
+    100088: chrome_14
+    100090: chrome_14 1
+    100092: chrome_15_
+    100094: chrome_17_
+    100096: chrome_17_ 1
+    100098: chrome_18_
+    100100: chrome_18_ 1
+    100102: chrome_19_
+    100104: chrome_19_ 1
+    100106: chrome_20
+    100108: chrome_20 1
+    100110: chrome_21_
+    100112: chrome_21_ 1
+    100114: chrome_22
+    100116: chrome_22 1
+    100118: chrome_23_
+    100120: chrome_23_ 1
+    100122: chrome_26_
+    100124: chrome_27
+    100126: chrome_28
+    100128: chrome_29
+    100130: chrome_30_
+    100132: chrome_31_
+    100134: chrome_32
+    100136: chrome_32 1
+    100138: chrome_34_
+    100140: chrome_37
+    100142: Component#2
+    100144: Component#2 1
+    100146: Component#2 2
+    100148: Component#2 3
+    100150: d_glass_01
+    100152: d_glass_03
+    100154: Door1
+    100156: Door1 1
+    100158: frame#5
+    100160: frame#5 1
+    100162: glass_01
+    100164: glass_02
+    100166: glass_04_p
+    100168: glass_04_p 1
+    100170: glass_05
+    100172: glass_05 1
+    100174: glass_06_p
+    100176: glass_06_p 1
+    100178: glass_07_p
+    100180: glass_07_p 1
+    100182: glass_08_p
+    100184: Group 176
+    100186: Group 181
+    100188: Group 188
+    100190: Group 190
+    100192: Group 192
+    100194: Group 194
+    100196: Group 197
+    100198: Group 202
+    100200: Group 209
+    100202: Group 211
+    100204: Group 213
+    100206: Group 215
+    100208: Group 218
+    100210: Group 220
+    100212: Group 222
+    100214: Group 224
+    100216: Group 226
+    100218: Group 228
+    100220: Group 230
+    100222: Group 232
+    100224: Group 234
+    100226: Group 246
+    100228: Group 248
+    100230: Group 299
+    100232: Group 3
+    100234: Group 308
+    100236: Group 310
+    100238: Group 312
+    100240: Group 314
+    100242: Group 316
+    100244: Group 318
+    100246: Group 320
+    100248: Group 322
+    100250: Group 324
+    100252: Group 336
+    100254: Group 338
+    100256: Group 391
+    100258: Group 398
+    100260: Group 403
+    100262: Group 410
+    100264: Group 412
+    100266: Group 414
+    100268: Group 416
+    100270: Group 419
+    100272: Group 424
+    100274: Group 431
+    100276: Group 433
+    100278: Group 435
+    100280: Group 437
+    100282: Group 5
+    100284: Group 7
+    100286: Group 9
+    100288: Group#17
+    100290: Group#17 1
+    100292: Group#2
+    100294: Group#2 1
+    100296: Group#2 2
+    100298: Group#2 3
+    100300: Group#2 4
+    100302: Group#2 5
+    100304: Headlight
+    100306: Headlight 1
+    100308: interior2_
+    100310: interior3_
+    100312: interior_0
+    100314: interior_1
+    100316: interior_2
+    100318: leather_01
+    100320: leather_02
+    100322: leather_03
+    100324: leather_04
+    100326: leather_05
+    100328: leather_06
+    100330: leather_06 1
+    100332: leather_07
+    100334: light_01
+    100336: light_02_p
+    100338: light_02_p 1
+    100340: light_04
+    100342: plastic2#2
+    100344: plastic2#2 1
+    100346: plastic_01
+    100348: plastic_01 1
+    100350: plastic_02
+    100352: plastic_04
+    100354: plastic_06
+    100356: plastic_07
+    100358: plastic_08
+    100360: plastic_09
+    100362: plastic_10
+    100364: plastic_15
+    100366: plastic_18
+    100368: plastic_22
+    100370: plastic_23
+    100372: plastic_25
+    100374: plastic_26
+    100376: plastic_27
+    100378: plastic_28
+    100380: plastic_29
+    100382: plastic_30
+    100384: plastic_31
+    100386: plastic_32
+    100388: plastic_33
+    100390: plastic_34
+    100392: plastic_35
+    100394: plastic_36
+    100396: plastic_38
+    100398: plastic_39
+    100400: plastic_40
+    100402: plastic_41
+    100404: plastic_42
+    100406: plastic_43
+    100408: plastic_44
+    100410: plastic_45
+    100412: plastic_46
+    100414: plastic_47
+    100416: plastic_48
+    100418: r_glass_02
+    100420: silver_02
+    100422: silver_04
+    100424: silver_05
+    100426: silver_06
+    100428: silver_07
+    100430: silver_08_
+    100432: silver_09_
+    100434: silver_10
+    100436: silver_11_
+    100438: silver_12
+    100440: silver_13
+    100442: silver_15
+    100444: silver_15 1
+    100446: silver_15 2
+    100448: silver_15 3
+    100450: silver_16
+    100452: silver_16 1
+    100454: silver_16 2
+    100456: silver_16 3
+    100458: skp182B
+    100460: skp182B 1
+    100462: Wheel1
+    100464: Wheel1 1
+    100466: Wheel1 2
+    100468: Wheel1 3
+    100470: white_03
+    400000: //RootNode
+    400002: Bemo_logo
+    400004: Bemo_logo 1
+    400006: black_02#1
+    400008: black_04
+    400010: black_05#1
+    400012: blue_03
+    400014: BMW logo
+    400016: BMW logo 1
+    400018: BMW logo 2
+    400020: BMW logo 3
+    400022: BMW logo 4
+    400024: BMW logo 5
+    400026: BMW M4 F30
+    400028: body#4
+    400030: body#4 1
+    400032: body_01_pi
+    400034: body_02_pi
+    400036: body_03_pi
+    400038: body_04_pi
+    400040: body_05_pi
+    400042: body_06_pi#1
+    400044: body_08_pi
+    400046: body_08_pi 1
+    400048: body_10_pi
+    400050: body_11_pi
+    400052: chrome#3
+    400054: chrome#3 1
+    400056: chrome_03
+    400058: chrome_04
+    400060: chrome_05
+    400062: chrome_05 1
+    400064: chrome_06
+    400066: chrome_06 1
+    400068: chrome_07
+    400070: chrome_07 1
+    400072: chrome_08_
+    400074: chrome_08_ 1
+    400076: chrome_09
+    400078: chrome_09 1
+    400080: chrome_10
+    400082: chrome_10 1
+    400084: chrome_11_
+    400086: chrome_11_ 1
+    400088: chrome_14
+    400090: chrome_14 1
+    400092: chrome_15_
+    400094: chrome_17_
+    400096: chrome_17_ 1
+    400098: chrome_18_
+    400100: chrome_18_ 1
+    400102: chrome_19_
+    400104: chrome_19_ 1
+    400106: chrome_20
+    400108: chrome_20 1
+    400110: chrome_21_
+    400112: chrome_21_ 1
+    400114: chrome_22
+    400116: chrome_22 1
+    400118: chrome_23_
+    400120: chrome_23_ 1
+    400122: chrome_26_
+    400124: chrome_27
+    400126: chrome_28
+    400128: chrome_29
+    400130: chrome_30_
+    400132: chrome_31_
+    400134: chrome_32
+    400136: chrome_32 1
+    400138: chrome_34_
+    400140: chrome_37
+    400142: Component#2
+    400144: Component#2 1
+    400146: Component#2 2
+    400148: Component#2 3
+    400150: d_glass_01
+    400152: d_glass_03
+    400154: Door1
+    400156: Door1 1
+    400158: frame#5
+    400160: frame#5 1
+    400162: glass_01
+    400164: glass_02
+    400166: glass_04_p
+    400168: glass_04_p 1
+    400170: glass_05
+    400172: glass_05 1
+    400174: glass_06_p
+    400176: glass_06_p 1
+    400178: glass_07_p
+    400180: glass_07_p 1
+    400182: glass_08_p
+    400184: Group 176
+    400186: Group 181
+    400188: Group 188
+    400190: Group 190
+    400192: Group 192
+    400194: Group 194
+    400196: Group 197
+    400198: Group 202
+    400200: Group 209
+    400202: Group 211
+    400204: Group 213
+    400206: Group 215
+    400208: Group 218
+    400210: Group 220
+    400212: Group 222
+    400214: Group 224
+    400216: Group 226
+    400218: Group 228
+    400220: Group 230
+    400222: Group 232
+    400224: Group 234
+    400226: Group 246
+    400228: Group 248
+    400230: Group 299
+    400232: Group 3
+    400234: Group 308
+    400236: Group 310
+    400238: Group 312
+    400240: Group 314
+    400242: Group 316
+    400244: Group 318
+    400246: Group 320
+    400248: Group 322
+    400250: Group 324
+    400252: Group 336
+    400254: Group 338
+    400256: Group 391
+    400258: Group 398
+    400260: Group 403
+    400262: Group 410
+    400264: Group 412
+    400266: Group 414
+    400268: Group 416
+    400270: Group 419
+    400272: Group 424
+    400274: Group 431
+    400276: Group 433
+    400278: Group 435
+    400280: Group 437
+    400282: Group 5
+    400284: Group 7
+    400286: Group 9
+    400288: Group#17
+    400290: Group#17 1
+    400292: Group#2
+    400294: Group#2 1
+    400296: Group#2 2
+    400298: Group#2 3
+    400300: Group#2 4
+    400302: Group#2 5
+    400304: Headlight
+    400306: Headlight 1
+    400308: interior2_
+    400310: interior3_
+    400312: interior_0
+    400314: interior_1
+    400316: interior_2
+    400318: leather_01
+    400320: leather_02
+    400322: leather_03
+    400324: leather_04
+    400326: leather_05
+    400328: leather_06
+    400330: leather_06 1
+    400332: leather_07
+    400334: light_01
+    400336: light_02_p
+    400338: light_02_p 1
+    400340: light_04
+    400342: plastic2#2
+    400344: plastic2#2 1
+    400346: plastic_01
+    400348: plastic_01 1
+    400350: plastic_02
+    400352: plastic_04
+    400354: plastic_06
+    400356: plastic_07
+    400358: plastic_08
+    400360: plastic_09
+    400362: plastic_10
+    400364: plastic_15
+    400366: plastic_18
+    400368: plastic_22
+    400370: plastic_23
+    400372: plastic_25
+    400374: plastic_26
+    400376: plastic_27
+    400378: plastic_28
+    400380: plastic_29
+    400382: plastic_30
+    400384: plastic_31
+    400386: plastic_32
+    400388: plastic_33
+    400390: plastic_34
+    400392: plastic_35
+    400394: plastic_36
+    400396: plastic_38
+    400398: plastic_39
+    400400: plastic_40
+    400402: plastic_41
+    400404: plastic_42
+    400406: plastic_43
+    400408: plastic_44
+    400410: plastic_45
+    400412: plastic_46
+    400414: plastic_47
+    400416: plastic_48
+    400418: r_glass_02
+    400420: silver_02
+    400422: silver_04
+    400424: silver_05
+    400426: silver_06
+    400428: silver_07
+    400430: silver_08_
+    400432: silver_09_
+    400434: silver_10
+    400436: silver_11_
+    400438: silver_12
+    400440: silver_13
+    400442: silver_15
+    400444: silver_15 1
+    400446: silver_15 2
+    400448: silver_15 3
+    400450: silver_16
+    400452: silver_16 1
+    400454: silver_16 2
+    400456: silver_16 3
+    400458: skp182B
+    400460: skp182B 1
+    400462: Wheel1
+    400464: Wheel1 1
+    400466: Wheel1 2
+    400468: Wheel1 3
+    400470: white_03
+    2300000: black_02#1
+    2300002: black_04
+    2300004: black_05#1
+    2300006: blue_03
+    2300008: BMW logo
+    2300010: BMW logo 1
+    2300012: BMW logo 2
+    2300014: BMW logo 3
+    2300016: BMW logo 4
+    2300018: BMW logo 5
+    2300020: body#4
+    2300022: body#4 1
+    2300024: body_01_pi
+    2300026: body_02_pi
+    2300028: body_03_pi
+    2300030: body_04_pi
+    2300032: body_05_pi
+    2300034: body_06_pi#1
+    2300036: body_08_pi
+    2300038: body_08_pi 1
+    2300040: body_10_pi
+    2300042: body_11_pi
+    2300044: chrome#3
+    2300046: chrome#3 1
+    2300048: chrome_03
+    2300050: chrome_04
+    2300052: chrome_05
+    2300054: chrome_05 1
+    2300056: chrome_06
+    2300058: chrome_06 1
+    2300060: chrome_07
+    2300062: chrome_07 1
+    2300064: chrome_08_
+    2300066: chrome_08_ 1
+    2300068: chrome_09
+    2300070: chrome_09 1
+    2300072: chrome_10
+    2300074: chrome_10 1
+    2300076: chrome_11_
+    2300078: chrome_11_ 1
+    2300080: chrome_14
+    2300082: chrome_14 1
+    2300084: chrome_15_
+    2300086: chrome_17_
+    2300088: chrome_17_ 1
+    2300090: chrome_18_
+    2300092: chrome_18_ 1
+    2300094: chrome_19_
+    2300096: chrome_19_ 1
+    2300098: chrome_20
+    2300100: chrome_20 1
+    2300102: chrome_21_
+    2300104: chrome_21_ 1
+    2300106: chrome_22
+    2300108: chrome_22 1
+    2300110: chrome_23_
+    2300112: chrome_23_ 1
+    2300114: chrome_26_
+    2300116: chrome_27
+    2300118: chrome_28
+    2300120: chrome_29
+    2300122: chrome_30_
+    2300124: chrome_31_
+    2300126: chrome_32
+    2300128: chrome_32 1
+    2300130: chrome_34_
+    2300132: chrome_37
+    2300134: d_glass_01
+    2300136: d_glass_03
+    2300138: frame#5
+    2300140: frame#5 1
+    2300142: glass_01
+    2300144: glass_02
+    2300146: glass_04_p
+    2300148: glass_04_p 1
+    2300150: glass_05
+    2300152: glass_05 1
+    2300154: glass_06_p
+    2300156: glass_06_p 1
+    2300158: glass_07_p
+    2300160: glass_07_p 1
+    2300162: glass_08_p
+    2300164: Group 176
+    2300166: Group 181
+    2300168: Group 188
+    2300170: Group 190
+    2300172: Group 192
+    2300174: Group 194
+    2300176: Group 197
+    2300178: Group 202
+    2300180: Group 209
+    2300182: Group 211
+    2300184: Group 213
+    2300186: Group 215
+    2300188: Group 218
+    2300190: Group 220
+    2300192: Group 222
+    2300194: Group 224
+    2300196: Group 226
+    2300198: Group 228
+    2300200: Group 230
+    2300202: Group 232
+    2300204: Group 246
+    2300206: Group 248
+    2300208: Group 299
+    2300210: Group 3
+    2300212: Group 308
+    2300214: Group 310
+    2300216: Group 312
+    2300218: Group 314
+    2300220: Group 316
+    2300222: Group 318
+    2300224: Group 320
+    2300226: Group 322
+    2300228: Group 336
+    2300230: Group 338
+    2300232: Group 391
+    2300234: Group 398
+    2300236: Group 403
+    2300238: Group 410
+    2300240: Group 412
+    2300242: Group 414
+    2300244: Group 416
+    2300246: Group 419
+    2300248: Group 424
+    2300250: Group 431
+    2300252: Group 433
+    2300254: Group 435
+    2300256: Group 437
+    2300258: Group 5
+    2300260: Group 7
+    2300262: Group 9
+    2300264: Group#17
+    2300266: Group#17 1
+    2300268: interior2_
+    2300270: interior3_
+    2300272: interior_0
+    2300274: interior_1
+    2300276: interior_2
+    2300278: leather_01
+    2300280: leather_02
+    2300282: leather_03
+    2300284: leather_04
+    2300286: leather_05
+    2300288: leather_06
+    2300290: leather_06 1
+    2300292: leather_07
+    2300294: light_01
+    2300296: light_02_p
+    2300298: light_02_p 1
+    2300300: light_04
+    2300302: plastic2#2
+    2300304: plastic2#2 1
+    2300306: plastic_01
+    2300308: plastic_01 1
+    2300310: plastic_02
+    2300312: plastic_04
+    2300314: plastic_06
+    2300316: plastic_07
+    2300318: plastic_08
+    2300320: plastic_09
+    2300322: plastic_10
+    2300324: plastic_15
+    2300326: plastic_18
+    2300328: plastic_22
+    2300330: plastic_23
+    2300332: plastic_25
+    2300334: plastic_26
+    2300336: plastic_27
+    2300338: plastic_28
+    2300340: plastic_29
+    2300342: plastic_30
+    2300344: plastic_31
+    2300346: plastic_32
+    2300348: plastic_33
+    2300350: plastic_34
+    2300352: plastic_35
+    2300354: plastic_36
+    2300356: plastic_38
+    2300358: plastic_39
+    2300360: plastic_40
+    2300362: plastic_41
+    2300364: plastic_42
+    2300366: plastic_43
+    2300368: plastic_44
+    2300370: plastic_45
+    2300372: plastic_46
+    2300374: plastic_47
+    2300376: plastic_48
+    2300378: silver_02
+    2300380: silver_04
+    2300382: silver_05
+    2300384: silver_06
+    2300386: silver_07
+    2300388: silver_08_
+    2300390: silver_09_
+    2300392: silver_10
+    2300394: silver_11_
+    2300396: silver_12
+    2300398: silver_13
+    2300400: silver_15
+    2300402: silver_15 1
+    2300404: silver_15 2
+    2300406: silver_15 3
+    2300408: silver_16
+    2300410: silver_16 1
+    2300412: silver_16 2
+    2300414: silver_16 3
+    2300416: white_03
+    3300000: black_02#1
+    3300002: black_04
+    3300004: black_05#1
+    3300006: blue_03
+    3300008: BMW logo
+    3300010: BMW logo 1
+    3300012: BMW logo 2
+    3300014: BMW logo 3
+    3300016: BMW logo 4
+    3300018: BMW logo 5
+    3300020: body#4
+    3300022: body#4 1
+    3300024: body_01_pi
+    3300026: body_02_pi
+    3300028: body_03_pi
+    3300030: body_04_pi
+    3300032: body_05_pi
+    3300034: body_06_pi#1
+    3300036: body_08_pi
+    3300038: body_08_pi 1
+    3300040: body_10_pi
+    3300042: body_11_pi
+    3300044: chrome#3
+    3300046: chrome#3 1
+    3300048: chrome_03
+    3300050: chrome_04
+    3300052: chrome_05
+    3300054: chrome_05 1
+    3300056: chrome_06
+    3300058: chrome_06 1
+    3300060: chrome_07
+    3300062: chrome_07 1
+    3300064: chrome_08_
+    3300066: chrome_08_ 1
+    3300068: chrome_09
+    3300070: chrome_09 1
+    3300072: chrome_10
+    3300074: chrome_10 1
+    3300076: chrome_11_
+    3300078: chrome_11_ 1
+    3300080: chrome_14
+    3300082: chrome_14 1
+    3300084: chrome_15_
+    3300086: chrome_17_
+    3300088: chrome_17_ 1
+    3300090: chrome_18_
+    3300092: chrome_18_ 1
+    3300094: chrome_19_
+    3300096: chrome_19_ 1
+    3300098: chrome_20
+    3300100: chrome_20 1
+    3300102: chrome_21_
+    3300104: chrome_21_ 1
+    3300106: chrome_22
+    3300108: chrome_22 1
+    3300110: chrome_23_
+    3300112: chrome_23_ 1
+    3300114: chrome_26_
+    3300116: chrome_27
+    3300118: chrome_28
+    3300120: chrome_29
+    3300122: chrome_30_
+    3300124: chrome_31_
+    3300126: chrome_32
+    3300128: chrome_32 1
+    3300130: chrome_34_
+    3300132: chrome_37
+    3300134: d_glass_01
+    3300136: d_glass_03
+    3300138: frame#5
+    3300140: frame#5 1
+    3300142: glass_01
+    3300144: glass_02
+    3300146: glass_04_p
+    3300148: glass_04_p 1
+    3300150: glass_05
+    3300152: glass_05 1
+    3300154: glass_06_p
+    3300156: glass_06_p 1
+    3300158: glass_07_p
+    3300160: glass_07_p 1
+    3300162: glass_08_p
+    3300164: Group 176
+    3300166: Group 181
+    3300168: Group 188
+    3300170: Group 190
+    3300172: Group 192
+    3300174: Group 194
+    3300176: Group 197
+    3300178: Group 202
+    3300180: Group 209
+    3300182: Group 211
+    3300184: Group 213
+    3300186: Group 215
+    3300188: Group 218
+    3300190: Group 220
+    3300192: Group 222
+    3300194: Group 224
+    3300196: Group 226
+    3300198: Group 228
+    3300200: Group 230
+    3300202: Group 232
+    3300204: Group 246
+    3300206: Group 248
+    3300208: Group 299
+    3300210: Group 3
+    3300212: Group 308
+    3300214: Group 310
+    3300216: Group 312
+    3300218: Group 314
+    3300220: Group 316
+    3300222: Group 318
+    3300224: Group 320
+    3300226: Group 322
+    3300228: Group 336
+    3300230: Group 338
+    3300232: Group 391
+    3300234: Group 398
+    3300236: Group 403
+    3300238: Group 410
+    3300240: Group 412
+    3300242: Group 414
+    3300244: Group 416
+    3300246: Group 419
+    3300248: Group 424
+    3300250: Group 431
+    3300252: Group 433
+    3300254: Group 435
+    3300256: Group 437
+    3300258: Group 5
+    3300260: Group 7
+    3300262: Group 9
+    3300264: Group#17
+    3300266: Group#17 1
+    3300268: interior2_
+    3300270: interior3_
+    3300272: interior_0
+    3300274: interior_1
+    3300276: interior_2
+    3300278: leather_01
+    3300280: leather_02
+    3300282: leather_03
+    3300284: leather_04
+    3300286: leather_05
+    3300288: leather_06
+    3300290: leather_06 1
+    3300292: leather_07
+    3300294: light_01
+    3300296: light_02_p
+    3300298: light_02_p 1
+    3300300: light_04
+    3300302: plastic2#2
+    3300304: plastic2#2 1
+    3300306: plastic_01
+    3300308: plastic_01 1
+    3300310: plastic_02
+    3300312: plastic_04
+    3300314: plastic_06
+    3300316: plastic_07
+    3300318: plastic_08
+    3300320: plastic_09
+    3300322: plastic_10
+    3300324: plastic_15
+    3300326: plastic_18
+    3300328: plastic_22
+    3300330: plastic_23
+    3300332: plastic_25
+    3300334: plastic_26
+    3300336: plastic_27
+    3300338: plastic_28
+    3300340: plastic_29
+    3300342: plastic_30
+    3300344: plastic_31
+    3300346: plastic_32
+    3300348: plastic_33
+    3300350: plastic_34
+    3300352: plastic_35
+    3300354: plastic_36
+    3300356: plastic_38
+    3300358: plastic_39
+    3300360: plastic_40
+    3300362: plastic_41
+    3300364: plastic_42
+    3300366: plastic_43
+    3300368: plastic_44
+    3300370: plastic_45
+    3300372: plastic_46
+    3300374: plastic_47
+    3300376: plastic_48
+    3300378: silver_02
+    3300380: silver_04
+    3300382: silver_05
+    3300384: silver_06
+    3300386: silver_07
+    3300388: silver_08_
+    3300390: silver_09_
+    3300392: silver_10
+    3300394: silver_11_
+    3300396: silver_12
+    3300398: silver_13
+    3300400: silver_15
+    3300402: silver_15 1
+    3300404: silver_15 2
+    3300406: silver_15 3
+    3300408: silver_16
+    3300410: silver_16 1
+    3300412: silver_16 2
+    3300414: silver_16 3
+    3300416: white_03
+    4300000: Mesh Group 3
+    4300002: Mesh Group 5
+    4300004: Mesh Group 9
+    4300006: Mesh black_04
+    4300008: Mesh blue_03
+    4300010: Mesh body_01_pi
+    4300012: Mesh body_02_pi
+    4300014: Mesh body_10_pi
+    4300016: Mesh body_11_pi
+    4300018: Mesh chrome_03
+    4300020: Mesh chrome_04
+    4300022: Mesh chrome_15_
+    4300024: Mesh chrome_26_
+    4300026: Mesh chrome_27
+    4300028: Mesh chrome_28
+    4300030: Mesh chrome_29
+    4300032: Mesh chrome_30_
+    4300034: Mesh chrome_31_
+    4300036: Mesh chrome_34_
+    4300038: Mesh chrome_37
+    4300040: Mesh d_glass_03
+    4300042: Mesh glass_01
+    4300044: Mesh glass_02
+    4300046: Mesh interior2_
+    4300048: Mesh interior3_
+    4300050: Mesh interior_0
+    4300052: Mesh interior_1
+    4300054: Mesh interior_2
+    4300056: Mesh leather_01
+    4300058: Mesh leather_02
+    4300060: Mesh leather_03
+    4300062: Mesh leather_04
+    4300064: Mesh leather_05
+    4300066: Mesh leather_06
+    4300068: Mesh leather_07
+    4300070: Mesh light_01
+    4300072: Mesh light_04
+    4300074: Mesh plastic_02
+    4300076: Mesh plastic_04
+    4300078: Mesh plastic_06
+    4300080: Mesh plastic_07
+    4300082: Mesh plastic_08
+    4300084: Mesh plastic_09
+    4300086: Mesh plastic_10
+    4300088: Mesh plastic_15
+    4300090: Mesh plastic_18
+    4300092: Mesh plastic_22
+    4300094: Mesh plastic_23
+    4300096: Mesh plastic_25
+    4300098: Mesh plastic_26
+    4300100: Mesh plastic_27
+    4300102: Mesh plastic_28
+    4300104: Mesh plastic_29
+    4300106: Mesh plastic_30
+    4300108: Mesh plastic_31
+    4300110: Mesh plastic_32
+    4300112: Mesh plastic_33
+    4300114: Mesh plastic_34
+    4300116: Mesh plastic_35
+    4300118: Mesh plastic_36
+    4300120: Mesh plastic_38
+    4300122: Mesh plastic_39
+    4300124: Mesh plastic_40
+    4300126: Mesh plastic_41
+    4300128: Mesh plastic_42
+    4300130: Mesh plastic_43
+    4300132: Mesh plastic_44
+    4300134: Mesh plastic_45
+    4300136: Mesh plastic_46
+    4300138: Mesh plastic_47
+    4300140: Mesh plastic_48
+    4300142: Mesh silver_02
+    4300144: Mesh silver_04
+    4300146: Mesh silver_05
+    4300148: Mesh silver_06
+    4300150: Mesh silver_07
+    4300152: Mesh silver_08_
+    4300154: Mesh silver_09_
+    4300156: Mesh silver_10
+    4300158: Mesh silver_11_
+    4300160: Mesh silver_12
+    4300162: Mesh silver_13
+    4300164: Mesh white_03
+    4300166: Mesh black_02#1
+    4300168: Mesh black_05#1
+    4300170: Mesh Group 176
+    4300172: Mesh silver_15
+    4300174: Mesh Group 181
+    4300176: Mesh BMW logo
+    4300178: Mesh silver_16
+    4300180: Mesh Group 188
+    4300182: Mesh Group 190
+    4300184: Mesh Group 192
+    4300186: Mesh Group 194
+    4300188: Mesh Group 218
+    4300190: Mesh Group 220
+    4300192: Mesh Group 222
+    4300194: Mesh Group 224
+    4300196: Mesh Group 226
+    4300198: Mesh Group 228
+    4300200: Mesh Group 230
+    4300202: Mesh Group#17
+    4300204: Mesh body#4
+    4300206: Mesh chrome#3
+    4300208: Mesh frame#5
+    4300210: Mesh plastic2#2
+    4300212: Mesh Group 246
+    4300214: Mesh Group 248
+    4300216: Mesh body_08_pi
+    4300218: Mesh chrome_05
+    4300220: Mesh chrome_06
+    4300222: Mesh chrome_07
+    4300224: Mesh chrome_08_
+    4300226: Mesh chrome_09
+    4300228: Mesh chrome_10
+    4300230: Mesh chrome_11_
+    4300232: Mesh chrome_14
+    4300234: Mesh chrome_17_
+    4300236: Mesh chrome_18_
+    4300238: Mesh chrome_19_
+    4300240: Mesh chrome_20
+    4300242: Mesh chrome_21_
+    4300244: Mesh chrome_22
+    4300246: Mesh chrome_23_
+    4300248: Mesh glass_04_p
+    4300250: Mesh glass_05
+    4300252: Mesh glass_06_p
+    4300254: Mesh glass_07_p
+    4300256: Mesh plastic_01
+    4300258: Mesh light_02_p
+    4300260: Mesh d_glass_01
+    4300262: Mesh glass_08_p
+    4300264: Mesh body_04_pi
+    4300266: Mesh body_05_pi
+    4300268: Mesh body_06_pi#1
+    4300270: Mesh chrome_32
+    4300272: Mesh body_03_pi
+  materials:
+    importMaterials: 1
+    materialName: 2
+    materialSearch: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.0254
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
