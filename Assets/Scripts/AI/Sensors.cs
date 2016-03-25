@@ -12,6 +12,21 @@ namespace VRAVE
 		public float Distance { get; set; }
 	}
 
+	public class VRAVESensor
+	{
+		private int m_ID; 
+		private Vector3 m_Direction;
+
+		public int ID {get { return m_ID; } set { m_ID = value; }}
+		public Vector3 Direction { get { return m_Direction; } set { m_Direction = value; } }
+
+		public VRAVESensor(int id, Vector3 dir)
+		{
+			ID = id;
+			Direction = dir;
+		}
+	}
+
 	// The long range sensors are for obstacles that we can steer around
 	// and the short range sensors are for obstacles that we can't avoid
 	public class Sensors : MonoBehaviour 
@@ -19,28 +34,33 @@ namespace VRAVE
 
 		// adjustable values
 		[SerializeField] private float m_sensorsStart = 1f;
-		[Range(10f, 60f)][SerializeField] private float m_shortSensorAngleDelta = 30f;
+		[Range(10f, 90f)][SerializeField] private float m_shortSensorAngleDelta = 30f;
 		[SerializeField] private float m_longSensorLength = 45f;
 		[SerializeField] private float m_shortSensorLength = 10f;
 		[SerializeField] private bool m_shortRangeSensorsEnable = true;
 		[SerializeField] private bool m_longRangeSensorsEnable = true;
 		[SerializeField] private float m_lateralSensorShift = 1f;
+		[Range(10f, 90f)][SerializeField] private float m_PassingSensorAngle = 15f;
 
 		private readonly float shortRangeSensorsHeight = 0.25f;
 		private readonly float longRangeSensorsHeight = 0.6f;
-		private readonly int numLongRangeSensors = 3;
+
+		/* IDs for look-up */
+
+		// the reverse-facing right side sensor is sensor 0
+		// short-range sensors are integers from 1 to n, n = number of short range sensors
+		// long-range sensors are integers from n+1 to m, where (m - n + 1) is the number of long range sensors
+		private readonly int numPassingSensors = 1;
 		private readonly int numShortRangeSensors = 6;
+		private readonly int numLongRangeSensors = 3;
 
-		private Vector3[] longRangeSensorsArray; 
-		private Vector3[] shortRangeSensorsArray;
-		private Vector3 passingSensor; 
-
+		private VRAVESensor[] longRangeSensorsArray; 
+		private VRAVESensor[] shortRangeSensorsArray;
 
 		private void Awake()
 		{
-			longRangeSensorsArray = new Vector3[numLongRangeSensors];
-			shortRangeSensorsArray = new Vector3[numShortRangeSensors];
-			passingSensor = new Vector3();
+			longRangeSensorsArray = new VRAVESensor[numLongRangeSensors];
+			shortRangeSensorsArray = new VRAVESensor[numShortRangeSensors + numPassingSensors];
 		}
 
 		private void InitShortRangeSensors()
@@ -49,59 +69,65 @@ namespace VRAVE
 			float delta = m_shortSensorAngleDelta / (numShortRangeSensors-1);
 			float angle = -(m_shortSensorAngleDelta / 2);
 
-			for (int idx = 0; idx < numShortRangeSensors; ++idx)
+			for (int idx = numPassingSensors; idx <= numShortRangeSensors; ++idx)
 			{
 				Quaternion deviation = Quaternion.AngleAxis (angle, new Vector3 (0, 1, 0));
-				shortRangeSensorsArray [idx] = deviation * transform.forward;
+				shortRangeSensorsArray [idx] = new VRAVESensor(idx, deviation * transform.forward);
 				angle = angle + delta;
 			}
+
+			Quaternion passingSensorRot = Quaternion.AngleAxis (-m_PassingSensorAngle, new Vector3(0, 1, 0));
+			// passing sensor is 0th
+			shortRangeSensorsArray[0] = new VRAVESensor(0, passingSensorRot * -transform.forward);
 		}
 
 		private void InitLongRangeSensors()
 		{
 			// long range sensors
-			longRangeSensorsArray [0] = transform.forward * m_sensorsStart;
-			longRangeSensorsArray [1] = longRangeSensorsArray [0];
-			longRangeSensorsArray [2] = longRangeSensorsArray [0];
+			longRangeSensorsArray [0] = new VRAVESensor(numPassingSensors + numShortRangeSensors, transform.forward * m_sensorsStart);
+			longRangeSensorsArray [1] = new VRAVESensor(numPassingSensors + numShortRangeSensors + 1, longRangeSensorsArray [0].Direction);
+			longRangeSensorsArray [2] = new VRAVESensor(numPassingSensors + numShortRangeSensors + 2, longRangeSensorsArray [0].Direction);
 		}
-
-
+			
 		public bool Scan (out Dictionary<int, VRAVEObstacle> obstacles)
 		{
 			obstacles = new Dictionary<int, VRAVEObstacle> ();
 				
-			if (m_shortRangeSensorsEnable) {
+			if (m_shortRangeSensorsEnable) 
+			{
 				RaycastHit shortSensorsHit;
-
 				Vector3 shortRangeSensorsStart = transform.position; 
 				shortRangeSensorsStart.y += shortRangeSensorsHeight;
 
 				InitShortRangeSensors ();
 
 				// Scan for nearby obstacles
-				foreach (Vector3 scan in shortRangeSensorsArray) {
+				foreach (VRAVESensor scan in shortRangeSensorsArray) 
+				{
 
-					Debug.DrawRay (shortRangeSensorsStart, scan * m_shortSensorLength, Color.green);
+					Debug.DrawRay (shortRangeSensorsStart, scan.Direction * m_shortSensorLength, Color.green);
 
-					if (Physics.Raycast (shortRangeSensorsStart, scan, out shortSensorsHit, m_shortSensorLength)) {
-
+					if (Physics.Raycast (shortRangeSensorsStart, scan.Direction, out shortSensorsHit, m_shortSensorLength)) 
+					{
 						if (shortSensorsHit.collider.CompareTag (VRAVEStrings.Obstacle) ||
-							shortSensorsHit.collider.CompareTag (VRAVEStrings.AI_Car)) {
-							if (!obstacles.ContainsKey(shortSensorsHit.collider.GetHashCode()))
+							shortSensorsHit.collider.CompareTag (VRAVEStrings.AI_Car)) 
+						{
+							if (!obstacles.ContainsKey(scan.ID))
 							{
 								Debug.DrawLine (shortRangeSensorsStart, shortSensorsHit.point, Color.yellow);
 								VRAVEObstacle vo = new VRAVEObstacle ();
 								vo.obstacle = shortSensorsHit;
 								vo.obstacleTag = shortSensorsHit.collider.tag;
 								vo.Distance = (shortSensorsHit.point - transform.position).magnitude;
-								obstacles.Add (shortSensorsHit.collider.GetHashCode (), vo);
+								obstacles.Add (scan.ID, vo);
 							}
 						}
 					}
 				}	
 			}
 
-			if (m_longRangeSensorsEnable) {
+			if (m_longRangeSensorsEnable) 
+			{
 				RaycastHit longSensorsHit;
 
 				Vector3 longRangeSensorsStart = transform.position; 
@@ -110,30 +136,34 @@ namespace VRAVE
 				// long sensors
 				InitLongRangeSensors ();
 
-				for (uint i = 0; i < numLongRangeSensors; ++i) {
-
+				for (uint i = 0; i < numLongRangeSensors; ++i) 
+				{
 					Vector3 sensorStart = longRangeSensorsStart;
 
-					if (i == 1) {
+					if (i == 1) 
+					{
 						sensorStart += transform.right * m_lateralSensorShift;
-					} else if (i == 2) {
+					} 
+					else if (i == 2) 
+					{
 						sensorStart -= transform.right * m_lateralSensorShift;
 					}
 
-					Debug.DrawRay (sensorStart, longRangeSensorsArray [i] * m_longSensorLength, Color.red);
+					Debug.DrawRay (sensorStart, longRangeSensorsArray [i].Direction * m_longSensorLength, Color.red);
 
-					if (Physics.Raycast (sensorStart, longRangeSensorsArray [i], out longSensorsHit, m_longSensorLength)) {
+					if (Physics.Raycast (sensorStart, longRangeSensorsArray [i].Direction, out longSensorsHit, m_longSensorLength)) 
+					{
 						if (longSensorsHit.collider.CompareTag (VRAVEStrings.Obstacle) ||
 							longSensorsHit.collider.CompareTag (VRAVEStrings.AI_Car)) 
 						{
-							if (!obstacles.ContainsKey (longSensorsHit.collider.GetHashCode ())) 
+							if (!obstacles.ContainsKey (longRangeSensorsArray[i].ID)) 
 							{
 								Debug.DrawLine (sensorStart, longSensorsHit.point, Color.yellow);
 								VRAVEObstacle vo = new VRAVEObstacle ();
 								vo.obstacle = longSensorsHit;
 								vo.obstacleTag = longSensorsHit.collider.tag;
 								vo.Distance = (longSensorsHit.point - transform.position).magnitude;
-								obstacles.Add (longSensorsHit.collider.GetHashCode(), vo);
+								obstacles.Add (longRangeSensorsArray[i].ID, vo);
 							}
 						}
 					}
@@ -142,35 +172,7 @@ namespace VRAVE
 
 			return obstacles.Count == 0 ? false : true;
 		}
-
-		public bool PassingSensor(out VRAVEObstacle obs)
-		{
-			obs = new VRAVEObstacle ();
-			RaycastHit shortSensorsHit;
-
-			Quaternion passingSensorAngle = Quaternion.AngleAxis (-(m_shortSensorAngleDelta / 2), new Vector3(0, 1, 0));
-			passingSensor = passingSensorAngle * -transform.forward;
-
-			Vector3 shortRangeSensorsStart = transform.position; 
-			shortRangeSensorsStart.y += shortRangeSensorsHeight;
-
-			// Passing sensor
-			Debug.DrawRay(shortRangeSensorsStart, passingSensor * m_shortSensorLength, Color.green);
-
-			if (Physics.Raycast (shortRangeSensorsStart, passingSensor, out shortSensorsHit, m_shortSensorLength))
-			{
-				if (shortSensorsHit.collider.CompareTag (VRAVEStrings.AI_Car)) 
-				{
-					Debug.DrawLine (shortRangeSensorsStart, shortSensorsHit.point, Color.yellow);
-					obs.obstacle = shortSensorsHit;
-					obs.obstacleTag = shortSensorsHit.collider.tag;	// this sensor is used to check whether you've passed a car
-					obs.Distance = (shortSensorsHit.point - transform.position).magnitude;	
-					return true;
-				}
-			}
-			return false;
-		}
-
+			
 		// can be used to find the nearest obstacle being tracked
 		public static bool nearestObstacle(Dictionary<int, VRAVEObstacle>.ValueCollection obs, out VRAVEObstacle nearest) 
 		{

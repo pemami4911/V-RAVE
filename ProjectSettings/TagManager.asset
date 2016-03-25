@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - AvoidableObstacle
-  - UnavoidableObstacle
+  - Obstacle
+  - AI_Car
   layers:
   - Default
   - TransparentFX

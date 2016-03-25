@@ -58,7 +58,7 @@ namespace VRAVE
 
 		// Obstacle avoidance
 		private Sensors m_Sensors;
-		private ObstacleHandler m_ObstacleHandler;
+		//private SensorResponseHandler m_ObstacleHandler;
 
 		public bool isUser
         {
@@ -125,17 +125,12 @@ namespace VRAVE
 				Dictionary<int, VRAVEObstacle> vo;
 				if (m_Sensors.Scan (out vo)) 
 				{
-					// m_ObstacleHandler.handleObstacles (this, vo.Values, m_CarController.CurrentSpeed, m_BrakeCondition);
+					// m_SensorResponseHandler.handle (this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
 				}
 
 				if (m_isPassing) // should get set by a lane passing script
 				{
-					VRAVEObstacle obs; 
-					if (m_Sensors.PassingSensor (out obs)) 
-					{
-						// Should be handled by a lane passing script
-					}
-
+					// bryce fill this out
 				}
 
 				/* End sensors */ 
