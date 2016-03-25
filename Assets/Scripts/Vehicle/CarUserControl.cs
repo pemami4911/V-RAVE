@@ -31,17 +31,16 @@ namespace VRAVE
         private void FixedUpdate()
         {
             // pass the input to the car!
-            double h = gain * CrossPlatformInputManager.GetAxis("Horizontal");
+            //double h = gain * CrossPlatformInputManager.GetAxis("Horizontal");
             double hh =Input.GetAxis("Horizontal");
-            double v = gain * CrossPlatformInputManager.GetAxis("Vertical");
+            //double v = gain * CrossPlatformInputManager.GetAxis("Vertical");
             double vv = Input.GetAxis("Vertical");
 
-            double h_raw = Input.GetAxisRaw("Horizontal");
-            double v_raw = Input.GetAxisRaw("Vertical");
+            //double h_raw = Input.GetAxisRaw("Horizontal");
+            //double v_raw = Input.GetAxisRaw("Vertical");
 
-//            Debug.Log("Horizontal: " + h_raw.ToString());
-//            Debug.Log("Vertical: " + v_raw.ToString());
-
+//           Debug.Log("Horizontal: " + h_raw.ToString());
+//           Debug.Log("Vertical: " + v_raw.ToString());
 
             /*
             #if !MOBILE_INPUT

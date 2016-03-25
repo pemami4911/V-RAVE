@@ -144,6 +144,7 @@ namespace VRAVE
                 //m_SteeringWheel.transform.Rotate(0, 180, 0, Space.Self);
                
             }
+            
 
             //clamp input values
             steering = Mathf.Clamp(steering, -1, 1);

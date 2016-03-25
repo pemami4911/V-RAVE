@@ -119,20 +119,22 @@ namespace VRAVE
 			}
 			else
 			{
-				/* SENSORS HERE */
+                /* SENSORS HERE */
+                if (m_isUser)
+                {
+                    Dictionary<int, VRAVEObstacle> vo;
+                    if (m_Sensors.Scan(out vo))
+                    {
+                        // m_SensorResponseHandler.handle (this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
+                    }
 
-				Dictionary<int, VRAVEObstacle> vo;
-				if (m_Sensors.Scan (out vo)) 
-				{
-					// m_SensorResponseHandler.handle (this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
-				}
+                    if (m_isPassing) // should get set by a lane passing script
+                    {
+                        // bryce fill this out
+                    }
 
-				if (m_isPassing) // should get set by a lane passing script
-				{
-					// bryce fill this out
-				}
-
-				/* End sensors */ 
+                    /* End sensors */
+                }
 
 				Vector3 fwd = transform.forward;
 				if (m_Rigidbody.velocity.magnitude > m_CarController.MaxSpeed*0.1f)
