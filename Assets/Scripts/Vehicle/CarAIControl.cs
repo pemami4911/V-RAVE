@@ -25,7 +25,6 @@ namespace VRAVE
 
 		// "wandering" is used to give the cars a more human, less robotic feel. They can waver slightly
 		// in speed and direction while driving towards their target.
-		[SerializeField] private Transform m_centerOfMass; 			  						      // the true CoM of the vehicle
 		[SerializeField] [Range(0, 1)] private float m_CautiousSpeedFactor = 0.05f;               // percentage of max speed to use when being maximally cautious
 		[SerializeField] [Range(0, 180)] private float m_CautiousMaxAngle = 50f;                  // angle of approaching corner to treat as warranting maximum caution
 		[SerializeField] private float m_CautiousMaxDistance = 100f;                              // distance at which distance-based cautiousness begins
