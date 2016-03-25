@@ -55,6 +55,6 @@ namespace MonsterLove.StateMachine
 			stateMachine.ChangeState(newState, transition);
 		}
 			
-		public abstract void ChangeState(uint idx); 
+		public abstract void TriggerCb(uint idx); 
 	}
 }
