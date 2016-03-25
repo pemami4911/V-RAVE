@@ -3,10 +3,13 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using UnityStandardAssets.Utility;
 using UnityStandardAssets.Vehicles;
+using System.Collections.Generic;
 
 namespace VRAVE
 {
-	//[RequireComponent(typeof (CarController))]
+//	[RequireComponent(typeof (CarController))]
+//	[RequireComponent(typeof (Sensors))]
+//	[RequireComponent(typeof (ObstacleHandler))]
 	public class CarAIControl : MonoBehaviour
 	{
 		public enum BrakeCondition
@@ -22,7 +25,6 @@ namespace VRAVE
 
 		// "wandering" is used to give the cars a more human, less robotic feel. They can waver slightly
 		// in speed and direction while driving towards their target.
-
 		[SerializeField] [Range(0, 1)] private float m_CautiousSpeedFactor = 0.05f;               // percentage of max speed to use when being maximally cautious
 		[SerializeField] [Range(0, 180)] private float m_CautiousMaxAngle = 50f;                  // angle of approaching corner to treat as warranting maximum caution
 		[SerializeField] private float m_CautiousMaxDistance = 100f;                              // distance at which distance-based cautiousness begins
@@ -32,16 +34,17 @@ namespace VRAVE
 		[SerializeField] private float m_BrakeSensitivity = 1f;                                   // How sensitively the AI uses the brake to reach the current desired speed
 		[SerializeField] private float m_LateralWanderDistance = 0f;                              // how far the car will wander laterally towards its target
 		[SerializeField] private float m_LateralWanderSpeed = 0f;                                 // how fast the lateral wandering will fluctuate
-		[SerializeField] [Range(0, 1)] private float m_AccelWanderAmount = 0.1f;                  // how much the cars acceleration will wander
-		[SerializeField] private float m_AccelWanderSpeed = 0.1f;                                 // how fast the cars acceleration wandering will fluctuate
+		[SerializeField] [Range(0, 1)] private float m_AccelWanderAmount = 0.0f;                  // how much the cars acceleration will wander
+		[SerializeField] private float m_AccelWanderSpeed = 0.0f;                                 // how fast the cars acceleration wandering will fluctuate
 		[SerializeField] private BrakeCondition m_BrakeCondition = BrakeCondition.TargetDistance; // what should the AI consider when accelerating/braking?
 		[SerializeField] private bool m_Driving;                                                  // whether the AI is currently actively driving or stopped.
 		[SerializeField] private bool m_StopWhenTargetReached;                                    // should we stop driving when we reach the target?
 		[SerializeField] private float m_ReachTargetThreshold = 2;                                // proximity to target to consider we 'reached' it, and stop driving.
 		[SerializeField] private WaypointCircuit circuit;										  // A reference to the waypoint-based route we should follow
-		[SerializeField] private bool m_isCircuit = false; 
-
-		private float m_RandomPerlin;             // A random value for the car to base its wander on (so that AI cars don't all wander in the same pattern)
+		[SerializeField] private bool m_isCircuit = false;
+        [SerializeField] private bool m_isUser = false;
+ 
+        private float m_RandomPerlin;             // A random value for the car to base its wander on (so that AI cars don't all wander in the same pattern)
 		private CarController m_CarController;    // Reference to actual car controller we are controlling
 		private float m_AvoidOtherCarTime;        // time until which to avoid the car we recently collided with
 		private float m_AvoidOtherCarSlowdown;    // how much to slow down due to colliding with another car, whilst avoiding
@@ -50,25 +53,59 @@ namespace VRAVE
 		private Transform m_Target;
 		private int progressNum; 
 		private VisualSteeringWheelController m_SteeringWheel; //SteeringWheelController
+		private bool m_isPassing; 				  // should be set to true if the car is passing 
 
-		private void Awake()
+		// Obstacle avoidance
+		private Sensors m_Sensors;
+		//private SensorResponseHandler m_ObstacleHandler;
+
+		public bool isUser
+        {
+            set
+            {
+                if (value)
+                {
+                    if (m_SteeringWheel == null)
+                    {
+                        m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController>();
+                    } 
+                }
+    
+                m_isUser = value;
+            }
+            get
+            {
+                return m_isUser;
+            }
+        }
+
+
+        private void Awake()
 		{
 			m_CarController = GetComponent<CarController> ();
+			m_Rigidbody = GetComponent<Rigidbody>();
+			m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController>();
+			m_Sensors = GetComponent<Sensors>();
+
 			// give the random perlin a random value
 			m_RandomPerlin = Random.value*100;
 
-			m_Rigidbody = GetComponent<Rigidbody>();
-			m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController>();
+            if(m_isUser)
+            {
+                isUser = true;
+            }
+
+			// m_ObstacleHandler = GetComponent<ObstacleHandler> ();
+
+			m_isPassing = true;
 
 			progressNum = 0;
-			//Debug.Log (progressNum);
-
-			SetTarget (circuit.Waypoints[progressNum]);
+			SetTarget (circuit.Waypoints[progressNum], false);
 		}
 
         private void onEnable()
         {   
-            //When switched to UserControl mode, expand steeringAngle
+            //When switched to AIControl, constrict steering angle
             m_CarController.setMaxSteeringAngle(35);
         }
 
@@ -82,6 +119,23 @@ namespace VRAVE
 			}
 			else
 			{
+                /* SENSORS HERE */
+                if (m_isUser)
+                {
+                    Dictionary<int, VRAVEObstacle> vo;
+                    if (m_Sensors.Scan(out vo))
+                    {
+                        // m_SensorResponseHandler.handle (this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
+                    }
+
+                    if (m_isPassing) // should get set by a lane passing script
+                    {
+                        // bryce fill this out
+                    }
+
+                    /* End sensors */
+                }
+
 				Vector3 fwd = transform.forward;
 				if (m_Rigidbody.velocity.magnitude > m_CarController.MaxSpeed*0.1f)
 				{
@@ -186,19 +240,24 @@ namespace VRAVE
 
 				// feed input to the car controller.
 				m_CarController.Move(steer, accel, accel, 0f);
-				// turn the steering wheel 
-				m_SteeringWheel.turnSteeringWheel((float)steer, m_CarController.CurrentSteerAngle);
+
+                if (m_isUser)
+                {
+                    // turn the steering wheel 
+                    m_SteeringWheel.turnSteeringWheel((float)steer, m_CarController.CurrentSteerAngle);
+                }
 
 				// if appropriate, stop driving when we're close enough to the target.
 				if (m_StopWhenTargetReached && localTarget.magnitude < m_ReachTargetThreshold) 
 				{
 					m_Driving = false;
-				} else if (!m_StopWhenTargetReached && localTarget.magnitude < m_ReachTargetThreshold) 
+				} 
+				else if (!m_StopWhenTargetReached && localTarget.magnitude < m_ReachTargetThreshold) 
 				{
 					if (m_isCircuit) 
 					{
 
-						SetTarget (circuit.Waypoints [++progressNum % circuit.Waypoints.Length]);
+						SetTarget (circuit.Waypoints [++progressNum % circuit.Waypoints.Length], false);
 					} 
 					else 
 					{
@@ -208,7 +267,7 @@ namespace VRAVE
                         }
                         else
                         {
-                            SetTarget(circuit.Waypoints[++progressNum]);
+                            SetTarget(circuit.Waypoints[++progressNum], false);
                         }
 						
 					}
@@ -250,11 +309,18 @@ namespace VRAVE
 			}
 		}
 
-
-		public void SetTarget(Transform target)
+		public void SetTarget(Transform target, bool stopWhenTargetReached)
 		{
 			m_Target = target;
 			m_Driving = true;
+			m_StopWhenTargetReached = stopWhenTargetReached;
+
+			// set this really high to ensure the car doesn't collide with the obstacle
+			if (m_StopWhenTargetReached)
+			{
+				m_ReachTargetThreshold = 15f;
+			}
 		}
+			
 	}
 }
