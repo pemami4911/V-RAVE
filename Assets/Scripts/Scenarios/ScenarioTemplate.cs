@@ -9,7 +9,7 @@
 		// Each scenario will want a reference to the user car
 		[SerializeField] private GameObject UserCar; 
 
-		private SpawnController manufacturer; 
+		//private SpawnController manufacturer; 
 
 		// You'll need to specify all of the states for your scenario here
 		// I recommend drawing an FSM to give you an idea about how state transitions
@@ -30,7 +30,8 @@
 			//Instantiate (UserCar, new Vector3 (21.11f, 0.14f, 14.4f), Quaternion.identity);
 			UserCar.SetActive (false);
 
-			manufacturer = GetComponent<SpawnController> ();
+			// Grab reference to vehicle spawn controller
+			//manufacturer = GetComponent<SpawnController> ();
 
 			// Set the initial state here
 			ChangeState (States.AIDriving);
@@ -39,7 +40,7 @@
 		// Extend abstract method "ChangeState(uint id)
 		//
 		// This is used for reacting to "OnTriggerEnter" events, called by WaypointTrigger scripts
-		public override void ChangeState (uint id)
+		public override void TriggerCb (uint id)
 		{
 			switch (id) 
 			{
@@ -61,7 +62,7 @@
 
 		void AIDriving_Update()
 		{
-			Debug.Log ("Driving...");
+			//Debug.Log ("Driving...");
 		}
 
 		void Obstacle_Enter()
@@ -70,7 +71,7 @@
 			Vector3 obstaclePosition = UserCar.transform.position + new Vector3 (0f, 0f, 30f);
 			GameObject cubeObstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			
-				Debug.Log ("Making cube");
+				//Debug.Log ("Making cube");
 				Instantiate (cubeObstacle, obstaclePosition, Quaternion.identity);
 
 			ChangeState (States.Exit);
