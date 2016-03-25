@@ -64,11 +64,11 @@ public class HUDModel {
 		topTextPosition = new Vector3(0,0, 0 );
 		bottomTextPosition = new Vector3(0,0, 0 );
 
-		centerText = "Alert!";
-		leftText = ">Hi, Dave.";
-		rightText = "Vehicle:\n100%";
-		topText = "TOP";
-		bottomText = "BOTTOM";
+//		centerText = "Alert!";
+//		leftText = ">Hi, Dave.";
+//		rightText = "Vehicle:\n100%";
+//		topText = "TOP";
+//		bottomText = "BOTTOM";
 
 		centerCharSize = 0.005f;
 		leftCharSize = 0.0025f;

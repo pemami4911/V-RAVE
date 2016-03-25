@@ -52,7 +52,8 @@ namespace VRAVE
 		private Transform m_Target;
 		private int progressNum; 
 		private VisualSteeringWheelController m_SteeringWheel; //SteeringWheelController
-        public bool isUser
+        
+		public bool isUser
         {
             set
             {
@@ -284,6 +285,11 @@ namespace VRAVE
 		{
 			m_Target = target;
 			m_Driving = true;
+		}
+
+		public void SetStopWhenTargetReached(bool s)
+		{
+			m_StopWhenTargetReached = s;
 		}
 	}
 }

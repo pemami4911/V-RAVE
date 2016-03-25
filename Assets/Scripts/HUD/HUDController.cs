@@ -53,7 +53,7 @@ public class HUDController : MonoBehaviour {
 		 *
 		 * */
 
-		model = new HUDModel_Upright (); //This is the layout that we decided we liked best. The other ones still exist
+		model = new HUDVRAVE_Default (); //This is the layout that we decided we liked best. The other ones still exist
 		//just in case we want to use them. 
 		transform.eulerAngles = model.HUDRotation;
 

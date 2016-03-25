@@ -12,6 +12,8 @@ namespace VRAVE
 			// The scenario which contains this trigger
 			[SerializeField] private StateBehaviour scenario; 
 			// Tag of GameObject colliding with this collider 
+
+			// TODO add default value of "Player"
 			[SerializeField] private string objectTag; 
 
 			// If this script is attached to a GameObject with a collider
