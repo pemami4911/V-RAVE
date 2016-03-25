@@ -18,12 +18,12 @@ namespace VRAVE
 			// that has "isTrigger" selected, this callback will fire upon collision. 
 			void OnTriggerEnter(Collider other)
 			{
-				if (!other.CompareTag(objectTag))
+				if (other.tag != null && !other.CompareTag(objectTag))
 				{
 					return;
 				}
 					
-				scenario.ChangeState (triggerID);
+				scenario.TriggerCb (triggerID);
 			}
 	}
 }

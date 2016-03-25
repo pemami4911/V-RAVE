@@ -40,7 +40,7 @@
 		// Extend abstract method "ChangeState(uint id)
 		//
 		// This is used for reacting to "OnTriggerEnter" events, called by WaypointTrigger scripts
-		public override void ChangeState (uint id)
+		public override void TriggerCb (uint id)
 		{
 			switch (id) 
 			{

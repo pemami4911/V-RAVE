@@ -3,10 +3,13 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using UnityStandardAssets.Utility;
 using UnityStandardAssets.Vehicles;
+using System.Collections.Generic;
 
 namespace VRAVE
 {
-	//[RequireComponent(typeof (CarController))]
+//	[RequireComponent(typeof (CarController))]
+//	[RequireComponent(typeof (Sensors))]
+//	[RequireComponent(typeof (ObstacleHandler))]
 	public class CarAIControl : MonoBehaviour
 	{
 		public enum BrakeCondition
@@ -50,9 +53,11 @@ namespace VRAVE
 		private Transform m_Target;
 		private int progressNum; 
 		private VisualSteeringWheelController m_SteeringWheel; //SteeringWheelController
+		private bool m_isPassing; 				  // should be set to true if the car is passing 
 
 		// Obstacle avoidance
 		private Sensors m_Sensors;
+		private ObstacleHandler m_ObstacleHandler;
 
 		private void Awake()
 		{
@@ -61,8 +66,11 @@ namespace VRAVE
 			m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController>();
 			m_Sensors = GetComponent<Sensors> ();
 
+			// m_ObstacleHandler = GetComponent<ObstacleHandler> ();
+
 			// give the random perlin a random value
 			m_RandomPerlin = Random.value*100;
+			m_isPassing = true;
 
 			progressNum = 0;
 			SetTarget (circuit.Waypoints[progressNum], false);
@@ -84,14 +92,25 @@ namespace VRAVE
 			}
 			else
 			{
-				RaycastHit shortRangeSensorsHit;
-				RaycastHit longRangeSensorsHit;
-				OBSTACLE_TYPE type;
-				if (m_Sensors.Scan (out shortRangeSensorsHit, out longRangeSensorsHit, out type)) 
-				{				
-					ObstacleHandler.handleObstacle (this, shortRangeSensorsHit, longRangeSensorsHit, type,
-						m_CarController.CurrentSpeed, m_BrakeCondition);
+				/* SENSORS HERE */
+
+				Dictionary<int, VRAVEObstacle> vo;
+				if (m_Sensors.Scan (out vo)) 
+				{
+					// m_ObstacleHandler.handleObstacles (this, vo.Values, m_CarController.CurrentSpeed, m_BrakeCondition);
 				}
+
+				if (m_isPassing) // should get set by a lane passing script
+				{
+					VRAVEObstacle obs; 
+					if (m_Sensors.PassingSensor (out obs)) 
+					{
+						// Should be handled by a lane passing script
+					}
+
+				}
+
+				/* End sensors */ 
 
 				Vector3 fwd = transform.forward;
 				if (m_Rigidbody.velocity.magnitude > m_CarController.MaxSpeed*0.1f)
