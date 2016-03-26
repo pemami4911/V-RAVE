@@ -97,16 +97,18 @@ namespace VRAVE
 
 			// m_ObstacleHandler = GetComponent<ObstacleHandler> ();
 
-			m_isPassing = true;
 
 			progressNum = 0;
 			SetTarget (circuit.Waypoints[progressNum], false);
 		}
 
         private void onEnable()
-        {   
+        {
             //When switched to AIControl, constrict steering angle
-            m_CarController.setMaxSteeringAngle(35);
+            if (isUser)
+            { m_CarController.MaxSteeringAngle = 30f; }
+            else
+            { m_CarController.MaxSteeringAngle = 38f; }
         }
 
 		private void FixedUpdate()
