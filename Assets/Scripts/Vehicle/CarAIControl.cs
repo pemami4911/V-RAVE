@@ -36,7 +36,7 @@ namespace VRAVE
 		[SerializeField] private float m_LateralWanderSpeed = 0f;                                 // how fast the lateral wandering will fluctuate
 		[SerializeField] [Range(0, 1)] private float m_AccelWanderAmount = 0.0f;                  // how much the cars acceleration will wander
 		[SerializeField] private float m_AccelWanderSpeed = 0.0f;                                 // how fast the cars acceleration wandering will fluctuate
-		[SerializeField] private BrakeCondition m_BrakeCondition = BrakeCondition.TargetDistance; // what should the AI consider when accelerating/braking?
+		[SerializeField] private BrakeCondition m_BrakeCondition = BrakeCondition.TargetDirectionDifference; // what should the AI consider when accelerating/braking?
 		[SerializeField] private bool m_Driving;                                                  // whether the AI is currently actively driving or stopped.
 		[SerializeField] private bool m_StopWhenTargetReached;                                    // should we stop driving when we reach the target?
 		[SerializeField] private float m_ReachTargetThreshold = 2;                                // proximity to target to consider we 'reached' it, and stop driving.
@@ -57,9 +57,75 @@ namespace VRAVE
 
 		// Obstacle avoidance
 		private Sensors m_Sensors;
-		//private SensorResponseHandler m_ObstacleHandler;
+        //private SensorResponseHandler m_ObstacleHandler;
 
-		public bool isUser
+        //Circuit Handling and get/set functions
+        
+        /*Use this function if you want to choose the starting point of the circuit.*/
+        public void switchCircuit(WaypointCircuit c, int progress)
+        {
+            Circuit = c;
+            ProgressNum = progress;
+        }
+
+        /*Use this function just to set a new Circuit and start at the beginning*/
+        public WaypointCircuit Circuit
+        {
+            get
+            {
+                return circuit;
+            }
+
+            set
+            {
+                circuit = value;
+                progressNum = 0;
+                SetTarget(circuit.Waypoints[progressNum], false);
+            }
+        }
+
+        public bool IsCircuit
+        {
+            get
+            {
+                return m_isCircuit;
+            }
+
+            set
+            {
+                m_isCircuit = value;
+            }
+        }
+
+        public int ProgressNum
+        {
+            get
+            {
+                return progressNum;
+            }
+
+            set
+            {
+                progressNum = value;
+            }
+        }
+
+        public Transform Target
+        {
+            get
+            {
+                return m_Target;
+            }
+
+            set
+            {
+                m_Target = value;
+            }
+        }
+
+
+        // Public variable getters and setters
+        public bool IsUser
         {
             set
             {
@@ -70,14 +136,146 @@ namespace VRAVE
                         m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController>();
                     } 
                 }
-    
                 m_isUser = value;
             }
+            get { return m_isUser; }
+        }
+
+        public bool IsPassing { get { return m_isPassing; } set { m_isPassing = value; } }
+
+        public BrakeCondition AIBrakeCondition
+        {
             get
             {
-                return m_isUser;
+                return m_BrakeCondition;
+            }
+
+            set
+            {
+                m_BrakeCondition = value;
             }
         }
+
+        public bool StopWhenTargetReached
+        {
+            get
+            {
+                return m_StopWhenTargetReached;
+            }
+
+            set
+            {
+                m_StopWhenTargetReached = value;
+            }
+        }
+
+        public float ReachTargetThreshold
+        {
+            get
+            {
+                return m_ReachTargetThreshold;
+            }
+
+            set
+            {
+                m_ReachTargetThreshold = value;
+            }
+        }
+
+
+
+        //AI cautiousness settings getters and setters
+        public float CautiousSpeedFactor
+        {
+            get
+            {
+                return m_CautiousSpeedFactor;
+            }
+
+            set
+            {
+                m_CautiousSpeedFactor = value;
+            }
+        }
+
+        public float CautiousMaxAngle
+        {
+            get
+            {
+                return m_CautiousMaxAngle;
+            }
+
+            set
+            {
+                m_CautiousMaxAngle = value;
+            }
+        }
+
+        public float CautiousMaxDistance
+        {
+            get
+            {
+                return m_CautiousMaxDistance;
+            }
+
+            set
+            {
+                m_CautiousMaxDistance = value;
+            }
+        }
+
+        public float CautiousAngularVelocityFactor
+        {
+            get
+            {
+                return m_CautiousAngularVelocityFactor;
+            }
+
+            set
+            {
+                m_CautiousAngularVelocityFactor = value;
+            }
+        }
+
+        public float SteerSensitivity
+        {
+            get
+            {
+                return m_SteerSensitivity;
+            }
+
+            set
+            {
+                m_SteerSensitivity = value;
+            }
+        }
+
+        public float AccelSensitivity
+        {
+            get
+            {
+                return m_AccelSensitivity;
+            }
+
+            set
+            {
+                m_AccelSensitivity = value;
+            }
+        }
+
+        public float BrakeSensitivity
+        {
+            get
+            {
+                return m_BrakeSensitivity;
+            }
+
+            set
+            {
+                m_BrakeSensitivity = value;
+            }
+        }
+
 
 
         private void Awake()
@@ -91,9 +289,7 @@ namespace VRAVE
 			m_RandomPerlin = Random.value*100;
 
             if(m_isUser)
-            {
-                isUser = true;
-            }
+            { IsUser = true; }
 
 			// m_ObstacleHandler = GetComponent<ObstacleHandler> ();
 
@@ -105,7 +301,7 @@ namespace VRAVE
         private void onEnable()
         {
             //When switched to AIControl, constrict steering angle
-            if (isUser)
+            if (m_isUser)
             { m_CarController.MaxSteeringAngle = 30f; }
             else
             { m_CarController.MaxSteeringAngle = 38f; }
