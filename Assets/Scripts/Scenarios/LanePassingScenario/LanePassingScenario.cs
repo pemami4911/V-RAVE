@@ -7,14 +7,16 @@ namespace VRAVE
     public class LanePassingScenario : StateBehaviour
     {
 
-        [SerializeField]
-        private GameObject UserCar;
+        [SerializeField] private GameObject UserCar;
+        [SerializeField] private GameObject AIVehicle;
 
         private SpawnController manufacturer;
         private HUDController hudController;
         private HUDAudioController audioController;
-        private CarAIControl carAI;
-        private CarController carController;
+        private CarAIControl userCarAI;
+        private CarAIControl AIVehicleAI;
+        private CarController userCarController;
+        private CarController AIVehicleCarController;
 
         private float intersectionStopThreshold = 5f;
 
@@ -32,11 +34,17 @@ namespace VRAVE
         {
             Initialize<States>();
 
-            carController = UserCar.GetComponent<CarController>();
-            carController.MaxSpeed = 30f;
-            carAI = UserCar.GetComponent<CarAIControl>();
-            carAI.enabled = false;
-            UserCar.GetComponent<CarUserControl>().enabled = true;
+            userCarController = UserCar.GetComponent<CarController>();
+            userCarController.MaxSpeed = 30f;
+            userCarAI = UserCar.GetComponent<CarAIControl>();
+            userCarAI.enabled = false;
+            UserCar.GetComponent<CarUserControl>().enabled = false;
+
+            AIVehicleCarController = AIVehicle.GetComponent<CarController>();
+            AIVehicleCarController.MaxSpeed = 30f;
+            AIVehicleAI = UserCar.GetComponent<CarAIControl>();
+            AIVehicleAI.enabled = false;
+            (AIVehicle.GetComponent("Halo") as Behaviour).enabled = false;
 
             manufacturer = GetComponent<SpawnController>();
             hudController = UserCar.GetComponentInChildren<HUDController>();
@@ -53,15 +61,16 @@ namespace VRAVE
             switch (id)
             {
                 case 0:
-                    carAI.SetStopWhenTargetReached(true);
+                    Debug.Log("Case 0!!!");
                     break;
                 case 1:
+                    Debug.Log("Case 1!!!");
                     if (checkCarSpeed())
                     {
-                        ChangeState(States.StoppedAtIntersection);
+                        //ChangeState(States.StoppedAtIntersection);
                     }
                     else {
-                        ChangeState(States.WarnAndRestart);
+                        //ChangeState(States.WarnAndRestart);
                     }
                     break;
             }
@@ -69,11 +78,16 @@ namespace VRAVE
 
         /* INIT_STATE */
 
-        // In this state, initializtions will be made.
+        // In this state, introduction is given
         // HUD and Audio changes
         public void Init_State_Enter()
         {
             //UseCar and AI Vehicles Created
+            //Display Scenario Information on HUD
+            
+            //Start when right paddle is pressed
+            //ChangeState(States.Following_Instruction);
+            
         }
 
         // Wait for the user to press OK
@@ -82,19 +96,30 @@ namespace VRAVE
             // 	Change to steering wheel paddle
             if (Input.GetButtonDown("LeftPaddle"))
             {
-                ChangeState(States.HumanDrivingToIntersection);
+                ChangeState(States.Following_Instruction);
             }
 
         }
 
-        /* HUMAN DRIVING INTERSECTION */
+        /* FOLLOWING_INSTRUCTION */
 
-        public void HumanDrivingToIntersection_Enter()
+        public void Following_Instruction_Enter()
         {
-            UserCar.GetComponent<CarUserControl>().enabled = true;
+            UserCar.GetComponent<CarUserControl>().enabled = true;      
         }
 
-        /* STOPPED_AT_INTERSECTION */
+        public void Following_Instruction_Update()
+        {
+            UserCar.GetComponent<CarUserControl>().enabled = true;
+
+            //Once user begins driving, start AI
+            if (userCarController.AccelInput >= 0.05f)
+            {
+                ChangeState(States.Following);
+            }
+        }
+
+        /* FOLLOWING */
 
         public void StoppedAtIntersection_Enter()
         {
@@ -112,7 +137,7 @@ namespace VRAVE
         /* Internal scenario methods */
         private bool checkCarSpeed()
         {
-            return (carController.CurrentSpeed < intersectionStopThreshold) ? true : false;
+            return (userCarController.CurrentSpeed < intersectionStopThreshold) ? true : false;
         }
     }
 }

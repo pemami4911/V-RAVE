@@ -182,7 +182,13 @@ namespace VRAVE
             }
         }
 
-
+        public bool Driving
+        {
+            get
+            {
+                return m_Driving;
+            }
+        }
 
         //AI cautiousness settings getters and setters
         public float CautiousSpeedFactor
