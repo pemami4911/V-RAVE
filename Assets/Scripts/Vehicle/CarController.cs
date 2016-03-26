@@ -32,7 +32,7 @@ namespace VRAVE
         [SerializeField] private float m_MaxHandbrakeTorque;
         [SerializeField] private float m_Downforce = 100f;
         [SerializeField] private SpeedType m_SpeedType;
-        [SerializeField] private float m_Topspeed = 200;
+        [SerializeField] private float m_Topspeed = 30;
         [SerializeField] private static int NoOfGears = 5;
         [SerializeField] private float m_RevRangeBoundary = 1f;
         [SerializeField] private float m_SlipLimit;
@@ -51,11 +51,11 @@ namespace VRAVE
         private const float k_ReversingThreshold = 0.01f;
 
         public bool Skidding { get; private set; }
-        //public float MaxSteeringAngle { get { return m_MaximumSteerAngle; } set(m_MaximumSteerAngle){ } }
+        public float MaxSteeringAngle { get { return m_MaximumSteerAngle; } set{ m_MaximumSteerAngle = value; } }
         public float BrakeInput { get; private set; }
         public float CurrentSteerAngle{ get { return m_SteerAngle; }}
         public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; }}
-        public float MaxSpeed{get { return m_Topspeed; }}
+        public float MaxSpeed{get { return m_Topspeed; } set { m_Topspeed = value; } }
         public float Revs { get; private set; }
         public float AccelInput { get; private set; }
 
@@ -375,9 +375,5 @@ namespace VRAVE
             return false;
         }*/
 
-        public void setMaxSteeringAngle(float maxSteeringAngle)
-        {
-            m_MaximumSteerAngle = maxSteeringAngle;
-        }
     }
 }
