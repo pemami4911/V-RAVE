@@ -33,16 +33,16 @@ namespace VRAVE
             Initialize<States>();
 
             carController = UserCar.GetComponent<CarController>();
-            carController.MaxSpeed = 15f;
+            carController.MaxSpeed = 30f;
             carAI = UserCar.GetComponent<CarAIControl>();
             carAI.enabled = false;
-            UserCar.GetComponent<CarUserControl>().enabled = false;
+            UserCar.GetComponent<CarUserControl>().enabled = true;
 
             manufacturer = GetComponent<SpawnController>();
             hudController = UserCar.GetComponentInChildren<HUDController>();
             audioController = UserCar.GetComponent<HUDAudioController>();
 
-            ChangeState(States.IntersectionBriefing);
+            ChangeState(States.Init_State);
         }
 
         // Extend abstract method "ChangeState(uint id)
@@ -67,14 +67,13 @@ namespace VRAVE
             }
         }
 
-        /* INTERSECTION_SCENARIO_BRIEFING */
+        /* INIT_STATE */
 
-        // In this state, the user will be briefed "briefly" 
-        // on what to do
+        // In this state, initializtions will be made.
         // HUD and Audio changes
-        public void IntersectionBriefing_Enter()
+        public void Init_State_Enter()
         {
-            // "Start" when paddle is hit 
+            //UseCar and AI Vehicles Created
         }
 
         // Wait for the user to press OK
