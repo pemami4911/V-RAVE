@@ -21,6 +21,8 @@ namespace VRAVE
         private CarController userCarController;
         private CarController AIVehicleCarController;
 
+        private bool userMode = true;
+
         private float intersectionStopThreshold = 5f;
 
         public enum States
@@ -140,9 +142,17 @@ namespace VRAVE
             AIVehicleAI.IsCircuit = true;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
 
-            (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-            userCarAI.Circuit = wc;
-            userCarAI.enabled = true;
+            if (userMode)
+            {
+                (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;       
+                userCarAI.enabled = false;
+            }
+            else
+            {
+                (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
+                userCarAI.Circuit = wc;
+                userCarAI.enabled = false;
+            }
 
         }
 
@@ -151,26 +161,46 @@ namespace VRAVE
             Debug.Log("Update: Following");
             WaypointCircuit wc = GameObject.Find("Figure8_North_3-22").GetComponent<WaypointCircuit>();
             Dictionary<int, VRAVE.VRAVEObstacle> vo;
-            if(userCarSensors.Scan(out vo))
+            bool scanned = userCarSensors.Scan(out vo);
+            Debug.Log(scanned);
+            if (scanned)
+            {
+                Debug.Log("Scanning!");
+                if (vo.ContainsKey(7) && vo[7].obstacleTag.Equals("AI_Car"))
+                {
+                    Debug.Log("Sensor 7 Hit");
+                    if (vo[7].Distance <= 10f)
+                    {
+                        Debug.Log("Sensor 7 in length");
+                        if(!vo.ContainsKey(8) || ((vo.ContainsKey(8) && vo[8].Distance >= 10)))
+                        {
+                            Debug.Log("Sensor 8 good!");
+
+                            Debug.Log("Passing Conditions Met!");
+                            userCarAI.IsPassing = true;
+                        }
+                    }
+                }
+            }
 
             //AIVehicleAI.enabled = true;
             //AIVehicleAI.IsCircuit = true;
             //(AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
 
-            userCarAI.Circuit = wc;
-            userCarAI.enabled = true;
+            //userCarAI.Circuit = wc;
+            //userCarAI.enabled = true;
 
             //RECORD DISTANCES!
 
         }
 
-        ///* PASSING INSTRUCTION */
+        /* PASSING INSTRUCTION */
 
-        //public void PassingInstruction_Enter()
-        //{
-        //    //hudController.model = new DefaultHUD();
+        public void PassingInstruction_Enter()
+        {
+            //hudController.model = new DefaultHUD();
 
-        //}
+        }
 
         ///* Internal scenario methods */
         //private bool checkCarSpeed()

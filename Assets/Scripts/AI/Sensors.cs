@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace VRAVE  
 {
+
 	public class VRAVEObstacle 
 	{
 		public string obstacleTag {get; set;}
@@ -31,6 +32,7 @@ namespace VRAVE
 	// and the short range sensors are for obstacles that we can't avoid
 	public class Sensors : MonoBehaviour 
 	{
+        public const int NUM_SENSORS = 9;
 
 		// adjustable values
 		[SerializeField] private float m_sensorsStart = 1f;
@@ -56,6 +58,17 @@ namespace VRAVE
 
 		private VRAVESensor[] longRangeSensorsArray; 
 		private VRAVESensor[] shortRangeSensorsArray;
+
+        public int numShortSensors()
+        {
+            return numShortRangeSensors;
+        }
+
+        //Number of total sensors, not including the passing sensor.
+        public int numSensors()
+        {
+            return numShortRangeSensors + numLongRangeSensors;
+        }
 
 		private void Awake()
 		{
@@ -106,12 +119,15 @@ namespace VRAVE
 				{
 
 					Debug.DrawRay (shortRangeSensorsStart, scan.Direction * m_shortSensorLength, Color.green);
-
+                    Debug.Log("SCANNING!");
 					if (Physics.Raycast (shortRangeSensorsStart, scan.Direction, out shortSensorsHit, m_shortSensorLength)) 
 					{
-						if (shortSensorsHit.collider.CompareTag (VRAVEStrings.Obstacle) ||
+                        Debug.Log("HIT!");
+
+                        if (shortSensorsHit.collider.CompareTag (VRAVEStrings.Obstacle) ||
 							shortSensorsHit.collider.CompareTag (VRAVEStrings.AI_Car)) 
 						{
+                            Debug.Log("Hit Obstacle or AI_Car");
 							if (!obstacles.ContainsKey(scan.ID))
 							{
 								Debug.DrawLine (shortRangeSensorsStart, shortSensorsHit.point, Color.yellow);
