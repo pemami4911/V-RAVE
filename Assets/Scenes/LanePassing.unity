@@ -6264,7 +6264,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &369872280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6358,7 +6358,7 @@ Transform:
   - {fileID: 153801874}
   - {fileID: 1856094686}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 6
 --- !u!1001 &370036008
 Prefab:
   m_ObjectHideFlags: 0
@@ -10409,7 +10409,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 612195894}
   - 135: {fileID: 612195896}
-  - 114: {fileID: 612195895}
   m_Layer: 0
   m_Name: Waypoint 000
   m_TagString: Untagged
@@ -10429,21 +10428,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 945762816}
   m_RootOrder: 0
---- !u!114 &612195895
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11467272, guid: be4f8f24ecb40a04ba65a6d6ceea432d,
-    type: 2}
-  m_PrefabInternal: {fileID: 668655368}
-  m_GameObject: {fileID: 612195893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59e74a15db0ba6f4f97f96e20e285f98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggerID: 0
-  scenario: {fileID: 0}
-  objectTag: Player
 --- !u!135 &612195896
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10907,6 +10891,49 @@ Transform:
 Transform:
   m_PrefabParentObject: {fileID: 452426, guid: b0300892992d0bd4d92ea5c4017c2628, type: 2}
   m_PrefabInternal: {fileID: 1416017670}
+--- !u!1001 &654814334
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 471940, guid: fa8420a85a8b43e45a02a760451bf75d, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 21.748486
+      objectReference: {fileID: 0}
+    - target: {fileID: 471940, guid: fa8420a85a8b43e45a02a760451bf75d, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 471940, guid: fa8420a85a8b43e45a02a760451bf75d, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 21.548416
+      objectReference: {fileID: 0}
+    - target: {fileID: 471940, guid: fa8420a85a8b43e45a02a760451bf75d, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 471940, guid: fa8420a85a8b43e45a02a760451bf75d, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 471940, guid: fa8420a85a8b43e45a02a760451bf75d, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 471940, guid: fa8420a85a8b43e45a02a760451bf75d, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 471940, guid: fa8420a85a8b43e45a02a760451bf75d, type: 2}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 11414592, guid: fa8420a85a8b43e45a02a760451bf75d, type: 2}
+  m_ParentPrefab: {fileID: 100100000, guid: fa8420a85a8b43e45a02a760451bf75d, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &657721977
 GameObject:
   m_ObjectHideFlags: 0
@@ -11084,7 +11111,8 @@ Prefab:
       propertyPath: m_Name
       value: Figure8_South
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: be4f8f24ecb40a04ba65a6d6ceea432d, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &669940437
@@ -15948,7 +15976,7 @@ Transform:
   - {fileID: 2059282892}
   - {fileID: 1448774154}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
 --- !u!1001 &947067430
 Prefab:
   m_ObjectHideFlags: 0
@@ -21327,6 +21355,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1272031132}
   - 108: {fileID: 1272031131}
+  - 114: {fileID: 1272031134}
+  - 114: {fileID: 1272031133}
   m_Layer: 0
   m_Name: Directional light
   m_TagString: Untagged
@@ -21379,6 +21409,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!114 &1272031133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1272031130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7480ffd28eeebb047b53d82b722559a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UserCar: {fileID: 1686133735}
+  AIVehicle: {fileID: 1327818961}
+--- !u!114 &1272031134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1272031130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f63d5793fbb125b4b8c30af0188a8f78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1272457145
 Prefab:
   m_ObjectHideFlags: 0
@@ -21912,7 +21966,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1317053733
 Transform:
   m_ObjectHideFlags: 0
@@ -21936,7 +21990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59e74a15db0ba6f4f97f96e20e285f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerID: 0
+  triggerID: 1
   scenario: {fileID: 0}
   objectTag: Player
 --- !u!64 &1317053735
@@ -22739,6 +22793,14 @@ Prefab:
     - target: {fileID: 404284, guid: 1a7c357295593a74d9a741f259eb36bb, type: 2}
       propertyPath: m_LocalScale.z
       value: 5.5859823
+      objectReference: {fileID: 0}
+    - target: {fileID: 11463636, guid: 1a7c357295593a74d9a741f259eb36bb, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11475200, guid: 1a7c357295593a74d9a741f259eb36bb, type: 2}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1a7c357295593a74d9a741f259eb36bb, type: 2}
@@ -28853,7 +28915,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1676201448
 Transform:
   m_ObjectHideFlags: 0
@@ -28877,7 +28939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59e74a15db0ba6f4f97f96e20e285f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerID: 0
+  triggerID: 2
   scenario: {fileID: 0}
   objectTag: Player
 --- !u!64 &1676201450
@@ -29099,9 +29161,29 @@ Prefab:
       propertyPath: m_isUser
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11476394, guid: 181b0f998d73c954c9bd9695646d5c53, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11476394, guid: 181b0f998d73c954c9bd9695646d5c53, type: 2}
+      propertyPath: m_ReachTargetThreshold
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11476394, guid: 181b0f998d73c954c9bd9695646d5c53, type: 2}
+      propertyPath: m_LateralWanderSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11476394, guid: 181b0f998d73c954c9bd9695646d5c53, type: 2}
+      propertyPath: m_LateralWanderDistance
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 181b0f998d73c954c9bd9695646d5c53, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1686133735 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 140412, guid: 181b0f998d73c954c9bd9695646d5c53, type: 2}
+  m_PrefabInternal: {fileID: 1686133734}
 --- !u!4 &1688273848 stripped
 Transform:
   m_PrefabParentObject: {fileID: 464548, guid: d4ce03e224d1a344a9d97ce364556330, type: 2}
@@ -31659,7 +31741,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1807979293}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.0865116, y: -4.988455, z: 0}
+  m_LocalPosition: {x: -2.0865116, y: -4.988455, z: -8}
   m_LocalScale: {x: 5.4500003, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 38955969}
@@ -31676,7 +31758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerID: 0
-  scenario: {fileID: 0}
+  scenario: {fileID: 1272031133}
   objectTag: Player
 --- !u!64 &1807979296
 MeshCollider:
@@ -35232,7 +35314,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2015381303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35326,7 +35408,7 @@ Transform:
   - {fileID: 1997750934}
   - {fileID: 1891726170}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 7
 --- !u!1001 &2016015701
 Prefab:
   m_ObjectHideFlags: 0

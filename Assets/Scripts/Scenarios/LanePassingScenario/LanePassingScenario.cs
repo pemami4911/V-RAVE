@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using MonsterLove.StateMachine;
+using UnityStandardAssets.Utility;
+using System.Collections.Generic;
 
 namespace VRAVE
 {
@@ -13,6 +15,7 @@ namespace VRAVE
         private SpawnController manufacturer;
         private HUDController hudController;
         private HUDAudioController audioController;
+        private Sensors userCarSensors;
         private CarAIControl userCarAI;
         private CarAIControl AIVehicleAI;
         private CarController userCarController;
@@ -22,10 +25,10 @@ namespace VRAVE
 
         public enum States
         {
-            Init_State,
-            Following_Instruction,
+            InitState,
+            FollowingInstruction,
             Following,
-            Passing_Instruction,
+            PassingInstruction,
             Passing,
             Mode_Switch
         }
@@ -39,10 +42,12 @@ namespace VRAVE
             userCarAI = UserCar.GetComponent<CarAIControl>();
             userCarAI.enabled = false;
             UserCar.GetComponent<CarUserControl>().enabled = false;
+            userCarSensors = UserCar.GetComponent<Sensors>();
+
 
             AIVehicleCarController = AIVehicle.GetComponent<CarController>();
             AIVehicleCarController.MaxSpeed = 30f;
-            AIVehicleAI = UserCar.GetComponent<CarAIControl>();
+            AIVehicleAI = AIVehicle.GetComponent<CarAIControl>();
             AIVehicleAI.enabled = false;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = false;
 
@@ -50,7 +55,7 @@ namespace VRAVE
             hudController = UserCar.GetComponentInChildren<HUDController>();
             audioController = UserCar.GetComponent<HUDAudioController>();
 
-            ChangeState(States.Init_State);
+            ChangeState(States.InitState);
         }
 
         // Extend abstract method "ChangeState(uint id)
@@ -62,10 +67,13 @@ namespace VRAVE
             {
                 case 0:
                     Debug.Log("Case 0!!!");
+                    WaypointCircuit wc = GameObject.Find("LeftTurn_Circuit").GetComponent<WaypointCircuit>();
+                    userCarAI.switchCircuit(wc, 0);
+                    userCarAI.IsCircuit = false;
                     break;
                 case 1:
                     Debug.Log("Case 1!!!");
-                    if (checkCarSpeed())
+                    if (true)
                     {
                         //ChangeState(States.StoppedAtIntersection);
                     }
@@ -80,64 +88,94 @@ namespace VRAVE
 
         // In this state, introduction is given
         // HUD and Audio changes
-        public void Init_State_Enter()
+        public void InitState_Enter()
         {
+            Debug.Log("Enter: InitState");
             //UseCar and AI Vehicles Created
             //Display Scenario Information on HUD
             
             //Start when right paddle is pressed
-            //ChangeState(States.Following_Instruction);
+            //ChangeState(States.FollowingInstruction);
             
         }
 
         // Wait for the user to press OK
-        public void IntersectionBriefing_Update()
+        public void InitState_Update()
         {
             // 	Change to steering wheel paddle
-            if (Input.GetButtonDown("LeftPaddle"))
+            if (Input.GetKeyDown(KeyCode.Return))
             {
-                ChangeState(States.Following_Instruction);
+                ChangeState(States.FollowingInstruction);
             }
 
         }
 
         /* FOLLOWING_INSTRUCTION */
 
-        public void Following_Instruction_Enter()
+        public void FollowingInstruction_Enter()
         {
-            UserCar.GetComponent<CarUserControl>().enabled = true;      
+            Debug.Log("Enter: FollowingInstruction");
+            (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;      
         }
 
-        public void Following_Instruction_Update()
+        public void FollowingInstruction_Update()
         {
-            UserCar.GetComponent<CarUserControl>().enabled = true;
 
             //Once user begins driving, start AI
             if (userCarController.AccelInput >= 0.05f)
             {
+                Debug.Log("Update: FollowingInstruction");
                 ChangeState(States.Following);
             }
         }
 
         /* FOLLOWING */
 
-        public void StoppedAtIntersection_Enter()
+        public void Following_Enter()
         {
-            Debug.Log("Stopped At Intersection!");
+            Debug.Log("Entered: Following");
+            WaypointCircuit wc = GameObject.Find("Figure8_North_3-22").GetComponent<WaypointCircuit>();
+            AIVehicleAI.Circuit = wc;
+            AIVehicleAI.enabled = true;
+            AIVehicleAI.IsCircuit = true;
+            (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+
+            (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
+            userCarAI.Circuit = wc;
+            userCarAI.enabled = true;
+
         }
 
-        /* INTERSECTION_FINISH */
-
-        public void IntersectionFinish_Enter()
+        public void Following_Update()
         {
-            //hudController.model = new DefaultHUD();
+            Debug.Log("Update: Following");
+            WaypointCircuit wc = GameObject.Find("Figure8_North_3-22").GetComponent<WaypointCircuit>();
+            Dictionary<int, VRAVE.VRAVEObstacle> vo;
+            if(userCarSensors.Scan(out vo))
+
+            //AIVehicleAI.enabled = true;
+            //AIVehicleAI.IsCircuit = true;
+            //(AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+
+            userCarAI.Circuit = wc;
+            userCarAI.enabled = true;
+
+            //RECORD DISTANCES!
 
         }
 
-        /* Internal scenario methods */
-        private bool checkCarSpeed()
-        {
-            return (userCarController.CurrentSpeed < intersectionStopThreshold) ? true : false;
-        }
+        ///* PASSING INSTRUCTION */
+
+        //public void PassingInstruction_Enter()
+        //{
+        //    //hudController.model = new DefaultHUD();
+
+        //}
+
+        ///* Internal scenario methods */
+        //private bool checkCarSpeed()
+        //{
+        //    return (userCarController.CurrentSpeed < intersectionStopThreshold) ? true : false;
+        //}
     }
 }
