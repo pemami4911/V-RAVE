@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - AI_Car
+  - PassingPath
   layers:
   - Default
   - TransparentFX
