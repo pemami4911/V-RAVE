@@ -4,6 +4,7 @@
 
 	namespace VRAVE 
 	{
+
 	public class ReactionTimeScenario : StateBehaviour {
 
 		[SerializeField] private GameObject UserCar; 
@@ -35,6 +36,7 @@
 
 		void Awake()
 		{
+			CameraFade.StartAlphaFade (Color.black, true, 2f, 0.5f);
 			Initialize<States> ();
 
 			carController = UserCar.GetComponent<CarController> ();
@@ -62,7 +64,9 @@
 			UnsuspectingAI.SetActive (false);
 
 			UserCar.transform.position = new Vector3 (26f, 0.26f, -18.3f);
+			UserCar.transform.rotation = Quaternion.Euler(0f, 0f, 0f); 
 		}
+
 		// Extend abstract method "ChangeState(uint id)
 		//
 		// This is used for reacting to "OnTriggerEnter" events, called by WaypointTrigger scripts
@@ -80,12 +84,11 @@
 				UnsuspectingAI.SetActive (true);
 				break;
 			case 3:
-				ChangeState (States.AIDrivingToIntersection);
-				resetScenario ();
+				StartCoroutine (PostCollisionStateChange (3f));
 				break;
 			}
 		}
-
+			
 		/* INTERSECTION_SCENARIO_BRIEFING */
 
 		// In this state, the user will be briefed "briefly" 
@@ -125,6 +128,7 @@
 
 		public void AIDrivingToIntersection_Enter()
 		{
+			CameraFade.StartAlphaFade (Color.black, true, 3f);
 			carAI.enabled = true;
 		}
 
@@ -134,6 +138,15 @@
 		{
 			//hudController.model = new DefaultHUD();
 
+		}
+
+		/* Coroutines */
+		private IEnumerator PostCollisionStateChange(float time)
+		{			
+			yield return new WaitForSeconds (time);
+			CameraFade.StartAlphaFade (Color.black, false, 3f);
+			resetScenario ();
+			ChangeState (States.AIDrivingToIntersection);
 		}
 	}
 	}
