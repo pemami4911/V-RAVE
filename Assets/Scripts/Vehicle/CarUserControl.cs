@@ -25,26 +25,35 @@ namespace VRAVE
         private void onEnable()
         {
             //When switched to UserControl mode, expand steeringAngle
-            m_Car.setMaxSteeringAngle(60);
+            m_Car.MaxSteeringAngle = 60f;
         }
 
 
         private void FixedUpdate()
         {
             // pass the input to the car!
-            double h = gain * CrossPlatformInputManager.GetAxis("Horizontal");
-            double v = gain * CrossPlatformInputManager.GetAxis("Vertical");
+            //double h = gain * CrossPlatformInputManager.GetAxis("Horizontal");
+            double hh =Input.GetAxis("Horizontal");
+            //double v = gain * CrossPlatformInputManager.GetAxis("Vertical");
+            double vv = Input.GetAxis("Vertical");
 
-/*
-#if !MOBILE_INPUT
-            float handbrake = CrossPlatformInputManager.GetAxis("Jump");
-*/
+            //double h_raw = Input.GetAxisRaw("Horizontal");
+            //double v_raw = Input.GetAxisRaw("Vertical");
+
+            Debug.Log("Horizontal: " + hh.ToString());
+            Debug.Log("Vertical: " + vv.ToString());
+
+
+            /*
+            #if !MOBILE_INPUT
+                        float handbrake = CrossPlatformInputManager.GetAxis("Jump");
+            */
             //m_Car.Move(h, v, v, handbrake);
-            
-/*#else*/
-            
-			m_Car.Move((float)h, (float)v, (float)v, 0f);
-			m_SteeringWheel.turnSteeringWheel((float)h, m_Car.CurrentSteerAngle);
+
+            /*#else*/
+
+            m_Car.Move((float)hh, (float)vv, (float)vv, 0f);
+			m_SteeringWheel.turnSteeringWheel((float)hh, m_Car.CurrentSteerAngle);
 /*#endif*/
         }
     }
