@@ -473,8 +473,8 @@ namespace VRAVE
 			}
 		}
 
-		public void SetSensorResponseHandlerEnable(bool en) {
-			m_sensorResponseHandler.Enable = en;
+		public void SetSensorResponseHandlerEnable(bool flag) {
+			m_sensorResponseHandler.Enable = flag;
 		}
 
 

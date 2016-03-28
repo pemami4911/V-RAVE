@@ -11,21 +11,16 @@ namespace VRAVE
 
         private StateBehaviour scenario;
 
-        private bool handlerEnabled = false;
-        
-
         public override void handle(CarAIControl controller, Dictionary<int, VRAVEObstacle> obstacles, float currentSpeed, CarAIControl.BrakeCondition brakeCondition)
         {
-            if (!handlerEnabled)
+            if (!Enable)
             {
                 if(passingCheck(obstacles))
                 {
-                    handlerEnabled = false;
+                    Enable = false;
                     controller.IsPassing = true;
                 }
             }
-
-
         }
         
 
@@ -50,12 +45,10 @@ namespace VRAVE
                 if (obstacles[7].Distance <= 10f)
                 {
                     Debug.Log("Sensor 7 in length");
-                    if (!obstacles.ContainsKey(8) || ((obstacles.ContainsKey(8) && obstacles[8].Distance >= 10)))
+                    if (!obstacles.ContainsKey(8) || ((obstacles.ContainsKey(8) && obstacles[8].Distance >= 20)))
                     {
-
                         Debug.Log("Passing Conditions Met!");
                         return true;
-
                     }
                 }
             }

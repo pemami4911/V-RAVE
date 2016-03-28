@@ -14,8 +14,6 @@ namespace VRAVE
         [SerializeField]
         private GameObject AIVehicle;
         [SerializeField]
-        private WaypointCircuit passingTrack;
-        [SerializeField]
         private WaypointCircuit initialTrack;
 
         private SpawnController manufacturer;
@@ -27,7 +25,8 @@ namespace VRAVE
         private CarController userCarController;
         private CarController AIVehicleCarController;
 
-        private bool userMode = true;
+        private WaypointCircuit passingTrack;
+        private bool userMode;
         private int circuitProgressNum = 0;
 
 
@@ -63,6 +62,12 @@ namespace VRAVE
             manufacturer = GetComponent<SpawnController>();
             hudController = UserCar.GetComponentInChildren<HUDController>();
             audioController = UserCar.GetComponent<HUDAudioController>();
+
+            //passingTrack = Instantiate((WaypointCircuit)(Resources.Load(VRAVEStrings.PassingTrack)));
+            passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack).GetComponent<WaypointCircuit>();
+            //, UserCar.transform.position + UserCar.transform.forward * 2f, UserCar.transform.rotation);
+            passingTrack.enabled = false;
+
 
             ChangeState(States.InitState);
         }
@@ -110,6 +115,7 @@ namespace VRAVE
         // HUD and Audio changes
         public void InitState_Enter()
         {
+            userMode = false;
             Debug.Log("Enter: InitState");
             //UseCar and AI Vehicles Created
             //Display Scenario Information on HUD
@@ -125,7 +131,7 @@ namespace VRAVE
             // 	Change to steering wheel paddle
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                ChangeState(States.FollowingInstruction);
+                ChangeState(States.PassingInstruction);
             }
 
         }
@@ -247,12 +253,16 @@ namespace VRAVE
             //WaypointCircuit wc = GameObject.Find("Figure8_North_3-22").GetComponent<WaypointCircuit>();
             AIVehicleAI.Circuit = initialTrack;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+            ChangeState(States.Passing);
+        }
 
-            //Move to update
-            if (Input.GetKey(KeyCode.Return))
-            {
-                ChangeState(States.Passing);
-            }
+        public void PassingInstruction_Update()
+        {
+            //Move to Passing
+            //if (Input.GetKey(KeyCode.Return))
+            //{
+            //    ChangeState(States.Passing);
+            //}
         }
 
         /* PASSING */
@@ -286,42 +296,13 @@ namespace VRAVE
 
             if (Input.GetKey(KeyCode.Return))
             {
-                //Enable SensorHandlerEnable from CarAIConrol
+                userCarAI.SetSensorResponseHandlerEnable(true);
             }
 
             if (userCarAI.IsPassing)
             {
+                Debug.Log("It's passing and I'm about to go to WAIT!");
                 ChangeState(States.PassingWait);
-            }
-
-
-                if (scanned)
-            {
-                Debug.Log("Scanning!");
-                if (vo.ContainsKey(7) && vo[7].obstacleTag.Equals("AI_Car"))
-                {
-                    Debug.Log("Sensor 7 Hit");
-                    if (vo[7].Distance <= 10f)
-                    {
-                        Debug.Log("Sensor 7 in length");
-                        if (!vo.ContainsKey(8) || ((vo.ContainsKey(8) && vo[8].Distance >= 10)))
-                        {
-                            Debug.Log("Sensor 8 good!");
-
-                            Debug.Log("Passing Conditions Met!");
-                            //userCarAI.IsPassing = true; //Should be set in the first trigger of the passing path
-                            if (Input.GetKey(KeyCode.Return))
-                            {
-                                Debug.Log("Passing Track Created!");
-                                Transform carTransform = UserCar.transform;
-                                //Instantiate in awake() and just translate and enable when needed. REMOVE!
-                                WaypointCircuit passTrack = (WaypointCircuit)(Instantiate(passingTrack, carTransform.position + carTransform.forward * 2f, carTransform.rotation));
-                                Debug.Log("UserCar: " + carTransform.position.ToString());
-                                ChangeState(States.PassingWait);
-                            }
-                        }
-                    }
-                }
             }
         }
 
@@ -330,18 +311,20 @@ namespace VRAVE
         /* Wait while passing other vehicle as to not attempt to pass again until finished. */
         public void PassingWait_Enter()
         {
+            //Move passing track to 2 units ahead of the UserCar and set rotation to forward.
+            passingTrack.transform.position = (UserCar.transform.position + UserCar.transform.forward * 2f);
+            float newAngle = Mathf.RoundToInt(UserCar.transform.eulerAngles.y / 90f) * 90f;
+            passingTrack.transform.eulerAngles = new Vector3(0, newAngle, 0);
+
             Debug.Log("Enter: PassingWait");
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = false;  //Turn off glow as you pass.
-            userCarAI.IsPassing = true;
             userCarAI.IsCircuit = false;
 
             circuitProgressNum = userCarAI.ProgressNum;
-            //Get reference from private variable made in awake() then set location/rotation
-            WaypointCircuit passTemp = (WaypointCircuit)GameObject.FindGameObjectWithTag("PassingPath").GetComponent<WaypointCircuit>();
-            userCarAI.switchCircuit(passTemp, 0);
+            userCarAI.switchCircuit(passingTrack, 0);
 
             (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-            userCarController.MaxSpeed = 30;
+            userCarController.MaxSpeed = 15f;
             userCarAI.enabled = true;
             
 
@@ -351,7 +334,7 @@ namespace VRAVE
         {
             Debug.Log("Exit: PassingWait");
             userCarAI.IsPassing = false;
-           
+            userCarController.MaxSpeed = 5f;           
 
             if (userMode)
             {
