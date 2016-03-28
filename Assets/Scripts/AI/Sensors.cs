@@ -119,15 +119,12 @@ namespace VRAVE
 				{
 
 					Debug.DrawRay (shortRangeSensorsStart, scan.Direction * m_shortSensorLength, Color.green);
-                    Debug.Log("SCANNING!");
 					if (Physics.Raycast (shortRangeSensorsStart, scan.Direction, out shortSensorsHit, m_shortSensorLength)) 
 					{
-                        Debug.Log("HIT!");
 
                         if (shortSensorsHit.collider.CompareTag (VRAVEStrings.Obstacle) ||
 							shortSensorsHit.collider.CompareTag (VRAVEStrings.AI_Car)) 
-						{
-                            Debug.Log("Hit Obstacle or AI_Car");
+						{;
 							if (!obstacles.ContainsKey(scan.ID))
 							{
 								Debug.DrawLine (shortRangeSensorsStart, shortSensorsHit.point, Color.yellow);
@@ -190,7 +187,7 @@ namespace VRAVE
 		}
 			
 		// can be used to find the nearest obstacle being tracked
-		public static bool nearestObstacle(Dictionary<int, VRAVEObstacle>.ValueCollection obs, out VRAVEObstacle nearest) 
+		public static bool nearestObstacle(Dictionary<int, VRAVEObstacle> obs, out VRAVEObstacle nearest) 
 		{
 			nearest = new VRAVEObstacle ();
 
@@ -199,10 +196,10 @@ namespace VRAVE
 		
 			float min = Mathf.Infinity;
 
-			foreach (VRAVEObstacle o in obs) {
-				if (o.Distance < min) {
-					min = o.Distance;
-					nearest = o;
+			foreach (KeyValuePair<int, VRAVEObstacle>  o in obs) {
+				if (o.Value.Distance < min) {
+					min = o.Value.Distance;
+					nearest = o.Value;
 				}
 			}
 
