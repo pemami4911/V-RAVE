@@ -53,10 +53,16 @@ namespace VRAVE
         public float MaxSteeringAngle { get { return m_MaximumSteerAngle; } set { m_MaximumSteerAngle = value; } }
         public float BrakeInput { get; private set; }
         public float CurrentSteerAngle{ get { return m_SteerAngle; } private set { m_SteerAngle = value; } } //Don't set this.
-        public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; }}
+		public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; }}
         public float MaxSpeed{get { return m_Topspeed; } set { m_Topspeed = value; } }
         public float Revs { get; private set; }
         public float AccelInput { get; private set; }
+		public Vector3 SetSpeed { set { m_Rigidbody.velocity = value; } }
+
+		private void Awake()
+		{
+			m_Rigidbody = GetComponent<Rigidbody>();
+		}
 
         // Use this for initialization
         private void Start()
@@ -70,9 +76,7 @@ namespace VRAVE
 
             m_MaxHandbrakeTorque = float.MaxValue;
 
-            m_Rigidbody = GetComponent<Rigidbody>();
             m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl*m_FullTorqueOverAllWheels);
-
         }
 
 
@@ -142,7 +146,6 @@ namespace VRAVE
 
             }
             
-
             //clamp input values
             steering = Mathf.Clamp(steering, -1, 1);
             AccelInput = accel = Mathf.Clamp(accel, 0, 1);
@@ -167,11 +170,11 @@ namespace VRAVE
             //Set the handbrake.
             //Assuming that wheels 2 and 3 are the rear wheels.
             if (handbrake > 0f)
-            {
+            { 
                 var hbTorque = handbrake*m_MaxHandbrakeTorque;
                 m_WheelColliders[2].brakeTorque = hbTorque;
                 m_WheelColliders[3].brakeTorque = hbTorque;
-            }
+            } 
 
 
             CalculateRevs();

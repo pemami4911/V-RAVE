@@ -26,17 +26,16 @@ namespace VRAVE {
 		}
 
 
-
 		//for spawning directly with the controller; this method does not use the SpawnModel
-		public void spawn(string resourceName, Vector3 position, Quaternion rotation) {
-			spawnObject(new SpawnTriple(resourceName, position, rotation));
+		public Object spawn(string resourceName, Vector3 position, Quaternion rotation) {
+			return spawnObject(new SpawnTriple(resourceName, position, rotation));
 		}
 
 		public void spawnOnDemand(int index) {
 			SpawnTriple spawn = spawnModel.onDemandSpawns [index];
 		}
 
-		private void spawnObject(SpawnTriple spawn) {
+		private Object spawnObject(SpawnTriple spawn) {
 			GameObject spawnObject;
 
 			if (!loadedResources.ContainsKey (spawn.resourceString)) {
@@ -48,7 +47,7 @@ namespace VRAVE {
 				spawnObject = loadedResources[spawn.resourceString];
 
 			//spawn @ position & rotation
-			Instantiate (spawnObject, spawn.position, spawn.rotation);
+			return Instantiate (spawnObject, spawn.position, spawn.rotation);
 		}
 
 

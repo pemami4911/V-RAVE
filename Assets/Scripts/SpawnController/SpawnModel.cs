@@ -16,7 +16,7 @@ namespace VRAVE {
 
 		//the name of the resource to use. 
 		//NOTE: the resource must be stored in the Resources folder
-		public static string AI_car_resource = "AICar";
+		public static string AI_car_resource = "AI_Vehicle_3-22";
 
 		public static Quaternion default_quaternion = Quaternion.Euler(0, 0, 0);
 

@@ -7,23 +7,24 @@
 	public class ReactionTimeScenario : StateBehaviour {
 
 		[SerializeField] private GameObject UserCar; 
+		[SerializeField] private GameObject CrazyIntersectionAI;
+		[SerializeField] private GameObject UnsuspectingAI;
 
 		private SpawnController manufacturer; 
 		private HUDController hudController;
 		private HUDAudioController audioController;
 		private CarAIControl carAI;
 		private CarController carController;
-
-		private float intersectionStopThreshold = 5f; 
+		private CarAIControl crazyAI;
+		private CarController crazyCarController;
 
 		public enum States 
 		{
 			IntersectionBriefing,
 			HumanDrivingToIntersection,
 			AIDrivingToIntersection,
-			StoppedAtIntersection,
-			WarnAndRestart,
-			AdvancingThroughIntersection,
+			HumanAdvancingThroughIntersection,
+			AIAdvancingThroughIntersection,
 			IntersectionFinish,
 			HumanDrivingToCorner,
 			AIDrivingToCorner,
@@ -39,16 +40,29 @@
 			carController = UserCar.GetComponent<CarController> ();
 			carController.MaxSpeed = 15f;
 			carAI = UserCar.GetComponent<CarAIControl> ();
-			carAI.enabled = false;
-			UserCar.GetComponent<CarUserControl> ().enabled = false;
+
+			crazyAI = CrazyIntersectionAI.GetComponent<CarAIControl> ();
+			crazyCarController = CrazyIntersectionAI.GetComponent<CarController> ();
+
 
 			manufacturer = GetComponent<SpawnController>();
 			hudController = UserCar.GetComponentInChildren<HUDController>();
 			audioController = UserCar.GetComponent<HUDAudioController>();
 
+			resetScenario ();
+
 			ChangeState(States.IntersectionBriefing);
 		}
 			
+		private void resetScenario()
+		{
+			carAI.enabled = false;
+			UserCar.GetComponent<CarUserControl> ().enabled = false;
+			CrazyIntersectionAI.SetActive (false);
+			UnsuspectingAI.SetActive (false);
+
+			UserCar.transform.position = new Vector3 (26f, 0.26f, -18.3f);
+		}
 		// Extend abstract method "ChangeState(uint id)
 		//
 		// This is used for reacting to "OnTriggerEnter" events, called by WaypointTrigger scripts
@@ -60,11 +74,14 @@
 				carAI.SetStopWhenTargetReached (true);
 				break;
 			case 1: 
-				if (checkCarSpeed ()) {
-					ChangeState (States.StoppedAtIntersection);
-				} else {
-					ChangeState (States.WarnAndRestart);
-				}
+				ChangeState (States.HumanAdvancingThroughIntersection);
+				break;
+			case 2:
+				UnsuspectingAI.SetActive (true);
+				break;
+			case 3:
+				ChangeState (States.AIDrivingToIntersection);
+				resetScenario ();
 				break;
 			}
 		}
@@ -97,11 +114,18 @@
 			UserCar.GetComponent<CarUserControl> ().enabled = true;
 		}
 
-		/* STOPPED_AT_INTERSECTION */
+		/* Human going through intersection */
 
-		public void StoppedAtIntersection_Enter()
+		public void HumanAdvancingThroughIntersection_Enter()
 		{
-			Debug.Log ("Stopped At Intersection!");
+			CrazyIntersectionAI.SetActive (true);
+			crazyCarController.MaxSpeed = 50f;
+			crazyCarController.SetSpeed = new Vector3 (-50f, 0f, 0f);
+		}
+
+		public void AIDrivingToIntersection_Enter()
+		{
+			carAI.enabled = true;
 		}
 
 		/* INTERSECTION_FINISH */ 
@@ -110,12 +134,6 @@
 		{
 			//hudController.model = new DefaultHUD();
 
-		}
-			
-		/* Internal scenario methods */ 
-		private bool checkCarSpeed()
-		{
-			return (carController.CurrentSpeed < intersectionStopThreshold) ? true : false;
 		}
 	}
 	}

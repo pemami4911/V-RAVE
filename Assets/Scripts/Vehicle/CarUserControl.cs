@@ -50,7 +50,7 @@ namespace VRAVE
 
             /*#else*/
 
-            m_Car.Move((float)hh, (float)vv, (float)vv, 0f);
+			m_Car.Move((float)hh, (float)vv, (float)vv, 0f);
 			m_SteeringWheel.turnSteeringWheel((float)hh, m_Car.CurrentSteerAngle);
 /*#endif*/
         }
