@@ -26,6 +26,8 @@
 		// the ones that shouldn't be visible yet
 		void Awake()
 		{
+			CameraFade.StartAlphaFade (Color.black, true, 4f);
+
 			Initialize<States> ();
 			//Instantiate (UserCar, new Vector3 (21.11f, 0.14f, 14.4f), Quaternion.identity);
 			UserCar.SetActive (false);
