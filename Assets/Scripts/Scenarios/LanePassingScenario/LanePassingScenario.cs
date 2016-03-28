@@ -284,10 +284,18 @@ namespace VRAVE
         {
             Debug.Log("Update: Passing");
 
-            Dictionary<int, VRAVE.VRAVEObstacle> vo;
-            bool scanned = userCarSensors.Scan(out vo);
-            Debug.Log(scanned);
-            if (scanned)
+            if (Input.GetKey(KeyCode.Return))
+            {
+                //Enable SensorHandlerEnable from CarAIConrol
+            }
+
+            if (userCarAI.IsPassing)
+            {
+                ChangeState(States.PassingWait);
+            }
+
+
+                if (scanned)
             {
                 Debug.Log("Scanning!");
                 if (vo.ContainsKey(7) && vo[7].obstacleTag.Equals("AI_Car"))

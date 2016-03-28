@@ -18,25 +18,14 @@ namespace VRAVE
         {
             if (!handlerEnabled)
             {
-                return;
-            }
-
-            Debug.Log("Scanning!");
-            if (obstacles.ContainsKey(7) && obstacles[7].obstacleTag.Equals("AI_Car"))
-            {
-                Debug.Log("Sensor 7 Hit");
-                if (obstacles[7].Distance <= 10f)
+                if(passingCheck(obstacles))
                 {
-                    Debug.Log("Sensor 7 in length");
-                    if (!obstacles.ContainsKey(8) || ((obstacles.ContainsKey(8) && obstacles[8].Distance >= 10)))
-                    {
-                        Debug.Log("Sensor 8 good!");
-
-                        Debug.Log("Passing Conditions Met!");
-
-                    }
+                    handlerEnabled = false;
+                    controller.IsPassing = true;
                 }
             }
+
+
         }
         
 
@@ -52,7 +41,7 @@ namespace VRAVE
 
         }
 
-        void PassingCheck(Dictionary<int, VRAVEObstacle>.ValueCollection obstacles)
+        private bool passingCheck(Dictionary<int, VRAVEObstacle> obstacles)
         {
             Debug.Log("Scanning!");
             if (obstacles.ContainsKey(7) && obstacles[7].obstacleTag.Equals("AI_Car"))
@@ -63,13 +52,14 @@ namespace VRAVE
                     Debug.Log("Sensor 7 in length");
                     if (!obstacles.ContainsKey(8) || ((obstacles.ContainsKey(8) && obstacles[8].Distance >= 10)))
                     {
-                        Debug.Log("Sensor 8 good!");
 
                         Debug.Log("Passing Conditions Met!");
+                        return true;
 
                     }
                 }
             }
+            return false;
         }
     }
 }
