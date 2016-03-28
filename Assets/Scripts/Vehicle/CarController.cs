@@ -37,7 +37,6 @@ namespace VRAVE
         [SerializeField] private float m_RevRangeBoundary = 1f;
         [SerializeField] private float m_SlipLimit;
         [SerializeField] private float m_BrakeTorque;
-        //[SerializeField] private GameObject m_SteeringWheel;
 
 
         private Quaternion[] m_WheelMeshLocalRotations;
@@ -51,14 +50,19 @@ namespace VRAVE
         private const float k_ReversingThreshold = 0.01f;
 
         public bool Skidding { get; private set; }
-        //public float MaxSteeringAngle { get { return m_MaximumSteerAngle; } set(m_MaximumSteerAngle){ } }
+        public float MaxSteeringAngle { get { return m_MaximumSteerAngle; } set { m_MaximumSteerAngle = value; } }
         public float BrakeInput { get; private set; }
-        public float CurrentSteerAngle{ get { return m_SteerAngle; }}
-        public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; }}
-		public float MaxSpeed{ get { return m_Topspeed; } set { m_Topspeed = value;}}
-        
-		public float Revs { get; private set; }
+        public float CurrentSteerAngle{ get { return m_SteerAngle; } private set { m_SteerAngle = value; } } //Don't set this.
+		public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; }}
+        public float MaxSpeed{get { return m_Topspeed; } set { m_Topspeed = value; } }
+        public float Revs { get; private set; }
         public float AccelInput { get; private set; }
+		public Vector3 SetSpeed { set { m_Rigidbody.velocity = value; } }
+
+		private void Awake()
+		{
+			m_Rigidbody = GetComponent<Rigidbody>();
+		}
 
         // Use this for initialization
         private void Start()
@@ -72,9 +76,7 @@ namespace VRAVE
 
             m_MaxHandbrakeTorque = float.MaxValue;
 
-            m_Rigidbody = GetComponent<Rigidbody>();
             m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl*m_FullTorqueOverAllWheels);
-
         }
 
 
@@ -141,11 +143,9 @@ namespace VRAVE
                 m_WheelColliders[i].GetWorldPose(out position, out quat);
                 m_WheelMeshes[i].transform.position = position;
                 m_WheelMeshes[i].transform.rotation = quat;
-                //m_SteeringWheel.transform.Rotate(0, 180, 0, Space.Self);
-               
+
             }
             
-
             //clamp input values
             steering = Mathf.Clamp(steering, -1, 1);
             AccelInput = accel = Mathf.Clamp(accel, 0, 1);
@@ -158,8 +158,10 @@ namespace VRAVE
             m_WheelColliders[0].steerAngle = m_SteerAngle;
             m_WheelColliders[1].steerAngle = m_SteerAngle;
            
-            //m_SteeringWheel.transform.RotateAround(transform.position, transform.up, Time.deltaTime * m_SteerAngle * 2);
-            //m_SteeringWheel.transform.Rotate(0, m_SteerAngle * 3 * Time.deltaTime , 0, Space.Self);
+            /*SteeringWheel animations called in CarAIControl. These are remnants of other attempts.
+                m_SteeringWheel.transform.RotateAround(transform.position, transform.up, Time.deltaTime * m_SteerAngle * 2);
+                m_SteeringWheel.transform.Rotate(0, m_SteerAngle * 3 * Time.deltaTime , 0, Space.Self); 
+            */
 
             SteerHelper();
             ApplyDrive(accel, footbrake);
@@ -168,11 +170,11 @@ namespace VRAVE
             //Set the handbrake.
             //Assuming that wheels 2 and 3 are the rear wheels.
             if (handbrake > 0f)
-            {
+            { 
                 var hbTorque = handbrake*m_MaxHandbrakeTorque;
                 m_WheelColliders[2].brakeTorque = hbTorque;
                 m_WheelColliders[3].brakeTorque = hbTorque;
-            }
+            } 
 
 
             CalculateRevs();
@@ -374,10 +376,5 @@ namespace VRAVE
             }
             return false;
         }*/
-
-        public void setMaxSteeringAngle(float maxSteeringAngle)
-        {
-            m_MaximumSteerAngle = maxSteeringAngle;
-        }
     }
 }
