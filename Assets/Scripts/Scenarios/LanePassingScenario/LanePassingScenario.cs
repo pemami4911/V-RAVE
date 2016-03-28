@@ -47,7 +47,7 @@ namespace VRAVE
             Initialize<States>();
 
             userCarController = UserCar.GetComponent<CarController>();
-            userCarController.MaxSpeed = 15f;
+            userCarController.MaxSpeed = 5f;
             userCarAI = UserCar.GetComponent<CarAIControl>();
             userCarAI.enabled = false;
             UserCar.GetComponent<CarUserControl>().enabled = false;
@@ -55,7 +55,7 @@ namespace VRAVE
 
 
             AIVehicleCarController = AIVehicle.GetComponent<CarController>();
-            AIVehicleCarController.MaxSpeed = 15f;
+            AIVehicleCarController.MaxSpeed = 5f;
             AIVehicleAI = AIVehicle.GetComponent<CarAIControl>();
             AIVehicleAI.enabled = false;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = false;
@@ -248,6 +248,7 @@ namespace VRAVE
             AIVehicleAI.Circuit = initialTrack;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
 
+            //Move to update
             if (Input.GetKey(KeyCode.Return))
             {
                 ChangeState(States.Passing);
@@ -271,7 +272,7 @@ namespace VRAVE
             else
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-                circuitProgressNum = Mathf.CeilToInt((circuitProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
+                circuitProgressNum = Mathf.CeilToInt((userCarAI.ProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
                 userCarAI.switchCircuit(initialTrack, circuitProgressNum);
                 userCarAI.IsCircuit = true;
                 userCarAI.enabled = true;
@@ -300,11 +301,12 @@ namespace VRAVE
                             Debug.Log("Sensor 8 good!");
 
                             Debug.Log("Passing Conditions Met!");
-                            userCarAI.IsPassing = true; //Should be set in the first trigger of the passing path
+                            //userCarAI.IsPassing = true; //Should be set in the first trigger of the passing path
                             if (Input.GetKey(KeyCode.Return))
                             {
                                 Debug.Log("Passing Track Created!");
                                 Transform carTransform = UserCar.transform;
+                                //Instantiate in awake() and just translate and enable when needed. REMOVE!
                                 WaypointCircuit passTrack = (WaypointCircuit)(Instantiate(passingTrack, carTransform.position + carTransform.forward * 2f, carTransform.rotation));
                                 Debug.Log("UserCar: " + carTransform.position.ToString());
                                 ChangeState(States.PassingWait);
@@ -326,11 +328,12 @@ namespace VRAVE
             userCarAI.IsCircuit = false;
 
             circuitProgressNum = userCarAI.ProgressNum;
+            //Get reference from private variable made in awake() then set location/rotation
             WaypointCircuit passTemp = (WaypointCircuit)GameObject.FindGameObjectWithTag("PassingPath").GetComponent<WaypointCircuit>();
             userCarAI.switchCircuit(passTemp, 0);
 
             (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-            userCarController.MaxSpeed = 50;
+            userCarController.MaxSpeed = 30;
             userCarAI.enabled = true;
             
 
@@ -350,7 +353,7 @@ namespace VRAVE
             else
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-                circuitProgressNum = Mathf.CeilToInt((circuitProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
+                circuitProgressNum = Mathf.CeilToInt((userCarAI.ProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
                 userCarAI.switchCircuit(initialTrack, circuitProgressNum);
                 userCarAI.IsCircuit = true;
                 userCarAI.enabled = true;
