@@ -128,7 +128,7 @@ namespace VRAVE
 					Dictionary<int, VRAVEObstacle> vo;
 					if (m_Sensors.Scan (out vo)) {
 						m_sensorResponseHandler.handle (this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
-					}
+					} 
 
 					if (m_isPassing) { // should get set by a lane passing script
 						// bryce fill this out
@@ -475,6 +475,15 @@ namespace VRAVE
 
 		public void SetSensorResponseHandlerEnable(bool en) {
 			m_sensorResponseHandler.Enable = en;
+		}
+
+		public bool Driving {
+			get {
+				return m_Driving;
+			}
+			set {
+				m_Driving = value;
+			}
 		}
 	}
 }

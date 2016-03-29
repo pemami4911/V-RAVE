@@ -8,6 +8,8 @@ namespace VRAVE
     //[RequireComponent(typeof (CarController))]
     public class CarUserControl : MonoBehaviour
     {
+		[SerializeField] private bool m_allowReverse = true;
+
         private CarController m_Car; // the car controller we want to use
         private VisualSteeringWheelController m_SteeringWheel; //SteeringWheelController
 		private double gain = 0.5; 
@@ -49,8 +51,16 @@ namespace VRAVE
             //m_Car.Move(h, v, v, handbrake);
 
             /*#else*/
+			float handbrake = 0f;
 
-			m_Car.Move((float)hh, (float)vv, (float)vv, 0f);
+			if (!m_allowReverse) {
+				if (vv < 0 && Math.Abs(m_Car.CurrentSpeed) < 0.25f) {
+					handbrake = 1f;
+				}
+			}
+
+			m_Car.Move((float)hh, (float)vv, (float)vv, handbrake);
+
 			m_SteeringWheel.turnSteeringWheel((float)hh, m_Car.CurrentSteerAngle);
 /*#endif*/
         }

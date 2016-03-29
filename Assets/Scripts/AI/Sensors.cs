@@ -34,7 +34,7 @@ namespace VRAVE
 
 		// adjustable values
 		[SerializeField] private float m_sensorsStart = 1f;
-		[Range(10f, 90f)][SerializeField] private float m_shortSensorAngleDelta = 30f;
+		[Range(10f, 180f)][SerializeField] private float m_shortSensorAngleDelta = 30f;
 		[SerializeField] private float m_longSensorLength = 45f;
 		[SerializeField] private float m_shortSensorLength = 10f;
 		[SerializeField] private bool m_shortRangeSensorsEnable = true;
@@ -51,8 +51,9 @@ namespace VRAVE
 		// short-range sensors are integers from 1 to n, n = number of short range sensors
 		// long-range sensors are integers from n+1 to m, where (m - n + 1) is the number of long range sensors
 		private readonly int numPassingSensors = 1;
-		private readonly int numShortRangeSensors = 6;
+		private readonly int numShortRangeSensors = 24;
 		private readonly int numLongRangeSensors = 3;
+		private int layerMask = 1 << 2;
 
 		private VRAVESensor[] longRangeSensorsArray; 
 		private VRAVESensor[] shortRangeSensorsArray;
@@ -61,6 +62,8 @@ namespace VRAVE
 		{
 			longRangeSensorsArray = new VRAVESensor[numLongRangeSensors];
 			shortRangeSensorsArray = new VRAVESensor[numShortRangeSensors + numPassingSensors];
+
+			layerMask = ~layerMask;
 		}
 
 		private void InitShortRangeSensors()
@@ -107,14 +110,14 @@ namespace VRAVE
 
 					Debug.DrawRay (shortRangeSensorsStart, scan.Direction * m_shortSensorLength, Color.green);
 
-					if (Physics.Raycast (shortRangeSensorsStart, scan.Direction, out shortSensorsHit, m_shortSensorLength)) 
+					if (Physics.Raycast (shortRangeSensorsStart, scan.Direction, out shortSensorsHit, m_shortSensorLength, layerMask)) 
 					{
 						if (shortSensorsHit.collider.CompareTag (VRAVEStrings.Obstacle) ||
 							shortSensorsHit.collider.CompareTag (VRAVEStrings.AI_Car)) 
 						{
 							if (!obstacles.ContainsKey(scan.ID))
 							{
-								Debug.DrawLine (shortRangeSensorsStart, shortSensorsHit.point, Color.yellow);
+								//Debug.DrawLine (shortRangeSensorsStart, shortSensorsHit.point, Color.yellow);
 								VRAVEObstacle vo = new VRAVEObstacle ();
 								vo.obstacle = shortSensorsHit;
 								vo.obstacleTag = shortSensorsHit.collider.tag;
@@ -151,7 +154,7 @@ namespace VRAVE
 
 					Debug.DrawRay (sensorStart, longRangeSensorsArray [i].Direction * m_longSensorLength, Color.red);
 
-					if (Physics.Raycast (sensorStart, longRangeSensorsArray [i].Direction, out longSensorsHit, m_longSensorLength)) 
+					if (Physics.Raycast (sensorStart, longRangeSensorsArray [i].Direction, out longSensorsHit, m_longSensorLength, layerMask)) 
 					{
 						if (longSensorsHit.collider.CompareTag (VRAVEStrings.Obstacle) ||
 							longSensorsHit.collider.CompareTag (VRAVEStrings.AI_Car)) 
