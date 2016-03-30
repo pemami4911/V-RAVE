@@ -50,7 +50,7 @@ namespace VRAVE
                 if (obstacles[7].Distance <= 10f)
                 {
                     Debug.Log("Sensor 7 in length");
-                    if (!obstacles.ContainsKey(8) || ((obstacles.ContainsKey(8) && obstacles[8].Distance >= 20)))
+                    if (!obstacles.ContainsKey(9) || ((obstacles.ContainsKey(9) && obstacles[9].Distance >= 20)))
                     {
                         Debug.Log("Passing Conditions Met!");
                         return true;

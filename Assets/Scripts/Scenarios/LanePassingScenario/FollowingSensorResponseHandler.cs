@@ -21,12 +21,13 @@ namespace VRAVE
             }
             else
             {
-                if(obstacles.ContainsKey(8) && obstacles[8].obstacleTag.Equals(VRAVEStrings.Obstacle) && (obstacles[8].Distance <= 25))
+                if(obstacles.ContainsKey(9) && obstacles[9].obstacleTag.Equals(VRAVEStrings.Obstacle) && (obstacles[9].Distance <= 25))
                 {
                     Debug.Log("Don't Turn!");
                     Enable = false;
                     controller.TooClose = false;
                     controller.TooFar = false;
+                    controller.AccelMultiplier = 0f;
 
                     //GetComponentInParent<CarController>().MaxSpeed = AISpeed;
                     return;
@@ -42,7 +43,7 @@ namespace VRAVE
                         if (differential > 0f)  //too far away
                         {
                             //userCarController.MaxSpeed = 1.2f * AISpeed;
-                            controller.AccelMultiplier =  1.0f + Mathf.Abs(controller.AccelMultiplier) * 1.01f;
+                            controller.AccelMultiplier =  (1.0f + Mathf.Abs(controller.AccelMultiplier)) * 1.05f;
                             controller.TooFar = true;
                             Debug.Log("Too far : " + controller.AccelMultiplier);
 
@@ -50,7 +51,7 @@ namespace VRAVE
                         else if (differential < 0f) //(differential < 0)  //too close
                         {
                             //userCarController.MaxSpeed = 1.2f * AISpeed;
-                            controller.AccelMultiplier = -1.0f + -1f*controller.AccelMultiplier*(1.0f/1.01f);
+                            controller.AccelMultiplier = -1.0f + -1f * Mathf.Abs(controller.AccelMultiplier) * (1.0f/1.05f);
                             //controller.AccelMultiplier = 0;
                             controller.TooClose = true;
                             Debug.Log("Too close : " + controller.AccelMultiplier);
@@ -60,7 +61,7 @@ namespace VRAVE
                     {
                         if (differential > 0f)  //too far away
                         {
-                            userCarController.MaxSpeed = 1.2f * AISpeed;
+                            userCarController.MaxSpeed = 1.5f * AISpeed;
                             //controller.AccelMultiplier = controller.AccelMultiplier / 2;
                             controller.TooFar = true;
                             Debug.Log("Too far : " + controller.AccelMultiplier);
@@ -68,7 +69,7 @@ namespace VRAVE
                         }
                         else if (differential < 0f) //(differential < 0)  //too close
                         {
-                            userCarController.MaxSpeed = 1.2f * AISpeed;
+                            userCarController.MaxSpeed = 1.5f * AISpeed;
                             //controller.AccelMultiplier = controller.AccelMultiplier / 2;
                             controller.TooClose = true;
                             Debug.Log("Too close : " + controller.AccelMultiplier);

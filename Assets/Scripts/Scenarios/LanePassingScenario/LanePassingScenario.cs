@@ -66,6 +66,9 @@ namespace VRAVE
             hudController = UserCar.GetComponentInChildren<HUDController>();
             audioController = UserCar.GetComponent<HUDAudioController>();
 
+            lanePassingHandler = UserCar.GetComponent<LanePassingSensorResponseHandler>();
+            followHandler = UserCar.GetComponent<FollowingSensorResponseHandler>();
+
             //passingTrack = Instantiate((WaypointCircuit)(Resources.Load(VRAVEStrings.PassingTrack)));
             switch (AIVehicleCarController.MaxSpeed.ToString())
             {
@@ -164,15 +167,6 @@ namespace VRAVE
 
         public void FollowingInstruction_Enter()
         {
-            userCarAI.SetAltResponseHandlerEnable(true);
-            if (userCarAI.IsUser)
-            {
-                userCarAI.SetAltResponseHandlerEnable(true);
-            }
-            else  //This is just to make sure the same functionality is not being given to fully AI non-user cars.
-            {
-                userCarAI.SetAltResponseHandlerEnable(false);
-            }
 
             Debug.Log("Enter: FollowingInstruction");
 
@@ -184,7 +178,7 @@ namespace VRAVE
             }
             else
             {
-                //NEEDS TO BE FIXED FOR FOLLOWING HANDLING
+                followHandler.Enable = true;
             }
             
         }
@@ -237,16 +231,7 @@ namespace VRAVE
 
         public void Following_Update()
         {
-            // 	Change to steering wheel paddle
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                userCarAI.SetAltResponseHandlerEnable(true);
-            }
-            else if (Input.GetKeyDown(KeyCode.Space))
-            {
-                userCarAI.SetAltResponseHandlerEnable(false);
-            }
-            
+            followHandler.Enable = true;
         }
 
         /* PASSING INSTRUCTION */
@@ -303,7 +288,7 @@ namespace VRAVE
 
             if (Input.GetKey(KeyCode.Return))
             {
-                userCarAI.SetSensorResponseHandlerEnable(true);
+                lanePassingHandler.Enable = true;
             }
 
             if (userCarAI.IsPassing)
