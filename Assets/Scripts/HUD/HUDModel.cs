@@ -65,7 +65,7 @@ public class HUDModel {
 		bottomTextPosition = new Vector3(0,0, 0 );
 
 		centerText = "Alert!";
-		leftText = ">Hi, Dave.";
+		leftText = ">Senior Design Spring 2016";
 		rightText = "Vehicle:\n100%";
 		topText = "TOP";
 		bottomText = "BOTTOM";

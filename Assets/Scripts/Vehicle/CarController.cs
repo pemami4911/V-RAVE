@@ -53,10 +53,11 @@ namespace VRAVE
         public float MaxSteeringAngle { get { return m_MaximumSteerAngle; } set { m_MaximumSteerAngle = value; } }
         public float BrakeInput { get; private set; }
         public float CurrentSteerAngle{ get { return m_SteerAngle; } private set { m_SteerAngle = value; } } //Don't set this.
-        public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; }}
+        public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; } }
         public float MaxSpeed{get { return m_Topspeed; } set { m_Topspeed = value; } }
         public float Revs { get; private set; }
         public float AccelInput { get; private set; }
+        public Vector3 SetSpeed { set { m_Rigidbody.velocity = value; } }
 
         // Use this for initialization
         private void Start()

@@ -263,32 +263,32 @@ namespace VRAVE
 		}
 
 
-		private void OnCollisionStay (Collision col)
-		{
-			// detect collision against other cars, so that we can take evasive action
-			if (col.rigidbody != null) {
-				var otherAI = col.rigidbody.GetComponent<CarAIControl> ();
-				if (otherAI != null) {
-					// we'll take evasive action for 1 second
-					m_AvoidOtherCarTime = Time.time + 1;
+		//private void OnCollisionStay (Collision col)
+		//{
+		//	// detect collision against other cars, so that we can take evasive action
+		//	if (col.rigidbody != null) {
+		//		var otherAI = col.rigidbody.GetComponent<CarAIControl> ();
+		//		if (otherAI != null) {
+		//			// we'll take evasive action for 1 second
+		//			m_AvoidOtherCarTime = Time.time + 1;
 
-					// but who's in front?...
-					if (Vector3.Angle (transform.forward, otherAI.transform.position - transform.position) < 90) {
-						// the other ai is in front, so it is only good manners that we ought to brake...
-						m_AvoidOtherCarSlowdown = 0.5f;
-					} else {
-						// we're in front! ain't slowing down for anybody...
-						m_AvoidOtherCarSlowdown = 1;
-					}
+		//			// but who's in front?...
+		//			if (Vector3.Angle (transform.forward, otherAI.transform.position - transform.position) < 90) {
+		//				// the other ai is in front, so it is only good manners that we ought to brake...
+		//				m_AvoidOtherCarSlowdown = 0.5f;
+		//			} else {
+		//				// we're in front! ain't slowing down for anybody...
+		//				m_AvoidOtherCarSlowdown = 1;
+		//			}
 
-					// both cars should take evasive action by driving along an offset from the path centre,
-					// away from the other car
-					var otherCarLocalDelta = transform.InverseTransformPoint (otherAI.transform.position);
-					float otherCarAngle = Mathf.Atan2 (otherCarLocalDelta.x, otherCarLocalDelta.z);
-					m_AvoidPathOffset = m_LateralWanderDistance * -Mathf.Sign (otherCarAngle);
-				}
-			}
-		}
+		//			// both cars should take evasive action by driving along an offset from the path centre,
+		//			// away from the other car
+		//			var otherCarLocalDelta = transform.InverseTransformPoint (otherAI.transform.position);
+		//			float otherCarAngle = Mathf.Atan2 (otherCarLocalDelta.x, otherCarLocalDelta.z);
+		//			m_AvoidPathOffset = m_LateralWanderDistance * -Mathf.Sign (otherCarAngle);
+		//		}
+		//	}
+		//}
 
 		public void SetTarget (Transform target, bool stopWhenTargetReached)
 		{
@@ -307,14 +307,15 @@ namespace VRAVE
 		/*Use this function if you want to choose the starting point of the circuit.*/
 		public void switchCircuit (WaypointCircuit c, int progress)
 		{
-			Circuit = c;
-			ProgressNum = progress;
-		}
+            circuit = c;
+            ProgressNum = progress;
+            SetTarget(circuit.Waypoints[ProgressNum], false);
+        }
 
 
-		/*Use this function just to set a new Circuit and start at the beginning*/
+        /*Use this function just to set a new Circuit and start at the beginning*/
 
-		public WaypointCircuit Circuit {
+        public WaypointCircuit Circuit {
 			get {
 				return circuit;
 			}
