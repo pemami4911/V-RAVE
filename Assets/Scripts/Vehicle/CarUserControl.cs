@@ -13,6 +13,18 @@ namespace VRAVE
         private CarController m_Car; // the car controller we want to use
         private VisualSteeringWheelController m_SteeringWheel; //SteeringWheelController
 		private double gain = 0.5; 
+		private float handbrake = 0f; 
+		public float Handbrake { get { return handbrake; } set { handbrake = value; } }
+
+		public void StopCar() {
+			Handbrake = 1f;
+			m_Car.ReverseTorque = 0f;
+		}
+
+		public void StartCar() {
+			Handbrake = 0f;
+			m_Car.ReverseTorque = 250f; 
+		}
 
         private void Awake()
         {
@@ -51,15 +63,15 @@ namespace VRAVE
             //m_Car.Move(h, v, v, handbrake);
 
             /*#else*/
-			float handbrake = 0f;
-
 			if (!m_allowReverse) {
-				if (vv < 0 && Math.Abs(m_Car.CurrentSpeed) < 0.25f) {
-					handbrake = 1f;
+				if (vv < 0 && Math.Abs (m_Car.CurrentSpeed) < 1f) {
+					StopCar ();
+				} else if (Handbrake > 0f) {
+					StartCar ();
 				}
 			}
-
-			m_Car.Move((float)hh, (float)vv, (float)vv, handbrake);
+			Debug.Log (Handbrake);
+			m_Car.Move((float)hh, (float)vv, (float)vv, Handbrake);
 
 			m_SteeringWheel.turnSteeringWheel((float)hh, m_Car.CurrentSteerAngle);
 /*#endif*/

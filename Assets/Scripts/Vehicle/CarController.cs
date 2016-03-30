@@ -40,7 +40,6 @@ namespace VRAVE
 		[SerializeField] private float m_SlipLimit;
 		[SerializeField] private float m_BrakeTorque;
 
-
 		private Quaternion[] m_WheelMeshLocalRotations;
 		private Vector3 m_Prevpos, m_Pos;
 		private float m_SteerAngle;
@@ -50,6 +49,14 @@ namespace VRAVE
 		private float m_CurrentTorque;
 		private Rigidbody m_Rigidbody;
 		private const float k_ReversingThreshold = 0.01f;
+
+
+		public void ResetSpeed () {
+			GetComponentInParent<Rigidbody> ().velocity = new Vector3 (0f, 0f, 0f);
+			GetComponentInParent<Rigidbody> ().angularVelocity = new Vector3 (0f, 0f, 0f);
+		}
+
+		public float ReverseTorque { get { return m_ReverseTorque; } set { m_ReverseTorque = value; } }
 
 		public bool Skidding { get; private set; }
 
