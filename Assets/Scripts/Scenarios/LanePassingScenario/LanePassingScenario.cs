@@ -330,7 +330,7 @@ namespace VRAVE
             userCarAI.switchCircuit(passingTrack, 0);
 
             (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-            userCarController.MaxSpeed = 20f;
+            userCarController.MaxSpeed = 25f;
             userCarAI.CautiousMaxAngle = 75f;
             userCarAI.CautiousSpeedFactor = 0.6f;
             userCarAI.enabled = true;

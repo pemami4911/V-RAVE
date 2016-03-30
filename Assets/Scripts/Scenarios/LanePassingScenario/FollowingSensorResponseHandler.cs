@@ -21,25 +21,55 @@ namespace VRAVE
             }
             else
             {
-                if (obstacles.ContainsKey(7) && obstacles[7].obstacleTag.Equals(VRAVEStrings.AI_Car))
+                if(obstacles.ContainsKey(8) && obstacles[8].obstacleTag.Equals(VRAVEStrings.Obstacle) && (obstacles[8].Distance <= 20))
                 {
+                    Debug.Log("Don't Turn!");
+                    Enable = false;
+                    controller.TooClose = false;
+                    controller.TooFar = false;
+
+                    //GetComponentInParent<CarController>().MaxSpeed = AISpeed;
+                    return;
+                }
+                else if (obstacles.ContainsKey(7) && obstacles[7].obstacleTag.Equals(VRAVEStrings.AI_Car))
+                {
+                    CarController userCarController = GetComponentInParent<CarController>();
                     float AISpeed = obstacles[7].obstacle.collider.GetComponentInParent<CarController>().MaxSpeed;
-                    controller.GetComponent<CarController>().MaxSpeed = 1.2f * AISpeed;
                     float differential = obstacles[7].Distance - followDistance;
                     Debug.Log("Distance: " + obstacles[7].Distance + "   Differential: " + differential);
-                    if (Mathf.Abs(differential) > 1f)
-
+                    if (Mathf.Abs(differential) > 5f)
                     {
                         if (differential > 0f)  //too far away
                         {
-                            controller.AccelMultiplier++;
+                            //userCarController.MaxSpeed = 1.2f * AISpeed;
+                            controller.AccelMultiplier =  1.0f + Mathf.Abs(controller.AccelMultiplier) * 1.01f;
                             controller.TooFar = true;
                             Debug.Log("Too far : " + controller.AccelMultiplier);
 
                         }
-                        else //(differential < 0)  //too close
+                        else if (differential < 0f) //(differential < 0)  //too close
                         {
-                            controller.AccelMultiplier--;
+                            //userCarController.MaxSpeed = 1.2f * AISpeed;
+                            controller.AccelMultiplier = -1.0f + -1f*controller.AccelMultiplier*(1.0f/1.01f);
+                            //controller.AccelMultiplier = 0;
+                            controller.TooClose = true;
+                            Debug.Log("Too close : " + controller.AccelMultiplier);
+                        }
+                    }
+                    else if (Math.Abs(differential) > 1f)
+                    {
+                        if (differential > 0f)  //too far away
+                        {
+                            userCarController.MaxSpeed = 1.2f * AISpeed;
+                            //controller.AccelMultiplier = controller.AccelMultiplier / 2;
+                            controller.TooFar = true;
+                            Debug.Log("Too far : " + controller.AccelMultiplier);
+
+                        }
+                        else if (differential < 0f) //(differential < 0)  //too close
+                        {
+                            userCarController.MaxSpeed = 1.2f * AISpeed;
+                            //controller.AccelMultiplier = controller.AccelMultiplier / 2;
                             controller.TooClose = true;
                             Debug.Log("Too close : " + controller.AccelMultiplier);
                         }
@@ -48,8 +78,10 @@ namespace VRAVE
                     {
                         //In the correct following range. Do nothing.
                         controller.TooClose = false;
-                        controller.TooClose = false;
-                        obstacles[7].obstacle.collider.GetComponentInParent<CarController>().MaxSpeed = AISpeed;
+                        controller.TooFar = false;
+
+                        GetComponentInParent<CarController>().MaxSpeed = AISpeed;
+                        //obstacles[7].obstacle.collider.GetComponentInParent<CarController>().MaxSpeed = AISpeed;
                     }
                 }
             }

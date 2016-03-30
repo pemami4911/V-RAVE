@@ -85,7 +85,7 @@ namespace VRAVE
         //should be set when the car is too far from the vehicle it is following. Auto sets TooClose to false, if true.
         private bool m_tooClose;
         //should be set when the car is too close to the vehicle it is following. Auto sets TooFar to false, if true;
-        private int m_accelMultiplier = 0;
+        private float m_accelMultiplier = 1;
 		private Sensors m_Sensors;
 		private SensorResponseHandler m_sensorResponseHandler;
         private SensorResponseHandler m_altSensorResponseHandler;
@@ -242,21 +242,22 @@ namespace VRAVE
 				// get the amount of steering needed to aim the car towards the target
 				float steer = Mathf.Clamp (targetAngle * m_SteerSensitivity, -1, 1) * Mathf.Sign (m_CarController.CurrentSpeed);
 
-                // feed input to the car controller.
+                // FOLLOWING BEHAVIOR ONLY
                 Mathf.Clamp(AccelMultiplier, -10, 10);
                 if(TooClose)
                 {
-                    m_CarController.MaxSpeed = 0.8f * m_CarController.MaxSpeed;
-                    //accel = accel + (0.01f);
-                    Debug.Log("Too Close Accel : " + accel);
+                    //m_CarController.MaxSpeed = Time.deltaTime * m_CarController.MaxSpeed;
+                    accel = -1*accel - m_accelMultiplier*(accel*Time.deltaTime);
+                    Debug.Log("Too Close Accel : " + accel + "  MaxSpeed: " + m_CarController.MaxSpeed);
+                    
                 }
                 else if(TooFar)
                 {
-                    m_CarController.MaxSpeed = (1f/0.8f) * m_CarController.MaxSpeed;
-                    //accel = accel - (0.01f);
-                    Debug.Log("Too Far Accel : " + accel);
+                    //m_CarController.MaxSpeed = Time.deltaTime * m_CarController.MaxSpeed;
+                    accel = accel + m_accelMultiplier*(accel*Time.deltaTime);
+                    Debug.Log("Too Far Accel : " + accel + "  MaxSpeed: " + m_CarController.MaxSpeed);
                 }
-                //Mathf.Clamp(accel, -1, 1);
+               
 				m_CarController.Move (steer, accel, accel, 0f);
 
 				if (m_isUser) {
@@ -530,7 +531,7 @@ namespace VRAVE
             }
         }
 
-        public int AccelMultiplier
+        public float AccelMultiplier
         {
             get
             {
