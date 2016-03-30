@@ -87,8 +87,7 @@ namespace VRAVE
         //should be set when the car is too close to the vehicle it is following. Auto sets TooFar to false, if true;
         private float m_accelMultiplier = 1;
 		private Sensors m_Sensors;
-		private SensorResponseHandler m_sensorResponseHandler;
-        private SensorResponseHandler m_altSensorResponseHandler;
+		private SensorResponseHandler[] m_sensorResponseHandlers;
 
 		/* Awake */ 
 
@@ -98,8 +97,7 @@ namespace VRAVE
 			m_Rigidbody = GetComponent<Rigidbody> ();
 			m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController> ();
 			m_Sensors = GetComponent<Sensors> ();
-			m_sensorResponseHandler = GetComponent<LanePassingSensorResponseHandler> ();
-            m_altSensorResponseHandler = GetComponent<FollowingSensorResponseHandler>();
+			m_sensorResponseHandlers = GetComponents<SensorResponseHandler> ();
 
             // give the random perlin a random value
             m_RandomPerlin = Random.value * 100;
@@ -133,10 +131,11 @@ namespace VRAVE
 				/* SENSORS HERE */
 				if (m_isUser) {
 					Dictionary<int, VRAVEObstacle> vo;
-					if (m_Sensors.Scan (out vo)) {
-						m_sensorResponseHandler.handle (this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
-                        m_altSensorResponseHandler.handle(this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
+					m_Sensors.Scan (out vo);
+					foreach (SensorResponseHandler s in m_sensorResponseHandlers) {
+						s.handle (this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
 					}
+
 
 					if (m_isPassing) { // should get set by a lane passing script
 						// bryce fill this out
@@ -543,16 +542,5 @@ namespace VRAVE
                 m_accelMultiplier = value;
             }
         }
-
-        public void SetSensorResponseHandlerEnable(bool flag) {
-			m_sensorResponseHandler.Enable = flag;
-		}
-
-        public void SetAltResponseHandlerEnable(bool flag)
-        {
-            m_altSensorResponseHandler.Enable = flag;
-        }
-
-
 	}
 }
