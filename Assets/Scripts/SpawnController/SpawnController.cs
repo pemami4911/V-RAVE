@@ -13,7 +13,7 @@ namespace VRAVE {
 
 		public SpawnController() {
 			loadedResources = new Dictionary<string, GameObject> ();
-			spawnModel = new SpawnModel ();
+			//spawnModel = new SpawnModel ();
 		}
 
 		public void enterScenario() {

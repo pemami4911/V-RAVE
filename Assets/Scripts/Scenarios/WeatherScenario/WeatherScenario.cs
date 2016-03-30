@@ -8,11 +8,12 @@ namespace VRAVE {
 
 		[SerializeField] private GameObject UserCar; 
 
-		private SpawnController manufacturer; 
+		private SpawnController spawnController;
+		private SpawnModel spawnModel;
 		private HUDController hudController;
 		private HUDAudioController audioController;
 
-		private float FOG_DENSITY = 0.8f;
+		private float FOG_DENSITY = 0.1f;
 
 		public enum States 
 		{
@@ -31,10 +32,12 @@ namespace VRAVE {
 			UserCar.GetComponent<CarAIControl> ().enabled = false;
 			UserCar.GetComponent<CarUserControl> ().enabled = true;
 
-			manufacturer = GetComponent<SpawnController>();
+			spawnController = GetComponent<SpawnController>();
 			hudController = UserCar.GetComponentInChildren<HUDController>();
 			audioController = UserCar.GetComponent<HUDAudioController>();
 
+			spawnModel = new WeatherSpawnModel ();
+			spawnController.spawnModel = spawnModel;
 			//hudController.model = new DefaultHUD ();
 
 			resetScenario ();
@@ -43,7 +46,7 @@ namespace VRAVE {
 
 		private void resetScenario() {
 			RenderSettings.fog = true; //enable fog bruh
-			RenderSettings.fogMode = FogMode.ExponentialSquared;
+			RenderSettings.fogMode = FogMode.Exponential;
 			RenderSettings.fogDensity = FOG_DENSITY;
 		}
 
@@ -56,7 +59,7 @@ namespace VRAVE {
 		}
 
 		public void UserDriveRoute_Enter() {
-			//RenderSettings.fog = true;
+			spawnController.enterScenario ();
 		}
 
 		public void AIDriveRoute_Enter() {
