@@ -25,6 +25,9 @@ namespace VRAVE
         private CarController userCarController;
         private CarController AIVehicleCarController;
 
+        private LanePassingSensorResponseHandler lanePassingHandler;
+        private FollowingSensorResponseHandler followHandler;
+
         private WaypointCircuit passingTrack;
         private bool userMode;
         private int circuitProgressNum = 0;
