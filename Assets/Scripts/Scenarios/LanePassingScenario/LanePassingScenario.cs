@@ -152,7 +152,7 @@ namespace VRAVE
             // 	Change to steering wheel paddle
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                ChangeState(States.PassingInstruction);
+                ChangeState(States.FollowingInstruction);
             }
 
         }
@@ -161,30 +161,50 @@ namespace VRAVE
 
         public void FollowingInstruction_Enter()
         {
+            if(userCarAI.IsUser)
+            {
+                userCarAI.SetAltResponseHandlerEnable(true);
+            }
+            else  //This is just to make sure the same functionality is not being given to fully AI non-user cars.
+            {
+                userCarAI.SetAltResponseHandlerEnable(false);
+            }
+
             Debug.Log("Enter: FollowingInstruction");
+
+            //Play insructions here!!!
 
             if(userMode)
             {
-                //(UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
-                ChangeState(States.PassingInstruction);
+                (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
             }
             else
             {
                 //NEEDS TO BE FIXED FOR FOLLOWING HANDLING
-                ChangeState(States.PassingInstruction);
             }
             
         }
 
         public void FollowingInstruction_Update()
         {
-
-            //Once user begins driving, start AI
-            if (userCarController.AccelInput >= 0.05f)
-            {
-                Debug.Log("Update: FollowingInstruction");
-                ChangeState(States.Following);
+            if(userMode)
+            {   
+                //Once user begins driving, start AI
+                if (userCarController.AccelInput >= 0.05f)  //Change to left trigger
+                {
+                    Debug.Log("Update: FollowingInstruction");
+                    ChangeState(States.Following);
+                }
             }
+            else
+            {
+                // 	Change to steering wheel paddle
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    ChangeState(States.Following);
+                }
+            }
+
         }
 
         /* FOLLOWING */
@@ -192,8 +212,6 @@ namespace VRAVE
         public void Following_Enter()
         {
             Debug.Log("Entered: Following");
-            //GameObject[] go = GameObject.FindGameObjectsWithTag("Path");
-            //initialTrack = GameObject.Find("Figure8_North_3-22").GetComponent<WaypointCircuit>();
             AIVehicleAI.Circuit = initialTrack;
             AIVehicleAI.enabled = true;
             AIVehicleAI.IsCircuit = true;
@@ -208,61 +226,23 @@ namespace VRAVE
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
                 userCarAI.Circuit = initialTrack;
-                userCarAI.enabled = false;
+                userCarAI.enabled = true;
             }
 
         }
 
         public void Following_Update()
         {
-            Debug.Log("Update: Following");
-
-            //TODO: REMOVE!!!
-            //WaypointCircuit wc = GameObject.Find("Figure8_North_3-22").GetComponent<WaypointCircuit>();
-            Dictionary<int, VRAVE.VRAVEObstacle> vo;
-            bool scanned = userCarSensors.Scan(out vo);
-            Debug.Log(scanned);
-            if (scanned)
+            // 	Change to steering wheel paddle
+            if (Input.GetKeyDown(KeyCode.Return))
             {
-                Debug.Log("Scanning!");
-                if (vo.ContainsKey(7) && vo[7].obstacleTag.Equals("AI_Car"))
-                {
-                    Debug.Log("Sensor 7 Hit");
-                    if (vo[7].Distance <= 10f)
-                    {
-                        Debug.Log("Sensor 7 in length");
-                        if (!vo.ContainsKey(8) || ((vo.ContainsKey(8) && vo[8].Distance >= 10)))
-                        {
-                            Debug.Log("Sensor 8 good!");
-
-                            Debug.Log("Passing Conditions Met!");
-
-                            if (Input.GetKey(KeyCode.Return))
-                            {
-                                Debug.Log("Passing Track Created!");
-                                Transform carTransform = UserCar.transform;
-                                WaypointCircuit passTrack = (WaypointCircuit)(Instantiate(passingTrack, carTransform.position + carTransform.forward * 2f, carTransform.rotation));
-                                Debug.Log("UserCar: " + carTransform.position.ToString());
-
-
-
-
-
-                            }
-                        }
-                    }
-                }
+                userCarAI.SetAltResponseHandlerEnable(true);
             }
-
-            //AIVehicleAI.enabled = true;
-            //AIVehicleAI.IsCircuit = true;
-            //(AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
-
-            //userCarAI.Circuit = wc;
-            //userCarAI.enabled = true;
-
-            //RECORD DISTANCES!
-
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                userCarAI.SetAltResponseHandlerEnable(false);
+            }
+            
         }
 
         /* PASSING INSTRUCTION */

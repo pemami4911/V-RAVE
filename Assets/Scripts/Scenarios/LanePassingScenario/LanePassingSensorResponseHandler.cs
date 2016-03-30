@@ -15,12 +15,17 @@ namespace VRAVE
         {
             if (!Enable)
             {
-                if(passingCheck(obstacles))
+                return;
+            }
+            else
+            {
+                if (passingCheck(obstacles))
                 {
                     Enable = false;
                     controller.IsPassing = true;
                 }
             }
+            
         }
         
 

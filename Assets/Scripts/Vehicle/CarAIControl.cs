@@ -80,9 +80,15 @@ namespace VRAVE
 		private VisualSteeringWheelController m_SteeringWheel;
 		//SteeringWheelController
 		private bool m_isPassing;
-		// should be set to true if the car is passing
+        // should be set to true if the car is passing
+        private bool m_tooFar;
+        //should be set when the car is too far from the vehicle it is following. Auto sets TooClose to false, if true.
+        private bool m_tooClose;
+        //should be set when the car is too close to the vehicle it is following. Auto sets TooFar to false, if true;
+        private int m_accelMultiplier = 0;
 		private Sensors m_Sensors;
 		private SensorResponseHandler m_sensorResponseHandler;
+        private SensorResponseHandler m_altSensorResponseHandler;
 
 		/* Awake */ 
 
@@ -92,10 +98,11 @@ namespace VRAVE
 			m_Rigidbody = GetComponent<Rigidbody> ();
 			m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController> ();
 			m_Sensors = GetComponent<Sensors> ();
-			m_sensorResponseHandler = GetComponent<SensorResponseHandler> ();
+			m_sensorResponseHandler = GetComponent<LanePassingSensorResponseHandler> ();
+            m_altSensorResponseHandler = GetComponent<FollowingSensorResponseHandler>();
 
-			// give the random perlin a random value
-			m_RandomPerlin = Random.value * 100;
+            // give the random perlin a random value
+            m_RandomPerlin = Random.value * 100;
 
 			if (m_isUser) {
 				IsUser = true;
@@ -128,6 +135,7 @@ namespace VRAVE
 					Dictionary<int, VRAVEObstacle> vo;
 					if (m_Sensors.Scan (out vo)) {
 						m_sensorResponseHandler.handle (this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
+                        m_altSensorResponseHandler.handle(this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
 					}
 
 					if (m_isPassing) { // should get set by a lane passing script
@@ -234,7 +242,21 @@ namespace VRAVE
 				// get the amount of steering needed to aim the car towards the target
 				float steer = Mathf.Clamp (targetAngle * m_SteerSensitivity, -1, 1) * Mathf.Sign (m_CarController.CurrentSpeed);
 
-				// feed input to the car controller.
+                // feed input to the car controller.
+                Mathf.Clamp(AccelMultiplier, -10, 10);
+                if(TooClose)
+                {
+                    m_CarController.MaxSpeed = 0.8f * m_CarController.MaxSpeed;
+                    //accel = accel + (0.01f);
+                    Debug.Log("Too Close Accel : " + accel);
+                }
+                else if(TooFar)
+                {
+                    m_CarController.MaxSpeed = (1f/0.8f) * m_CarController.MaxSpeed;
+                    //accel = accel - (0.01f);
+                    Debug.Log("Too Far Accel : " + accel);
+                }
+                //Mathf.Clamp(accel, -1, 1);
 				m_CarController.Move (steer, accel, accel, 0f);
 
 				if (m_isUser) {
@@ -474,9 +496,61 @@ namespace VRAVE
 			}
 		}
 
-		public void SetSensorResponseHandlerEnable(bool flag) {
+        public bool TooFar
+        {
+            get
+            {
+                return m_tooFar;
+            }
+
+            set
+            {
+                m_tooFar = value;
+                if (value == true)
+                {
+                    m_tooFar = false;
+                }
+            }
+        }
+
+        public bool TooClose
+        {
+            get
+            {
+                return m_tooClose;
+            }
+
+            set
+            {
+                m_tooClose = value;
+                if(value == true)
+                {
+                    m_tooFar = false;
+                }
+            }
+        }
+
+        public int AccelMultiplier
+        {
+            get
+            {
+                return m_accelMultiplier;
+            }
+
+            set
+            {
+                m_accelMultiplier = value;
+            }
+        }
+
+        public void SetSensorResponseHandlerEnable(bool flag) {
 			m_sensorResponseHandler.Enable = flag;
 		}
+
+        public void SetAltResponseHandlerEnable(bool flag)
+        {
+            m_altSensorResponseHandler.Enable = flag;
+        }
 
 
 	}
