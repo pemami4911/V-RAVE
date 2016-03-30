@@ -9,7 +9,17 @@ public class SensitiveSensorResponseHandler : SensorResponseHandler {
 		public override void handle (CarAIControl controller, Dictionary<int, VRAVEObstacle> obstacles,
 			float currentSpeed,
 			CarAIControl.BrakeCondition brakeCondition) {
-			controller.Driving = false;
+
+			if (!Enable) {
+				return;
+			}
+
+			foreach (VRAVEObstacle vo in obstacles.Values) {
+				if (vo.obstacleTag.Equals(VRAVEStrings.AI_Car)) {
+					controller.Driving = false;
+					return;
+				}
+			}
 		}
 }
 }

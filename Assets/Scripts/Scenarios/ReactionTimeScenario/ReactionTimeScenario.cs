@@ -19,6 +19,7 @@ namespace VRAVE
 		private CarController carController;
 		private CarAIControl crazyAI;
 		private CarController crazyCarController;
+		private SensitiveSensorResponseHandler sensorResponseHandler;
 
 		private UnityStandardAssets.Utility.WaypointCircuit ai_path;
 
@@ -28,10 +29,9 @@ namespace VRAVE
 			HumanDrivingToIntersection,
 			AIDrivingToIntersection,
 			AdvancingThroughIntersection,
-			IntersectionFinish,
+			WrongWayBriefing,
 			HumanDrivingToCorner,
 			AIDrivingToCorner,
-			Turning,
 			AvoidOncoming,
 			DriveToCornerFinish
 		}
@@ -40,13 +40,11 @@ namespace VRAVE
 		{
 			CameraFade.StartAlphaFade (Color.black, true, 2f, 0.5f);
 			Initialize<States> ();
-
-			Instantiate (CrazyIntersectionAI);
-			Instantiate (UnsuspectingAI);
-
+		
 			carController = UserCar.GetComponent<CarController> ();
 			carController.MaxSpeed = 15f;
 			carAI = UserCar.GetComponent<CarAIControl> ();
+			sensorResponseHandler = UserCar.GetComponent<SensitiveSensorResponseHandler> ();
 
 			crazyAI = CrazyIntersectionAI.GetComponent<CarAIControl> ();
 			crazyCarController = CrazyIntersectionAI.GetComponent<CarController> ();
@@ -68,20 +66,26 @@ namespace VRAVE
 		{
 			carAI.enabled = false;
 			UserCar.GetComponent<CarUserControl> ().enabled = false;
+
 			CrazyIntersectionAI.SetActive (false);
 			UnsuspectingAI.SetActive (false);
 
 			UserCar.transform.position = new Vector3 (26f, 0.26f, -18.3f);
-			UserCar.transform.rotation = Quaternion.Euler (0f, 0f, 0f); 
-			carController.SetSpeed = new Vector3(0f, 0f, 0f);
+			UserCar.transform.rotation = Quaternion.Euler (0f, 0f, 0f);
 
-//			CrazyIntersectionAI.transform.position = new Vector3 (50.6f, 0.01f, 64.2f);
-//			CrazyIntersectionAI.transform.rotation = Quaternion.Euler (0f, 270f, 0f);
-//
-//			UnsuspectingAI.transform.position = new Vector3 (-34f, 0.01f, 63.07f);
-//			UnsuspectingAI.transform.rotation = Quaternion.Euler (0f, 90f, 0f);
+			carController.ResetSpeed ();
+
+			CrazyIntersectionAI.transform.position = new Vector3 (43.6f, 0.01f, 65f);
+			CrazyIntersectionAI.transform.rotation = Quaternion.Euler (0f, 270f, 0f);
+
+			UnsuspectingAI.transform.position = new Vector3 (-34f, 0.01f, 63.07f);
+			UnsuspectingAI.transform.rotation = Quaternion.Euler (0f, 90f, 0f);
+
+			// reset circuits
+			crazyAI.Circuit = crazyAI.Circuit;
+			UnsuspectingAI.GetComponent<CarAIControl> ().Circuit = UnsuspectingAI.GetComponent<CarAIControl> ().Circuit;
 		}
-
+			
 		// Extend abstract method "ChangeState(uint id)
 		//
 		// This is used for reacting to "OnTriggerEnter" events, called by WaypointTrigger scripts
@@ -98,9 +102,9 @@ namespace VRAVE
 				break;
 			case 2:
 				UnsuspectingAI.SetActive (true);
-				Debug.Log ("Setting active");
 				break;
 			case 3:
+				UserCar.GetComponent<CarUserControl> ().enabled = false;
 				StartCoroutine (PostCollisionStateChange (2f));
 				break;
 			}
@@ -134,8 +138,9 @@ namespace VRAVE
 
 		public void AIDrivingToIntersection_Enter ()
 		{
-			CameraFade.StartAlphaFade (Color.black, true, 3f, 0f, () => { 
+			CameraFade.StartAlphaFade (Color.black, true, 3f, 0f, () => {
 				carAI.enabled = true;
+				sensorResponseHandler.Enable = true;
 			});
 		}
 
@@ -148,20 +153,29 @@ namespace VRAVE
 			crazyCarController.SetSpeed = new Vector3 (-40f, 0f, 0f);
 		}
 
-		/* INTERSECTION_FINISH */
+		/* Wrong way briefing state */ 
 
-		public void IntersectionFinish_Enter ()
-		{
+		public void WrongWayBriefing_Enter() {
+
+			ChangeState (States.HumanDrivingToCorner);
+		}
+
+		public void HumanDrivingToCorner_Enter() {
 		}
 
 		/* Coroutines */
 		private IEnumerator PostCollisionStateChange (float time)
 		{			
 			yield return new WaitForSeconds (time);
+		
 			// use a lambda expression to define the callback
 			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
 				resetScenario ();
-				ChangeState (States.AIDrivingToIntersection);
+				if (!carAI.enabled) {
+					ChangeState (States.AIDrivingToIntersection);
+				} else {
+					ChangeState (States.WrongWayBriefing);
+				}
 			});
 		}
 
