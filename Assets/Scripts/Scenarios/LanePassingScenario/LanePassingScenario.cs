@@ -164,7 +164,8 @@ namespace VRAVE
 
         public void FollowingInstruction_Enter()
         {
-            if(userCarAI.IsUser)
+            userCarAI.SetAltResponseHandlerEnable(true);
+            if (userCarAI.IsUser)
             {
                 userCarAI.SetAltResponseHandlerEnable(true);
             }

@@ -21,7 +21,7 @@ namespace VRAVE
             }
             else
             {
-                if(obstacles.ContainsKey(8) && obstacles[8].obstacleTag.Equals(VRAVEStrings.Obstacle) && (obstacles[8].Distance <= 20))
+                if(obstacles.ContainsKey(8) && obstacles[8].obstacleTag.Equals(VRAVEStrings.Obstacle) && (obstacles[8].Distance <= 25))
                 {
                     Debug.Log("Don't Turn!");
                     Enable = false;
