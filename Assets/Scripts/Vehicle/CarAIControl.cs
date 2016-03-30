@@ -82,7 +82,7 @@ namespace VRAVE
 		private bool m_isPassing;
 		// should be set to true if the car is passing
 		private Sensors m_Sensors;
-		private SensorResponseHandler m_sensorResponseHandler;
+		private SensorResponseHandler[] m_sensorResponseHandlers;
 
 		/* Awake */ 
 
@@ -92,7 +92,7 @@ namespace VRAVE
 			m_Rigidbody = GetComponent<Rigidbody> ();
 			m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController> ();
 			m_Sensors = GetComponent<Sensors> ();
-			m_sensorResponseHandler = GetComponent<SensorResponseHandler> ();
+			m_sensorResponseHandlers = GetComponents<SensorResponseHandler> ();
 
 			// give the random perlin a random value
 			m_RandomPerlin = Random.value * 100;
@@ -126,9 +126,11 @@ namespace VRAVE
 				/* SENSORS HERE */
 				if (m_isUser) {
 					Dictionary<int, VRAVEObstacle> vo;
-					if (m_Sensors.Scan (out vo)) {
-						m_sensorResponseHandler.handle (this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
+					m_Sensors.Scan (out vo);
+					foreach (SensorResponseHandler s in m_sensorResponseHandlers) {
+						s.handle (this, vo, m_CarController.CurrentSpeed, m_BrakeCondition);
 					}
+
 
 					if (m_isPassing) { // should get set by a lane passing script
 						// bryce fill this out
@@ -472,11 +474,6 @@ namespace VRAVE
 				m_BrakeSensitivity = value;
 			}
 		}
-
-		public void SetSensorResponseHandlerEnable(bool en) {
-			m_sensorResponseHandler.Enable = en;
-		}
-
-
+			
 	}
 }
