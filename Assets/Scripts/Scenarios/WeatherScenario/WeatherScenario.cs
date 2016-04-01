@@ -48,11 +48,19 @@ namespace VRAVE {
 			RenderSettings.fog = true; //enable fog bruh
 			RenderSettings.fogMode = FogMode.Exponential;
 			RenderSettings.fogDensity = FOG_DENSITY;
+			hudController.model = new WeatherHUDModel ();
 		}
 
 		public override void TriggerCb (uint id) {
 			switch (id) {
-			//will fill out later
+			case 0:
+				if(GetState().Equals(States.UserDriveRoute)) {
+					ChangeState(States.UserApproachTraffic);
+				}
+				else if (GetState().Equals(States.AIDriveRoute)) {
+					ChangeState(States.AIApproachTraffic);
+				}
+				break;
 			default:
 				break;
 			}
@@ -60,6 +68,7 @@ namespace VRAVE {
 
 		public void UserDriveRoute_Enter() {
 			spawnController.enterScenario ();
+
 		}
 
 		public void AIDriveRoute_Enter() {
@@ -67,7 +76,8 @@ namespace VRAVE {
 		}
 
 		public void UserApproachTraffic_Enter() {
-			//TODO
+			Debug.Log("Entered State UserApproachTraffic");
+			hudController.model.isLeftImageEnabled = true;
 		}
 
 		public void AIApproachTraffic_Enter() {

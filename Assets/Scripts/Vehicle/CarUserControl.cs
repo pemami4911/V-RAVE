@@ -40,8 +40,8 @@ namespace VRAVE
             //double h_raw = Input.GetAxisRaw("Horizontal");
             //double v_raw = Input.GetAxisRaw("Vertical");
 
-            Debug.Log("Horizontal: " + hh.ToString());
-            Debug.Log("Vertical: " + vv.ToString());
+            //Debug.Log("Horizontal: " + hh.ToString());
+            //Debug.Log("Vertical: " + vv.ToString());
 
 
             /*
