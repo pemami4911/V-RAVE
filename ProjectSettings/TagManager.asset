@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - AI_Car
-  - Crazy_AI_Car
+  - Crazy_AI
   layers:
   - Default
   - TransparentFX

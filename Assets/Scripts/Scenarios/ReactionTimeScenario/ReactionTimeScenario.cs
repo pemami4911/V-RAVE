@@ -13,6 +13,18 @@ namespace VRAVE
 		[SerializeField] private GameObject UnsuspectingAI;
 		[SerializeField] private GameObject trashCan; 
 
+		// 0 - unsuspecting car trigger
+		// 1 - approaching intersection trigger
+		// 2 - post collision trigger
+		// 3 - trash trigger 
+		// 4 - trashcan ai path 2 trigger
+		[SerializeField] private GameObject[] triggers; 
+
+		// 0 - ai_intersection_path_2
+		// 1 - AI_Car_TrashcanPath1
+		// 2 - AI_Car_TrashcanPath2
+		[SerializeField] private UnityStandardAssets.Utility.WaypointCircuit[] ai_paths; 
+
 		private SpawnController manufacturer;
 		private HUDController hudController;
 		private HUDAudioController audioController;
@@ -21,7 +33,7 @@ namespace VRAVE
 		private CarAIControl crazyAI;
 		private CarController crazyCarController;
 		private SensitiveSensorResponseHandler sensitiveSensorResponseHandler;
-		private UnityStandardAssets.Utility.WaypointCircuit ai_path;
+
 
 		public enum States
 		{
@@ -29,9 +41,9 @@ namespace VRAVE
 			HumanDrivingToIntersection,
 			AIDrivingToIntersection,
 			AdvancingThroughIntersection,
-			WrongWayBriefing,
-			HumanDrivingToCorner,
-			AIDrivingToCorner,
+			TrashcanBriefing,
+			HumanDrivingToTrashcan,
+			AIDrivingToTrashcan,
 			AvoidOncoming,
 			DriveToCornerFinish
 		}
@@ -53,16 +65,19 @@ namespace VRAVE
 			hudController = UserCar.GetComponentInChildren<HUDController> ();
 			audioController = UserCar.GetComponent<HUDAudioController> ();
 
-			GameObject o = GameObject.Find (VRAVEStrings.AI_Intersection_Path2);
-			ai_path = o.GetComponent<UnityStandardAssets.Utility.WaypointCircuit> ();
+			//resetIntersectionScenario ();
+			resetTrashCanScenario();
 
-			resetIntersectionScenario ();
+			foreach (GameObject o2 in triggers) {
+				o2.SetActive(false);
+			}
 
-			ChangeState (States.IntersectionBriefing);
+			ChangeState (States.TrashcanBriefing);
+			//ChangeState (States.IntersectionBriefing);
 			//ChangeState(States.AIDrivingToIntersection);
 		}
 
-		/* RESETS */ 
+		/********************** RESETS *******************************/ 
 
 		// DISABLES CAR-AI AND USER-DRIVING
 		private void resetIntersectionScenario ()
@@ -108,6 +123,8 @@ namespace VRAVE
 			carAI.Circuit = carAI.Circuit;
 		}
 
+		/********************** TRIGGERS *****************************/
+
 		// Extend abstract method "ChangeState(uint id)
 		//
 		// This is used for reacting to "OnTriggerEnter" events, called by WaypointTrigger scripts
@@ -116,7 +133,7 @@ namespace VRAVE
 			switch (id) {
 			case 0: 
 				if (GetState ().Equals( States.AIDrivingToIntersection)) {
-					StartCoroutine (ChangeAIPaths ());
+					StartCoroutine (ChangeAIPaths (3f, ai_paths[0], carAI));
 				}
 				break;
 			case 1: 
@@ -133,10 +150,13 @@ namespace VRAVE
 				trashCan.SetActive (true);
 				trashCan.GetComponent<TrashCanAnimator> ().roll ();
 				break;
+			case 5: 
+				StartCoroutine (ChangeAIPaths (5f, ai_paths[2], UnsuspectingAI.GetComponent<CarAIControl>()));
+				break;
 			}
 		}
 			
-		/* INTERSECTION_SCENARIO_BRIEFING */
+		/*************** INTERSECTION_SCENARIO_BRIEFING ***********************/
 
 		// In this state, the user will be briefed "briefly"
 		// on what to do
@@ -144,6 +164,9 @@ namespace VRAVE
 		public void IntersectionBriefing_Enter ()
 		{
 			// "Start" when paddle is hit 
+			triggers [0].SetActive(true);
+			triggers [1].SetActive(true);
+			triggers [2].SetActive(true);
 		}
 
 		// Wait for the user to press OK
@@ -154,9 +177,7 @@ namespace VRAVE
 				ChangeState (States.HumanDrivingToIntersection);
 			}
 		}
-
-		/* HUMAN DRIVING INTERSECTION */
-
+			
 		public void HumanDrivingToIntersection_Enter ()
 		{
 			UserCar.GetComponent<CarUserControl> ().enabled = true;
@@ -187,15 +208,31 @@ namespace VRAVE
 			}
 		}
 
-		/* Wrong way briefing state */ 
+		/**************************** Trash can states *********************/ 
 
-		public void WrongWayBriefing_Enter() {
+		public void TrashcanBriefing_Enter() {
 
-			// Update HUD, explain what's gonna happen
-			ChangeState (States.HumanDrivingToCorner);
+			UnsuspectingAI.GetComponent<CarAIControl> ().switchCircuit (ai_paths [1], 0);
+			UnsuspectingAI.GetComponent<CarAIControl> ().enabled = false;
+
+			UnsuspectingAI.SetActive (true);
+			UnsuspectingAI.GetComponent<CarController> ().MaxSpeed = 30f;
+
+			CameraFade.StartAlphaFade (Color.black, true, 3f, 0f, () => {
+				triggers [0].SetActive(false);
+				triggers [1].SetActive(false);
+				triggers [2].SetActive(false);
+				triggers [3].SetActive(false);
+				triggers [4].SetActive(true);
+				UnsuspectingAI.GetComponent<CarAIControl> ().enabled = true;
+
+				// Update HUD, explain what's gonna happen
+				ChangeState (States.HumanDrivingToTrashcan);
+			});
 		}
 
-		public void HumanDrivingToCorner_Enter() {
+		public void HumanDrivingToTrashcan_Enter() {
+			UserCar.GetComponent<CarUserControl> ().enabled = true;
 		}
 
 
@@ -210,16 +247,16 @@ namespace VRAVE
 				resetIntersectionScenario ();
 				if (!carAI.enabled) {
 					ChangeState (States.AIDrivingToIntersection);
-				} else {
-					ChangeState (States.WrongWayBriefing);
+				} else {					
+					ChangeState (States.TrashcanBriefing);
 				}
 			});
 		}
 
-		private IEnumerator ChangeAIPaths ()
+		private IEnumerator ChangeAIPaths (float time, UnityStandardAssets.Utility.WaypointCircuit wc, CarAIControl ai)
 		{
-			yield return new WaitForSeconds (3f);
-			carAI.switchCircuit (ai_path, 0);
+			yield return new WaitForSeconds (time);
+			ai.Circuit = wc;
 		}
 	}
 }

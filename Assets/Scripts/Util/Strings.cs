@@ -12,5 +12,10 @@ namespace VRAVE
 
 		// Patrick's scenario
 		public static string AI_Intersection_Path2 = "AI_IntersectionPath2";
+		public static string AI_Car_TrashcanPath1 = "AI_Car_TrashcanPath1";
+		public static string AI_Car_TrashcanPath2 = "AI_Car_TrashcanPath2";
+		public static string Crazy_AI = "Crazy_AI";
+		public static string Unsuspecting_AI = "Unsuspecting_AI";
+
 	}
 }
