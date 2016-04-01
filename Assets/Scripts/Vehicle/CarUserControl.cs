@@ -63,6 +63,7 @@ namespace VRAVE
             //m_Car.Move(h, v, v, handbrake);
 
             /*#else*/
+
 			if (!m_allowReverse) {
 				if (vv < 0 && Math.Abs (m_Car.CurrentSpeed) < 1f) {
 					StopCar ();
@@ -70,7 +71,7 @@ namespace VRAVE
 					StartCar ();
 				}
 			}
-			Debug.Log (Handbrake);
+
 			m_Car.Move((float)hh, (float)vv, (float)vv, Handbrake);
 
 			m_SteeringWheel.turnSteeringWheel((float)hh, m_Car.CurrentSteerAngle);

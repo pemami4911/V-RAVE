@@ -11,6 +11,7 @@ namespace VRAVE
 		[SerializeField] private GameObject UserCar;
 		[SerializeField] private GameObject CrazyIntersectionAI;
 		[SerializeField] private GameObject UnsuspectingAI;
+		[SerializeField] private GameObject trashCan; 
 
 		private SpawnController manufacturer;
 		private HUDController hudController;
@@ -19,8 +20,7 @@ namespace VRAVE
 		private CarController carController;
 		private CarAIControl crazyAI;
 		private CarController crazyCarController;
-		private SensitiveSensorResponseHandler sensorResponseHandler;
-
+		private SensitiveSensorResponseHandler sensitiveSensorResponseHandler;
 		private UnityStandardAssets.Utility.WaypointCircuit ai_path;
 
 		public enum States
@@ -44,7 +44,7 @@ namespace VRAVE
 			carController = UserCar.GetComponent<CarController> ();
 			carController.MaxSpeed = 15f;
 			carAI = UserCar.GetComponent<CarAIControl> ();
-			sensorResponseHandler = UserCar.GetComponent<SensitiveSensorResponseHandler> ();
+			sensitiveSensorResponseHandler = UserCar.GetComponent<SensitiveSensorResponseHandler> ();
 
 			crazyAI = CrazyIntersectionAI.GetComponent<CarAIControl> ();
 			crazyCarController = CrazyIntersectionAI.GetComponent<CarController> ();
@@ -56,13 +56,16 @@ namespace VRAVE
 			GameObject o = GameObject.Find (VRAVEStrings.AI_Intersection_Path2);
 			ai_path = o.GetComponent<UnityStandardAssets.Utility.WaypointCircuit> ();
 
-			resetScenario ();
+			resetIntersectionScenario ();
 
 			ChangeState (States.IntersectionBriefing);
 			//ChangeState(States.AIDrivingToIntersection);
 		}
 
-		private void resetScenario ()
+		/* RESETS */ 
+
+		// DISABLES CAR-AI AND USER-DRIVING
+		private void resetIntersectionScenario ()
 		{
 			carAI.enabled = false;
 			UserCar.GetComponent<CarUserControl> ().enabled = false;
@@ -86,6 +89,25 @@ namespace VRAVE
 			UnsuspectingAI.GetComponent<CarAIControl> ().Circuit = UnsuspectingAI.GetComponent<CarAIControl> ().Circuit;
 		}
 			
+		private void resetTrashCanScenario() 
+		{
+			carAI.enabled = false;
+			UserCar.GetComponent<CarUserControl> ().enabled = false;
+			CrazyIntersectionAI.SetActive (false);
+			UnsuspectingAI.SetActive (false);
+
+			UserCar.transform.position = new Vector3 (26f, 0.26f, -18.3f);
+			UserCar.transform.rotation = Quaternion.Euler (0f, 0f, 0f);
+
+			carController.ResetSpeed ();
+
+			UnsuspectingAI.transform.position = new Vector3 (26.09f, 0.01f, -2.24f);
+			UnsuspectingAI.transform.rotation = Quaternion.Euler (0f, 0f, 0f);
+
+			// reset circuits 
+			carAI.Circuit = carAI.Circuit;
+		}
+
 		// Extend abstract method "ChangeState(uint id)
 		//
 		// This is used for reacting to "OnTriggerEnter" events, called by WaypointTrigger scripts
@@ -106,6 +128,10 @@ namespace VRAVE
 			case 3:
 				UserCar.GetComponent<CarUserControl> ().enabled = false;
 				StartCoroutine (PostCollisionStateChange (2f));
+				break;
+			case 4: 
+				trashCan.SetActive (true);
+				trashCan.GetComponent<TrashCanAnimator> ().roll ();
 				break;
 			}
 		}
@@ -140,7 +166,7 @@ namespace VRAVE
 		{
 			CameraFade.StartAlphaFade (Color.black, true, 3f, 0f, () => {
 				carAI.enabled = true;
-				sensorResponseHandler.Enable = true;
+				sensitiveSensorResponseHandler.Enable = true;
 			});
 		}
 
@@ -153,24 +179,35 @@ namespace VRAVE
 			crazyCarController.SetSpeed = new Vector3 (-40f, 0f, 0f);
 		}
 
+		// disable hard stopping 
+		public void AdvancingThroughIntersection_Exit ()
+		{
+			if (sensitiveSensorResponseHandler.Enable) {
+				sensitiveSensorResponseHandler.Enable = false;
+			}
+		}
+
 		/* Wrong way briefing state */ 
 
 		public void WrongWayBriefing_Enter() {
 
+			// Update HUD, explain what's gonna happen
 			ChangeState (States.HumanDrivingToCorner);
 		}
 
 		public void HumanDrivingToCorner_Enter() {
 		}
 
-		/* Coroutines */
+
+		/************* Coroutines *****************/
+
 		private IEnumerator PostCollisionStateChange (float time)
 		{			
 			yield return new WaitForSeconds (time);
 		
 			// use a lambda expression to define the callback
 			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
-				resetScenario ();
+				resetIntersectionScenario ();
 				if (!carAI.enabled) {
 					ChangeState (States.AIDrivingToIntersection);
 				} else {
