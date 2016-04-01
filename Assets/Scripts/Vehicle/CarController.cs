@@ -59,6 +59,8 @@ namespace VRAVE
         public float AccelInput { get; private set; }
         public Vector3 SetSpeed { set { m_Rigidbody.velocity = value; } }
 
+
+
         // Use this for initialization
         private void Start()
         {
@@ -363,7 +365,20 @@ namespace VRAVE
             }
         }
 
-		/*
+        public float FullTorqueOverAllWheels
+        {
+            get
+            {
+                return m_FullTorqueOverAllWheels;
+            }
+
+            set
+            {
+                m_FullTorqueOverAllWheels = value;
+            }
+        }
+
+        /*
         private bool AnySkidSoundPlaying()
         {
             for (int i = 0; i < 4; i++)
