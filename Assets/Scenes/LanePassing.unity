@@ -10970,7 +10970,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UserCar: {fileID: 1686133735}
   AIVehicle: {fileID: 1327818961}
-  initialTrack: {fileID: 31359835}
+  UserTrack: {fileID: 31359835}
+  AITrack: {fileID: 1401572952}
   triggers:
   - {fileID: 1807979293}
   - {fileID: 1317053732}
@@ -17874,6 +17875,14 @@ Prefab:
       propertyPath: passingZones.Array.data[3]
       value: 
       objectReference: {fileID: 2078848989}
+    - target: {fileID: 11452302, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
+      propertyPath: UserTrack
+      value: 
+      objectReference: {fileID: 31359835}
+    - target: {fileID: 11452302, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
+      propertyPath: AITrack
+      value: 
+      objectReference: {fileID: 1401572952}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
   m_IsPrefabParent: 0

@@ -14,7 +14,9 @@ namespace VRAVE
         [SerializeField]
         private GameObject AIVehicle;
         [SerializeField]
-        private WaypointCircuit initialTrack;
+        private WaypointCircuit UserTrack;
+        [SerializeField]
+        private WaypointCircuit AITrack;
         [SerializeField]
         private GameObject[] triggers;
         [SerializeField]
@@ -50,11 +52,13 @@ namespace VRAVE
             PassingInstruction,
             WaitToPass,
             Passing,
-            Mode_Switch
+            ChangeMode
         }
 
         void Awake()
         {
+            CameraFade.StartAlphaFade(Color.black, true, 2f, 0.5f);
+
             Initialize<States>();
 
             userCarController = UserCar.GetComponent<CarController>();
@@ -79,7 +83,7 @@ namespace VRAVE
             lanePassingHandler.Enable = false;
             followHandler = UserCar.GetComponent<FollowingSensorResponseHandler>();
 
-            userMode = false;
+            userMode = true;
             //triggers[2].gameObject.SetActive(false);
                 
             ChangeState(States.InitState);
@@ -180,6 +184,32 @@ namespace VRAVE
             }
         }
 
+
+        private void resetScenario()
+        {
+
+            userCarAI.enabled = false;
+            UserCar.GetComponent<CarUserControl>().enabled = false;
+
+            AIVehicleAI.enabled = false;
+            //UnsuspectingAI.SetActive(false);
+
+            AIVehicle.transform.position = new Vector3(25.9f, 0.457f, 1f);
+            AIVehicle.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
+            //userCarController.ResetSpeed();
+
+            UserCar.transform.position = new Vector3(26f, 0.26f, -6f);
+            UserCar.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
+            //UnsuspectingAI.transform.position = new Vector3(-34f, 0.01f, 63.07f);
+            //UnsuspectingAI.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+
+            // reset circuits
+            userCarAI.Circuit = AITrack;
+            AIVehicleAI.Circuit = UserTrack;
+        }
+
         /* INIT_STATE */
 
         // In this state, introduction is given
@@ -199,10 +229,15 @@ namespace VRAVE
         // Wait for the user to press OK
         public void InitState_Update()
         {
+
+            ChangeState(States.FollowingInstruction);
+
+            //POSSIBLY DONT NEED THIS
             // 	Change to steering wheel paddle
-            if (Input.GetKeyDown(KeyCode.Return))
+            Debug.Log("Waiting for Input");
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                ChangeState(States.PassingInstruction);
+                ChangeState(States.FollowingInstruction);
             }
 
         }
@@ -215,8 +250,8 @@ namespace VRAVE
             Debug.Log("Enter: FollowingInstruction");
 
             //Play insructions here!!!
-
-            if(userMode)
+            (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+            if (userMode)
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
             }
@@ -224,13 +259,13 @@ namespace VRAVE
             {
                 //followHandler.Enable = true;
             }
-            
+
         }
 
         public void FollowingInstruction_Update()
         {
-            if(userMode)
-            {   
+            if (userMode)
+            {
                 //Once user begins driving, start AI
                 if (userCarController.AccelInput >= 0.05f)  //Change to left trigger
                 {
@@ -249,44 +284,56 @@ namespace VRAVE
 
         }
 
-        ///* FOLLOWING */
+        /* FOLLOWING */
 
-        //public void Following_Enter()
-        //{
-        //    Debug.Log("Entered: Following");
-        //    AIVehicleAI.Circuit = initialTrack;
-        //    AIVehicleAI.enabled = true;
-        //    AIVehicleAI.IsCircuit = true;
-        //    (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+        public void Following_Enter()
+        {
+            Debug.Log("Entered: Following");
+            AIVehicleAI.Circuit = AITrack;
+            AIVehicleAI.enabled = true;
+            AIVehicleAI.IsCircuit = true;
+            (AIVehicle.GetComponent("Halo") as Behaviour).enabled = false;
 
-        //    if (userMode)
-        //    {
-        //        (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
-        //        userCarAI.enabled = false;
-        //    }
-        //    else
-        //    {
-        //        (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-        //        userCarAI.Circuit = initialTrack;
-        //        userCarAI.enabled = true;
-        //    }
+            if (userMode)
+            {
+                (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
+                userCarAI.enabled = false;
+            }
+            else
+            {
+                (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
+                userCarAI.Circuit = UserTrack;
+                userCarAI.enabled = true;
+                userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+            }
 
-        //}
+        }
 
-        //public void Following_Update()
-        //{
-        //    //followHandler.Enable = true;
-        //    userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
-        //}
+        public void Following_Update()
+        {
+            //followHandler.Enable = true;
+            //userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+            if (Input.GetButton("Fire3"))
+            {
+                    Time.timeScale = 0;
+                    resetScenario();
+                    CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
+                    Time.timeScale = 1;
+                    ChangeState(States.PassingInstruction);
+            }
+        }
 
         /* PASSING INSTRUCTION */
 
         public void PassingInstruction_Enter()
         {
+            //POSSIBLY ADD Time.timeScale = 1;
+            CameraFade.StartAlphaFade(Color.black, true, 2f, 0.5f);
+
             Debug.Log("Entered: PassingInstruction");
             //GameObject[] go = GameObject.FindGameObjectsWithTag("Path");
             //WaypointCircuit wc = GameObject.Find("Figure8_North_3-22").GetComponent<WaypointCircuit>();
-            AIVehicleAI.Circuit = initialTrack;
+            AIVehicleAI.Circuit = AITrack;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
             ChangeState(States.WaitToPass);
         }
@@ -308,7 +355,7 @@ namespace VRAVE
             Debug.Log("Entered: WaitToPass");
             AIVehicleAI.enabled = true;
             AIVehicleAI.IsCircuit = true;
-            (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+            //(AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;  Already called in PassingInstruction
 
             if (userMode)
             {
@@ -319,7 +366,7 @@ namespace VRAVE
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
                 circuitProgressNum = Mathf.CeilToInt((userCarAI.ProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
-                userCarAI.switchCircuit(initialTrack, circuitProgressNum);
+                userCarAI.switchCircuit(UserTrack, circuitProgressNum);
                 Debug.Log(circuitProgressNum);
                 //Debug.Log(initialTrack.ToString());
                 userCarAI.IsCircuit = true;
@@ -333,6 +380,11 @@ namespace VRAVE
         public void WaitToPass_Update()
         {
             Debug.Log("Update: WaitToPass");
+
+            if (Input.GetButton("Fire3"))
+            {
+                ChangeState(States.ChangeMode);
+            }
 
             if (Input.GetKey(KeyCode.Space) && canPass == true)
             {
@@ -394,12 +446,31 @@ namespace VRAVE
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
                 circuitProgressNum = Mathf.CeilToInt((userCarAI.ProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
-                userCarAI.switchCircuit(initialTrack, circuitProgressNum);
+                userCarAI.switchCircuit(UserTrack, circuitProgressNum);
                 Debug.Log(circuitProgressNum);
                 userCarAI.IsCircuit = true;
                 userCarAI.enabled = true;
             }
 
+        }
+
+        public void ChangeMode_Enter()
+        {
+            Time.timeScale = 0;
+            CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
+            resetScenario();
+            Time.timeScale = 1;
+            if(userMode)
+            {
+                userMode = false;
+                //Show AI passing and following
+                ChangeState(States.PassingInstruction);
+            }
+            else  //End scenario
+            {
+                userMode = true;
+                ChangeState(States.FollowingInstruction);
+            }
         }
 
         private void getPassTrack()
