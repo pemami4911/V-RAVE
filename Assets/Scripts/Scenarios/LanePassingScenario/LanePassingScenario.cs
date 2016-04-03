@@ -35,6 +35,8 @@ namespace VRAVE
         private WaypointCircuit passingTrack;
         private bool userMode;
         private bool canPass = false;
+        private bool alreadyPassed = false;
+        private bool triggerToggle = true;  //Find a better way of toggling waypoint triggers
         private int circuitProgressNum = 0;
         private float passingSpeed;
 
@@ -78,7 +80,7 @@ namespace VRAVE
             followHandler = UserCar.GetComponent<FollowingSensorResponseHandler>();
 
             userMode = false;
-            triggers[2].gameObject.SetActive(false);
+            //triggers[2].gameObject.SetActive(false);
                 
             ChangeState(States.InitState);
         }
@@ -96,11 +98,21 @@ namespace VRAVE
                     userCarAI.switchCircuit(wc, 0);
                     userCarAI.IsCircuit = true;
                     break;
-                case 1: //Follow Trigger #1
-                    AIVehicleCarController.MaxSpeed = 15;
+
+                case 1: //Slow Down
+                    AIVehicleCarController.MaxSpeed = 10;
+                    if (!alreadyPassed)
+                    {
+                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                    }
                     break;
-                case 2:
+
+                case 2:  //Speed Up
                     AIVehicleCarController.MaxSpeed = 25;
+                    if (!alreadyPassed)
+                    {
+                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                    }
                     break;
 
                 case 3: //Beginning of passing track
@@ -121,6 +133,7 @@ namespace VRAVE
                     //userCarController.MaxSpeed = 20;
                     userCarController.FullTorqueOverAllWheels = 750;
                     userCarAI.CautiousSpeedFactor = 0.4f;
+                    alreadyPassed = true;
                     break;
 
                 case 10:
@@ -141,11 +154,28 @@ namespace VRAVE
                     AIVehicleAI.ReachTargetThreshold = 2;
                     break;
 
-                case 30:  //User Vehicle slows down before right turn
-                    userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed - 5.0f;
+                case 30:  
+                    //User Vehicle slows down before right turn
+                    Debug.Log("SLOW DOWN!");
+                    if (triggerToggle)
+                    {
+                        //userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed - 10.0f;
+                        userCarAI.AvoidOtherCarTime = Time.time + 3f;
+                        userCarAI.AvoidOtherCarSlowdown = 0.5f;
+                    }
                     break;
-                case 31:  //User vehicle Speeds back up
+                case 31:
+                    //User vehicle Speeds back up
+                    Debug.Log("Speed back up!");
                     userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                    break;
+
+                case 32:
+                    triggerToggle = false;
+                    break;
+
+                case 33:
+                    triggerToggle = true;
                     break;
             }
         }
@@ -336,7 +366,7 @@ namespace VRAVE
             userCarAI.switchCircuit(passingTrack, 0);
 
             (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-            userCarController.FullTorqueOverAllWheels = 1000;
+            userCarController.FullTorqueOverAllWheels = 1500;
             userCarController.MaxSpeed = passingSpeed;
             userCarAI.CautiousMaxAngle = 75f;
             userCarAI.CautiousSpeedFactor = 0.7f;
@@ -351,7 +381,7 @@ namespace VRAVE
             userCarAI.IsPassing = false;
             userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
             userCarAI.CautiousMaxAngle = 25f;
-            float AISpeed = AIVehicleCarController.CurrentSpeed;
+            //float AISpeed = AIVehicleCarController.CurrentSpeed;
             //userCarController.SetSpeed = new Vector3(0,0,40f);
 
 

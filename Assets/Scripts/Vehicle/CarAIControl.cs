@@ -542,5 +542,31 @@ namespace VRAVE
                 m_accelMultiplier = value;
             }
         }
-	}
+
+        public float AvoidOtherCarSlowdown
+        {
+            get
+            {
+                return m_AvoidOtherCarSlowdown;
+            }
+
+            set
+            {
+                m_AvoidOtherCarSlowdown = value;
+            }
+        }
+
+        public float AvoidOtherCarTime
+        {
+            get
+            {
+                return m_AvoidOtherCarTime;
+            }
+
+            set
+            {
+                m_AvoidOtherCarTime = value;
+            }
+        }
+    }
 }
