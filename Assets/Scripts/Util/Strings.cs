@@ -10,6 +10,7 @@ public static class VRAVEStrings : object {
 	public static string Obstacle = "Obstacle";
     public static string PassingTrack5 = "Passing5";
     public static string PassingTrack10 = "Passing10";
+    public static string PassingTrack25 = "Passing25";
 
     }
 }

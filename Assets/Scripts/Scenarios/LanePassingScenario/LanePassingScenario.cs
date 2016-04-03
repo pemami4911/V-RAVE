@@ -36,6 +36,7 @@ namespace VRAVE
         private bool userMode;
         private bool canPass = false;
         private int circuitProgressNum = 0;
+        private float passingSpeed;
 
 
 
@@ -45,8 +46,8 @@ namespace VRAVE
             FollowingInstruction,
             Following,
             PassingInstruction,
+            WaitToPass,
             Passing,
-            PassingWait,
             Mode_Switch
         }
 
@@ -55,7 +56,7 @@ namespace VRAVE
             Initialize<States>();
 
             userCarController = UserCar.GetComponent<CarController>();
-            userCarController.MaxSpeed = 25f;
+            userCarController.MaxSpeed = 20f;
             userCarAI = UserCar.GetComponent<CarAIControl>();
             userCarAI.enabled = false;
             UserCar.GetComponent<CarUserControl>().enabled = false;
@@ -63,7 +64,7 @@ namespace VRAVE
 
 
             AIVehicleCarController = AIVehicle.GetComponent<CarController>();
-            AIVehicleCarController.MaxSpeed = 25;
+            AIVehicleCarController.MaxSpeed = 15;
             AIVehicleAI = AIVehicle.GetComponent<CarAIControl>();
             AIVehicleAI.enabled = false;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = false;
@@ -76,26 +77,9 @@ namespace VRAVE
             lanePassingHandler.Enable = false;
             followHandler = UserCar.GetComponent<FollowingSensorResponseHandler>();
 
-            //passingTrack = Instantiate((WaypointCircuit)(Resources.Load(VRAVEStrings.PassingTrack)));
-            switch (AIVehicleCarController.MaxSpeed.ToString())
-            {
-                case "5":
-                    //string track = "PassingTrack" + userCarController.MaxSpeed.ToString();
-                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack5).GetComponent<WaypointCircuit>();
-                    break;
-                case "10":
-                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack10).GetComponent<WaypointCircuit>();
-                    break;
-                default:
-                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack10).GetComponent<WaypointCircuit>();
-                    break;
-
-            }
-            //passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack).GetComponent<WaypointCircuit>();
-            //, UserCar.transform.position + UserCar.transform.forward * 2f, UserCar.transform.rotation);
-            passingTrack.enabled = false;
-
-
+            userMode = false;
+            triggers[2].gameObject.SetActive(false);
+                
             ChangeState(States.InitState);
         }
 
@@ -113,8 +97,6 @@ namespace VRAVE
                     userCarAI.IsCircuit = true;
                     break;
                 case 1: //Follow Trigger #1
-                    Debug.Log("FollowTrigger #1");
-                    //userCarController.MaxSpeed = 25;
                     AIVehicleCarController.MaxSpeed = 15;
                     break;
                 case 2:
@@ -130,13 +112,15 @@ namespace VRAVE
                     Debug.Log("Inside Case 4");
                     //userCarController.MaxSpeed = 30;
                     Debug.Log("Speeding up quickly!");
-                    ChangeState(States.Passing);
+                    ChangeState(States.WaitToPass);
 
 
                     break;
                 case 5: //Speed up quickly
                     Debug.Log("Back to normal");
                     //userCarController.MaxSpeed = 20;
+                    userCarController.FullTorqueOverAllWheels = 750;
+                    userCarAI.CautiousSpeedFactor = 0.4f;
                     break;
 
                 case 10:
@@ -147,6 +131,22 @@ namespace VRAVE
                     Debug.Log("Cannot Pass");
                     canPass = false;
                     break;
+
+                case 20:
+                    //AI Car gets to turn at 15 mph
+                    AIVehicleAI.ReachTargetThreshold = 2;
+                    break;
+                case 21:
+                    //AI Car leaves turn from 15 mph
+                    AIVehicleAI.ReachTargetThreshold = 2;
+                    break;
+
+                case 30:  //User Vehicle slows down before right turn
+                    userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed - 5.0f;
+                    break;
+                case 31:  //User vehicle Speeds back up
+                    userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                    break;
             }
         }
 
@@ -156,13 +156,13 @@ namespace VRAVE
         // HUD and Audio changes
         public void InitState_Enter()
         {
-            userMode = false;
+            if(userMode)
+            {
+                //do things
+            }
             Debug.Log("Enter: InitState");
             //UseCar and AI Vehicles Created
             //Display Scenario Information on HUD
-
-            //Start when right paddle is pressed
-            //ChangeState(States.FollowingInstruction);
 
         }
 
@@ -219,35 +219,35 @@ namespace VRAVE
 
         }
 
-        /* FOLLOWING */
+        ///* FOLLOWING */
 
-        public void Following_Enter()
-        {
-            Debug.Log("Entered: Following");
-            AIVehicleAI.Circuit = initialTrack;
-            AIVehicleAI.enabled = true;
-            AIVehicleAI.IsCircuit = true;
-            (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+        //public void Following_Enter()
+        //{
+        //    Debug.Log("Entered: Following");
+        //    AIVehicleAI.Circuit = initialTrack;
+        //    AIVehicleAI.enabled = true;
+        //    AIVehicleAI.IsCircuit = true;
+        //    (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
 
-            if (userMode)
-            {
-                (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
-                userCarAI.enabled = false;
-            }
-            else
-            {
-                (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-                userCarAI.Circuit = initialTrack;
-                userCarAI.enabled = true;
-            }
+        //    if (userMode)
+        //    {
+        //        (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
+        //        userCarAI.enabled = false;
+        //    }
+        //    else
+        //    {
+        //        (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
+        //        userCarAI.Circuit = initialTrack;
+        //        userCarAI.enabled = true;
+        //    }
 
-        }
+        //}
 
-        public void Following_Update()
-        {
-            //followHandler.Enable = true;
-            userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 1;
-        }
+        //public void Following_Update()
+        //{
+        //    //followHandler.Enable = true;
+        //    userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+        //}
 
         /* PASSING INSTRUCTION */
 
@@ -258,24 +258,24 @@ namespace VRAVE
             //WaypointCircuit wc = GameObject.Find("Figure8_North_3-22").GetComponent<WaypointCircuit>();
             AIVehicleAI.Circuit = initialTrack;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
-            ChangeState(States.Passing);
+            ChangeState(States.WaitToPass);
         }
 
         public void PassingInstruction_Update()
         {
-            //Move to Passing
+            //Move to WaitToPass
             //if (Input.GetKey(KeyCode.Return))
             //{
-            //    ChangeState(States.Passing);
+            //    ChangeState(States.WaitToPass);
             //}
         }
 
-        /* PASSING */
+        /* WaitToPass */
 
-        public void Passing_Enter()
+        public void WaitToPass_Enter()
         {
             
-            Debug.Log("Entered: Passing");
+            Debug.Log("Entered: WaitToPass");
             AIVehicleAI.enabled = true;
             AIVehicleAI.IsCircuit = true;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
@@ -294,39 +294,41 @@ namespace VRAVE
                 //Debug.Log(initialTrack.ToString());
                 userCarAI.IsCircuit = true;
                 userCarAI.enabled = true;
+                userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
             }
+
         }
 
 
-        public void Passing_Update()
+        public void WaitToPass_Update()
         {
-            Debug.Log("Update: Passing");
+            Debug.Log("Update: WaitToPass");
 
             if (Input.GetKey(KeyCode.Space) && canPass == true)
             {
+                getPassTrack();
                 lanePassingHandler.Enable = true;
             }
 
             if (userCarAI.IsPassing)
             {
-                Debug.Log("It's passing and I'm about to go to WAIT!");
-                ChangeState(States.PassingWait);
+                ChangeState(States.Passing);
             }
 
-            userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 1;
+            //userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 1;
         }
 
 
-        /* Passing Wait */
+        /* Passing */
         /* Wait while passing other vehicle as to not attempt to pass again until finished. */
-        public void PassingWait_Enter()
+        public void Passing_Enter()
         {
             //Move passing track to 2 units ahead of the UserCar and set rotation to forward.
             passingTrack.transform.position = (UserCar.transform.position + UserCar.transform.forward * 2f);
             float newAngle = Mathf.RoundToInt(UserCar.transform.eulerAngles.y / 90f) * 90f;
             passingTrack.transform.eulerAngles = new Vector3(0, newAngle, 0);
 
-            Debug.Log("Enter: PassingWait");
+            Debug.Log("Enter: Passing");
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = false;  //Turn off glow as you pass.
             userCarAI.IsCircuit = false;
 
@@ -334,8 +336,8 @@ namespace VRAVE
             userCarAI.switchCircuit(passingTrack, 0);
 
             (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-            userCarController.FullTorqueOverAllWheels = 2000;
-            userCarController.MaxSpeed = 30f;
+            userCarController.FullTorqueOverAllWheels = 1000;
+            userCarController.MaxSpeed = passingSpeed;
             userCarAI.CautiousMaxAngle = 75f;
             userCarAI.CautiousSpeedFactor = 0.7f;
             userCarAI.enabled = true;
@@ -343,14 +345,12 @@ namespace VRAVE
 
         }
 
-        public void PassingWait_Exit()
+        public void Passing_Exit()
         {
-            Debug.Log("Exit: PassingWait");
+            Debug.Log("Exit: Passing");
             userCarAI.IsPassing = false;
-            userCarController.FullTorqueOverAllWheels = 750;
-            userCarController.MaxSpeed = 25f;
+            userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
             userCarAI.CautiousMaxAngle = 25f;
-            userCarAI.CautiousSpeedFactor = 0.3f;
             float AISpeed = AIVehicleCarController.CurrentSpeed;
             //userCarController.SetSpeed = new Vector3(0,0,40f);
 
@@ -370,6 +370,32 @@ namespace VRAVE
                 userCarAI.enabled = true;
             }
 
+        }
+
+        private void getPassTrack()
+        {
+            switch (Mathf.RoundToInt(AIVehicleCarController.MaxSpeed).ToString())
+            {
+                case "5":
+                    //string track = "PassingTrack" + userCarController.MaxSpeed.ToString();
+                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack5).GetComponent<WaypointCircuit>();
+                    passingSpeed = 15f;
+                    break;
+                case "10":
+                case "15":
+                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack10).GetComponent<WaypointCircuit>();
+                    passingSpeed = 25f;
+                    break;
+                case "25":
+                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack25).GetComponent<WaypointCircuit>();
+                    passingSpeed = 30f;
+                    break;
+                default:
+                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack10).GetComponent<WaypointCircuit>();
+                    passingSpeed = 25f;
+                    break;
+
+            }
         }
     }
 }

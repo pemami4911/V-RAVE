@@ -10,7 +10,6 @@ namespace VRAVE
     {
         private CarController m_Car; // the car controller we want to use
         private VisualSteeringWheelController m_SteeringWheel; //SteeringWheelController
-		private double gain = 0.5; 
 
         private void Awake()
         {
