@@ -3,8 +3,6 @@ using System.Collections;
 
 public class HUDModel_Upright : HUDModel {
 
-
-
 	public HUDModel_Upright () : base() {
 
 		HUDRotation = new Vector3(90, 0, 180);
