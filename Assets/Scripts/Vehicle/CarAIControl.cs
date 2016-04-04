@@ -21,6 +21,7 @@ namespace VRAVE
 			TargetDistance,
 			// the car will brake as it approaches its target, regardless of the target's direction. Useful if you want the car to
 			// head for a stationary target and come to rest when it arrives there.
+			AvoidTarget
 		}
 
 		// This script provides input to the car controller in the same way that the user control script does.
@@ -61,7 +62,7 @@ namespace VRAVE
 		[SerializeField] private WaypointCircuit circuit;
 		// A reference to the waypoint-based route we should follow
 		[SerializeField] private bool m_isCircuit = false;
-		// Is this a user-AI or just an AI car? 
+		// Is this a user-AI or just an AI car?
 		[SerializeField] private bool m_isUser = false;
 
 		private float m_RandomPerlin;
@@ -83,8 +84,11 @@ namespace VRAVE
 		// should be set to true if the car is passing
 		private Sensors m_Sensors;
 		private SensorResponseHandler[] m_sensorResponseHandlers;
+		// for avoiding obstacles via steer updates
+		private bool m_isAvoidingObstacle;
+		private float m_obstacleAvoidanceSteerAmount;
 
-		/* Awake */ 
+		/* Awake */
 
 		private void Awake ()
 		{
@@ -93,6 +97,8 @@ namespace VRAVE
 			m_SteeringWheel = GetComponentInChildren<VisualSteeringWheelController> ();
 			m_Sensors = GetComponent<Sensors> ();
 			m_sensorResponseHandlers = GetComponents<SensorResponseHandler> ();
+			IsAvoidingObstacle = false;
+			ObstacleAvoidanceSteerAmount = 1f;
 
 			// give the random perlin a random value
 			m_RandomPerlin = Random.value * 100;
@@ -156,8 +162,8 @@ namespace VRAVE
 
 						// if it's different to our current angle, we need to be cautious (i.e. slow down) a certain amount
 						float cautiousnessRequired = Mathf.InverseLerp (0, m_CautiousMaxAngle,
-							                                               Mathf.Max (spinningAngle,
-								                                               approachingCornerAngle));
+							                             Mathf.Max (spinningAngle,
+								                             approachingCornerAngle));
 						//Debug.Log("Cautiousness Required: " + cautiousnessRequired);
 						desiredSpeed = Mathf.Lerp (m_CarController.MaxSpeed, m_CarController.MaxSpeed * m_CautiousSpeedFactor,
 							cautiousnessRequired);
@@ -228,8 +234,14 @@ namespace VRAVE
 				// work out the local angle towards the target
 				float targetAngle = Mathf.Atan2 (localTarget.x, localTarget.z) * Mathf.Rad2Deg;
 
-				// get the amount of steering needed to aim the car towards the target
-				float steer = Mathf.Clamp (targetAngle * m_SteerSensitivity, -1, 1) * Mathf.Sign (m_CarController.CurrentSpeed);
+				float steer = 0f;
+
+				if (!IsAvoidingObstacle) {
+					// get the amount of steering needed to aim the car towards the target
+					steer = Mathf.Clamp (targetAngle * m_SteerSensitivity, -1, 1) * Mathf.Sign (m_CarController.CurrentSpeed);
+				} else {
+					steer = Mathf.Clamp (ObstacleAvoidanceSteerAmount * m_SteerSensitivity, -1, 1) * Mathf.Sign (m_CarController.CurrentSpeed);
+				}
 
 				// feed input to the car controller.
 				m_CarController.Move (steer, accel, accel, 0f);
@@ -352,7 +364,7 @@ namespace VRAVE
 				m_Target = value;
 			}
 		}
-			
+
 		public bool IsUser {
 			set {
 				if (value) {
@@ -469,7 +481,7 @@ namespace VRAVE
 				m_BrakeSensitivity = value;
 			}
 		}
-			
+
 		public bool Driving {
 			get {
 				return m_Driving;
@@ -479,5 +491,20 @@ namespace VRAVE
 			}
 		}
 
+		public bool IsAvoidingObstacle {
+			get {
+				return m_isAvoidingObstacle;
+			}
+			set { m_isAvoidingObstacle = value;}
+		}
+
+		public float ObstacleAvoidanceSteerAmount {
+			get {
+				return m_obstacleAvoidanceSteerAmount;
+			}
+			set {
+				m_obstacleAvoidanceSteerAmount = value;
+			}
+		}
 	}
 }

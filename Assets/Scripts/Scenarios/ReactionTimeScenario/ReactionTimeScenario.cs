@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using MonsterLove.StateMachine;
 
@@ -18,22 +19,28 @@ namespace VRAVE
 		// 2 - post collision trigger
 		// 3 - trash trigger 
 		// 4 - trashcan ai path 2 trigger
+		// 5 - trashcan user ai path 2 trigger
 		[SerializeField] private GameObject[] triggers; 
 
 		// 0 - ai_intersection_path_2
 		// 1 - AI_Car_TrashcanPath1
 		// 2 - AI_Car_TrashcanPath2
+		// 3 - UserCar_Trashcan_Path1
+		// 4 - UserCar_Trashcan_Path2
 		[SerializeField] private UnityStandardAssets.Utility.WaypointCircuit[] ai_paths; 
 
 		private SpawnController manufacturer;
 		private HUDController hudController;
 		private HUDAudioController audioController;
 		private CarAIControl carAI;
+		private CarAIControl unsuspectingCarAI;
 		private CarController carController;
 		private CarAIControl crazyAI;
 		private CarController crazyCarController;
 		private SensitiveSensorResponseHandler sensitiveSensorResponseHandler;
+		private TrashcanSensorResponseHandler trashCanSensorResponseHandler;
 
+		private bool m_humanDrivingState;
 
 		public enum States
 		{
@@ -44,8 +51,7 @@ namespace VRAVE
 			TrashcanBriefing,
 			HumanDrivingToTrashcan,
 			AIDrivingToTrashcan,
-			AvoidOncoming,
-			DriveToCornerFinish
+			Finish
 		}
 
 		void Awake ()
@@ -57,6 +63,7 @@ namespace VRAVE
 			carController.MaxSpeed = 15f;
 			carAI = UserCar.GetComponent<CarAIControl> ();
 			sensitiveSensorResponseHandler = UserCar.GetComponent<SensitiveSensorResponseHandler> ();
+			trashCanSensorResponseHandler = UserCar.GetComponent<TrashcanSensorResponseHandler> ();
 
 			crazyAI = CrazyIntersectionAI.GetComponent<CarAIControl> ();
 			crazyCarController = CrazyIntersectionAI.GetComponent<CarController> ();
@@ -65,15 +72,17 @@ namespace VRAVE
 			hudController = UserCar.GetComponentInChildren<HUDController> ();
 			audioController = UserCar.GetComponent<HUDAudioController> ();
 
-			//resetIntersectionScenario ();
-			resetTrashCanScenario();
+			unsuspectingCarAI = UnsuspectingAI.GetComponent<CarAIControl> ();
 
 			foreach (GameObject o2 in triggers) {
 				o2.SetActive(false);
 			}
 
-			ChangeState (States.TrashcanBriefing);
-			//ChangeState (States.IntersectionBriefing);
+			resetIntersectionScenario ();
+			//resetTrashCanScenario();
+
+			//ChangeState (States.TrashcanBriefing);
+			ChangeState (States.IntersectionBriefing);
 			//ChangeState(States.AIDrivingToIntersection);
 		}
 
@@ -84,6 +93,7 @@ namespace VRAVE
 		{
 			carAI.enabled = false;
 			UserCar.GetComponent<CarUserControl> ().enabled = false;
+			UserCar.GetComponent<CarUserControl> ().StopCar();
 
 			CrazyIntersectionAI.SetActive (false);
 			UnsuspectingAI.SetActive (false);
@@ -101,15 +111,19 @@ namespace VRAVE
 
 			// reset circuits
 			crazyAI.Circuit = crazyAI.Circuit;
-			UnsuspectingAI.GetComponent<CarAIControl> ().Circuit = UnsuspectingAI.GetComponent<CarAIControl> ().Circuit;
+			unsuspectingCarAI.Circuit = unsuspectingCarAI.Circuit;
 		}
 			
 		private void resetTrashCanScenario() 
 		{
 			carAI.enabled = false;
+			trashCan.SetActive (false);
 			UserCar.GetComponent<CarUserControl> ().enabled = false;
+			UserCar.GetComponent<CarUserControl> ().StopCar();
+
 			CrazyIntersectionAI.SetActive (false);
 			UnsuspectingAI.SetActive (false);
+			trashCanSensorResponseHandler.Enable = false;
 
 			UserCar.transform.position = new Vector3 (26f, 0.26f, -18.3f);
 			UserCar.transform.rotation = Quaternion.Euler (0f, 0f, 0f);
@@ -118,9 +132,19 @@ namespace VRAVE
 
 			UnsuspectingAI.transform.position = new Vector3 (26.09f, 0.01f, -2.24f);
 			UnsuspectingAI.transform.rotation = Quaternion.Euler (0f, 0f, 0f);
+			UnsuspectingAI.GetComponent<CarController> ().ResetSpeed ();
 
-			// reset circuits 
-			carAI.Circuit = carAI.Circuit;
+			trashCan.transform.position = new Vector3 (47.663f, 0.4394f, 121.95f);
+			trashCan.transform.rotation = Quaternion.Euler (90f, 310.44f, 133f);
+			trashCan.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+			trashCan.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
+
+			triggers [0].SetActive(false);
+			triggers [1].SetActive(false);
+			triggers [2].SetActive(false);
+			triggers [3].SetActive(true);
+			triggers [4].SetActive(true);
+			triggers [5].SetActive(false);
 		}
 
 		/********************** TRIGGERS *****************************/
@@ -132,8 +156,10 @@ namespace VRAVE
 		{
 			switch (id) {
 			case 0: 
-				if (GetState ().Equals( States.AIDrivingToIntersection)) {
-					StartCoroutine (ChangeAIPaths (3f, ai_paths[0], carAI));
+				if (GetState ().Equals (States.AIDrivingToIntersection)) {
+					StartCoroutine (ChangeAIPaths (3f, ai_paths [0], carAI, () => { 
+						carController.MaxSpeed = 20f;
+					}));
 				}
 				break;
 			case 1: 
@@ -144,14 +170,31 @@ namespace VRAVE
 				break;
 			case 3:
 				UserCar.GetComponent<CarUserControl> ().enabled = false;
-				StartCoroutine (PostCollisionStateChange (2f));
+				StartCoroutine (PostCollisionStateChange (3f));
 				break;
 			case 4: 
 				trashCan.SetActive (true);
 				trashCan.GetComponent<TrashCanAnimator> ().roll ();
+				trashCanSensorResponseHandler.Enable = true;
+				StartCoroutine (PostTrashcanStateChange (6f));
 				break;
 			case 5: 
-				StartCoroutine (ChangeAIPaths (5f, ai_paths[2], UnsuspectingAI.GetComponent<CarAIControl>()));
+				StartCoroutine (ChangeAIPaths (4f, ai_paths [2], unsuspectingCarAI, () => {
+					unsuspectingCarAI.ReachTargetThreshold = 2f;
+					UnsuspectingAI.GetComponent<CarController> ().MaxSpeed = 30f;
+				}));
+				break;
+			case 6:
+				unsuspectingCarAI.CautiousSpeedFactor = 0.8f;
+				break;
+			case 7: 
+				StartCoroutine (ChangeAIPaths (4f, ai_paths [4], carAI, () => {
+					carAI.ReachTargetThreshold = 2f;
+					carController.MaxSpeed = 25f;
+				}));
+				break;
+			case 8:
+				carAI.CautiousSpeedFactor = 0.8f;
 				break;
 			}
 		}
@@ -180,15 +223,16 @@ namespace VRAVE
 			
 		public void HumanDrivingToIntersection_Enter ()
 		{
+			m_humanDrivingState = true;
 			UserCar.GetComponent<CarUserControl> ().enabled = true;
+			UserCar.GetComponent<CarUserControl> ().StartCar();
 		}
 
 		public void AIDrivingToIntersection_Enter ()
 		{
-			CameraFade.StartAlphaFade (Color.black, true, 3f, 0f, () => {
-				carAI.enabled = true;
-				sensitiveSensorResponseHandler.Enable = true;
-			});
+			m_humanDrivingState = false;
+			carAI.enabled = true;
+			sensitiveSensorResponseHandler.Enable = true;
 		}
 
 		/* going through intersection */
@@ -207,34 +251,56 @@ namespace VRAVE
 				sensitiveSensorResponseHandler.Enable = false;
 			}
 		}
-
+			
 		/**************************** Trash can states *********************/ 
 
 		public void TrashcanBriefing_Enter() {
-
-			UnsuspectingAI.GetComponent<CarAIControl> ().switchCircuit (ai_paths [1], 0);
-			UnsuspectingAI.GetComponent<CarAIControl> ().enabled = false;
-
+			resetTrashCanScenario ();
+			unsuspectingCarAI.enabled = false;
 			UnsuspectingAI.SetActive (true);
-			UnsuspectingAI.GetComponent<CarController> ().MaxSpeed = 30f;
+			UnsuspectingAI.GetComponent<CarController> ().MaxSpeed = 15f;
+			unsuspectingCarAI.ReachTargetThreshold = 5f;
 
-			CameraFade.StartAlphaFade (Color.black, true, 3f, 0f, () => {
-				triggers [0].SetActive(false);
-				triggers [1].SetActive(false);
-				triggers [2].SetActive(false);
-				triggers [3].SetActive(false);
-				triggers [4].SetActive(true);
-				UnsuspectingAI.GetComponent<CarAIControl> ().enabled = true;
+			unsuspectingCarAI.Circuit = ai_paths[1];
+			unsuspectingCarAI.enabled = true;
 
-				// Update HUD, explain what's gonna happen
-				ChangeState (States.HumanDrivingToTrashcan);
-			});
+			// Update HUD, explain what's gonna happen
+			ChangeState (States.HumanDrivingToTrashcan);
 		}
 
 		public void HumanDrivingToTrashcan_Enter() {
+			m_humanDrivingState = true;
+			carController.MaxSpeed = 15f;
 			UserCar.GetComponent<CarUserControl> ().enabled = true;
+			UserCar.GetComponent<CarUserControl> ().StartCar();
 		}
 
+		// change sensor angle to 100
+		public void AIDrivingToTrashcan_Enter() {
+			m_humanDrivingState = false;
+
+			unsuspectingCarAI.enabled = false;
+			UnsuspectingAI.SetActive (true);
+			UnsuspectingAI.GetComponent<CarController> ().MaxSpeed = 15f;
+			carController.MaxSpeed = 15f;
+			unsuspectingCarAI.ReachTargetThreshold = 5f;
+			carAI.ReachTargetThreshold = 5f;
+			UserCar.GetComponent<Sensors> ().M_shortSensorAngleDelta = 100f;
+
+			// enable the trigger for changing the path of the user AI
+			triggers [5].SetActive(true);
+
+			unsuspectingCarAI.Circuit = ai_paths[1];
+			carAI.GetComponent<CarAIControl> ().Circuit = ai_paths[3];
+			carAI.enabled = true;
+			unsuspectingCarAI.enabled = true;
+		}
+
+		public void Finish_Enter() {
+			Debug.Log ("Finish!");
+			carController.MaxSpeed = 0f;
+			// Application.LoadLevel(Lobby)
+		}
 
 		/************* Coroutines *****************/
 
@@ -244,8 +310,8 @@ namespace VRAVE
 		
 			// use a lambda expression to define the callback
 			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
-				resetIntersectionScenario ();
-				if (!carAI.enabled) {
+				if (m_humanDrivingState) {
+					resetIntersectionScenario ();
 					ChangeState (States.AIDrivingToIntersection);
 				} else {					
 					ChangeState (States.TrashcanBriefing);
@@ -256,7 +322,31 @@ namespace VRAVE
 		private IEnumerator ChangeAIPaths (float time, UnityStandardAssets.Utility.WaypointCircuit wc, CarAIControl ai)
 		{
 			yield return new WaitForSeconds (time);
-			ai.Circuit = wc;
+			ai.switchCircuit(wc, 0);
+		}
+
+		private IEnumerator ChangeAIPaths (float time, UnityStandardAssets.Utility.WaypointCircuit wc, CarAIControl ai, Action postPathChange)
+		{
+			yield return new WaitForSeconds (time);
+			ai.switchCircuit(wc, 0);
+			if (postPathChange != null) {
+				postPathChange ();					
+			}
+		}
+
+		private IEnumerator PostTrashcanStateChange( float time )
+		{
+			yield return new WaitForSeconds (time); 
+
+			// use a lambda expression to define the callback
+			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
+				if (m_humanDrivingState) {
+					resetTrashCanScenario ();
+					ChangeState (States.AIDrivingToTrashcan);
+				} else {					
+					ChangeState (States.Finish);
+				}
+			});
 		}
 	}
 }

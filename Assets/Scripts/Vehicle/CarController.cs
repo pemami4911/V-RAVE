@@ -52,8 +52,8 @@ namespace VRAVE
 
 
 		public void ResetSpeed () {
-			GetComponentInParent<Rigidbody> ().velocity = new Vector3 (0f, 0f, 0f);
-			GetComponentInParent<Rigidbody> ().angularVelocity = new Vector3 (0f, 0f, 0f);
+			GetComponent<Rigidbody> ().velocity = new Vector3 (0f, 0f, 0f);
+			GetComponent<Rigidbody> ().angularVelocity = new Vector3 (0f, 0f, 0f);
 		}
 
 		public float ReverseTorque { get { return m_ReverseTorque; } set { m_ReverseTorque = value; } }

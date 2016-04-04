@@ -11,7 +11,6 @@ namespace VRAVE
 		// Use this for initialization
 		public void roll ()
 		{
-			Debug.Log ("We're rolling!");
 			transform.GetComponent<Rigidbody> ().AddForce (-Vector3.right * trashCanForce, ForceMode.Acceleration);
 		}
 	}

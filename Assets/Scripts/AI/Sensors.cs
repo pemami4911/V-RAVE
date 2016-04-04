@@ -40,17 +40,14 @@ namespace VRAVE
 		[SerializeField] private bool m_shortRangeSensorsEnable = true;
 		[SerializeField] private bool m_longRangeSensorsEnable = true;
 		[SerializeField] private float m_lateralSensorShift = 1f;
-		[Range(10f, 90f)][SerializeField] private float m_PassingSensorAngle = 15f;
 
 		private readonly float shortRangeSensorsHeight = 0.25f;
 		private readonly float longRangeSensorsHeight = 0.6f;
 
 		/* IDs for look-up */
 
-		// the reverse-facing right side sensor is sensor 0
-		// short-range sensors are integers from 1 to n, n = number of short range sensors
+		// short-range sensors are integers from 0 to n-1, n = number of short range sensors
 		// long-range sensors are integers from n+1 to m, where (m - n + 1) is the number of long range sensors
-		private readonly int numPassingSensors = 1;
 		private readonly int numShortRangeSensors = 24;
 		private readonly int numLongRangeSensors = 3;
 		private int layerMask = 1 << 2;
@@ -61,7 +58,7 @@ namespace VRAVE
 		private void Awake()
 		{
 			longRangeSensorsArray = new VRAVESensor[numLongRangeSensors];
-			shortRangeSensorsArray = new VRAVESensor[numShortRangeSensors + numPassingSensors];
+			shortRangeSensorsArray = new VRAVESensor[numShortRangeSensors];
 
 			layerMask = ~layerMask;
 		}
@@ -72,24 +69,20 @@ namespace VRAVE
 			float delta = m_shortSensorAngleDelta / (numShortRangeSensors-1);
 			float angle = -(m_shortSensorAngleDelta / 2);
 
-			for (int idx = numPassingSensors; idx <= numShortRangeSensors; ++idx)
+			for (int idx = 0; idx < numShortRangeSensors; ++idx)
 			{
 				Quaternion deviation = Quaternion.AngleAxis (angle, new Vector3 (0, 1, 0));
 				shortRangeSensorsArray [idx] = new VRAVESensor(idx, deviation * transform.forward);
 				angle = angle + delta;
 			}
-
-			Quaternion passingSensorRot = Quaternion.AngleAxis (-m_PassingSensorAngle, new Vector3(0, 1, 0));
-			// passing sensor is 0th
-			shortRangeSensorsArray[0] = new VRAVESensor(0, passingSensorRot * -transform.forward);
 		}
 
 		private void InitLongRangeSensors()
 		{
 			// long range sensors
-			longRangeSensorsArray [0] = new VRAVESensor(numPassingSensors + numShortRangeSensors, transform.forward * m_sensorsStart);
-			longRangeSensorsArray [1] = new VRAVESensor(numPassingSensors + numShortRangeSensors + 1, longRangeSensorsArray [0].Direction);
-			longRangeSensorsArray [2] = new VRAVESensor(numPassingSensors + numShortRangeSensors + 2, longRangeSensorsArray [0].Direction);
+			longRangeSensorsArray [0] = new VRAVESensor(numShortRangeSensors, transform.forward * m_sensorsStart);
+			longRangeSensorsArray [1] = new VRAVESensor(numShortRangeSensors + 1, longRangeSensorsArray [0].Direction);
+			longRangeSensorsArray [2] = new VRAVESensor(numShortRangeSensors + 2, longRangeSensorsArray [0].Direction);
 		}
 			
 		public bool Scan (out Dictionary<int, VRAVEObstacle> obstacles)
@@ -113,15 +106,16 @@ namespace VRAVE
 					if (Physics.Raycast (shortRangeSensorsStart, scan.Direction, out shortSensorsHit, m_shortSensorLength, layerMask)) 
 					{
 						if (shortSensorsHit.collider.CompareTag (VRAVEStrings.Obstacle) ||
-							shortSensorsHit.collider.CompareTag (VRAVEStrings.AI_Car)) 
+							shortSensorsHit.collider.CompareTag (VRAVEStrings.AI_Car) ||
+							shortSensorsHit.collider.CompareTag (VRAVEStrings.Crazy_AI_Car)) 
 						{
 							if (!obstacles.ContainsKey(scan.ID))
 							{
-								//Debug.DrawLine (shortRangeSensorsStart, shortSensorsHit.point, Color.yellow);
+								Debug.DrawLine (shortRangeSensorsStart, shortSensorsHit.point, Color.yellow);
 								VRAVEObstacle vo = new VRAVEObstacle ();
 								vo.obstacle = shortSensorsHit;
 								vo.obstacleTag = shortSensorsHit.collider.tag;
-								vo.Distance = (shortSensorsHit.point - transform.position).magnitude;
+								vo.Distance = shortSensorsHit.distance;
 								obstacles.Add (scan.ID, vo);
 							}
 						}
@@ -194,6 +188,15 @@ namespace VRAVE
 			}
 
 			return true;
+		}
+
+		public float M_shortSensorAngleDelta {
+			get {
+				return m_shortSensorAngleDelta;
+			}
+			set {
+				m_shortSensorAngleDelta = value;
+			}
 		}
 	}
 }

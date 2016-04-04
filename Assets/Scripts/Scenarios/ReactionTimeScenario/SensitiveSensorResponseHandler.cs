@@ -15,7 +15,7 @@ public class SensitiveSensorResponseHandler : SensorResponseHandler {
 			}
 
 			foreach (VRAVEObstacle vo in obstacles.Values) {
-				if (vo.obstacleTag.Equals(VRAVEStrings.Crazy_AI)) {
+				if (vo.obstacleTag.Equals(VRAVEStrings.Crazy_AI_Car)) {
 					controller.Driving = false;
 					return;
 				}
