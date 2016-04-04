@@ -13,7 +13,10 @@ namespace VRAVE {
 		private HUDController hudController;
 		private HUDAudioController audioController;
 
+		private Vector3 USER_STARTING_POSITION = new Vector3 (25.92f, 0.26f, 1.9f);
+		private Quaternion USER_STARTING_ROTATION = Quaternion.Euler (0f, 0f, 0f);
 		private float INITIAL_FOG_DENSITY = 0.1f;
+		private float END_SCENARIO_WAIT_TIME = 4.0f;
 
 		public enum States 
 		{
@@ -47,6 +50,9 @@ namespace VRAVE {
 		}
 
 		private void resetScenario() {
+			UserCar.transform.position = USER_STARTING_POSITION;
+			UserCar.transform.rotation = USER_STARTING_ROTATION;
+
 			RenderSettings.fog = true; //enable fog bruh
 			RenderSettings.fogMode = FogMode.Exponential;
 			RenderSettings.fogDensity = INITIAL_FOG_DENSITY;
@@ -80,6 +86,15 @@ namespace VRAVE {
 					hudController.model.centerText = "Turn left";
 				}
 				break;
+			case 4:
+				Debug.Log ("CollisionTrigger triggered");
+				if (GetState ().Equals (States.UserWarnCollision)) { 
+					Debug.Log ("Switching to UserStopped state");
+					ChangeState (States.UserStopped);
+				} else if (GetState().Equals (States.AIWarnCollision)) {
+					ChangeState (States.AIStopped);
+				}
+				break;
 			default:
 				break;
 			}
@@ -88,10 +103,18 @@ namespace VRAVE {
 		public void UserDriveRoute_Enter() {
 			spawnController.enterScenario ();
 			hudController.model.centerText = "Proceed to intersection";
+
+			UserCar.GetComponent<CarAIControl> ().enabled = false;
+			UserCar.GetComponent<CarUserControl> ().enabled = true;
 		}
 
 		public void AIDriveRoute_Enter() {
-			//TODO
+			Debug.Log ("Entered AI Drive state");
+			spawnController.resetInitialSpawns ();
+
+			UserCar.GetComponent<CarAIControl> ().enabled = true;
+			UserCar.GetComponent<CarAIControl> ().IsCircuit = false;
+			UserCar.GetComponent<CarUserControl> ().enabled = false;
 		}
 
 		public void UserApproachTraffic_Enter() {
@@ -114,7 +137,24 @@ namespace VRAVE {
 		}
 
 		public void UserStopped_Enter() {
-			//TODO
+			Debug.Log ("Reached end of scenario for user drive");
+			StartCoroutine (postStopStateChange (END_SCENARIO_WAIT_TIME));
+
+		}
+
+		private IEnumerator postStopStateChange(float time) {
+			yield return new WaitForSeconds (time);
+
+			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
+				if(GetState().Equals(States.UserStopped)) { //fix this so I'm not checking states all the time
+					Debug.Log("Preparing to reset scenario...");
+					resetScenario ();
+					ChangeState (States.AIDriveRoute);
+				}
+				else {
+					Debug.Log("Else statement reached in postStopStateChange()");
+				}
+			});
 		}
 
 		public void AIStopped_Enter() {
