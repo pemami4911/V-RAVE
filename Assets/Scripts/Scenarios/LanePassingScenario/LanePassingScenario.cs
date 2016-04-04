@@ -48,10 +48,10 @@ namespace VRAVE
         {
             InitState,
             FollowingInstruction,
-            Following,
+            Following,  //Effectively UserMode (Used only for User)
             PassingInstruction,
             WaitToPass,
-            Passing,
+            Passing,  //Effectively AIMode (Used only for AI)
             ChangeMode
         }
 
@@ -189,21 +189,29 @@ namespace VRAVE
         {
 
             userCarAI.enabled = false;
+            AIVehicleAI.enabled = false;
+
             UserCar.GetComponent<CarUserControl>().enabled = false;
 
-            AIVehicleAI.enabled = false;
-            //UnsuspectingAI.SetActive(false);
+            UserCar.GetComponent<CarUserControl>().StopCar();
+
+            userCarController.ResetSpeed();
+            AIVehicleCarController.ResetSpeed();
+
+            //UserCar.GetComponent<WheelCollider>
+            UserCar.SetActive(false);
+            AIVehicle.SetActive(false);
 
             AIVehicle.transform.position = new Vector3(25.9f, 0.457f, 1f);
             AIVehicle.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-
-            //userCarController.ResetSpeed();
 
             UserCar.transform.position = new Vector3(26f, 0.26f, -6f);
             UserCar.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
             //UnsuspectingAI.transform.position = new Vector3(-34f, 0.01f, 63.07f);
             //UnsuspectingAI.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+
+            canPass = false;
 
             // reset circuits
             userCarAI.Circuit = AITrack;
@@ -235,7 +243,7 @@ namespace VRAVE
             //POSSIBLY DONT NEED THIS
             // 	Change to steering wheel paddle
             Debug.Log("Waiting for Input");
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
                 ChangeState(States.FollowingInstruction);
             }
@@ -273,7 +281,7 @@ namespace VRAVE
                     ChangeState(States.Following);
                 }
             }
-            else
+            else  //Not used anymore
             {
                 // 	Change to steering wheel paddle
                 if (Input.GetKeyDown(KeyCode.Return))
@@ -289,6 +297,7 @@ namespace VRAVE
         public void Following_Enter()
         {
             Debug.Log("Entered: Following");
+            (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
             AIVehicleAI.Circuit = AITrack;
             AIVehicleAI.enabled = true;
             AIVehicleAI.IsCircuit = true;
@@ -299,7 +308,7 @@ namespace VRAVE
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
                 userCarAI.enabled = false;
             }
-            else
+            else  //Not used
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
                 userCarAI.Circuit = UserTrack;
@@ -312,39 +321,42 @@ namespace VRAVE
         public void Following_Update()
         {
             //followHandler.Enable = true;
-            //userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
-            if (Input.GetButton("Fire3"))
+            //Leave UserMode and Being AI Mode
+            AIVehicle.SetActive(true);
+            if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
-                    Time.timeScale = 0;
-                    resetScenario();
-                    CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
-                    Time.timeScale = 1;
-                    ChangeState(States.PassingInstruction);
+                (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
+                CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
+                ChangeState(States.ChangeMode);
             }
         }
 
         /* PASSING INSTRUCTION */
-
+        //The AI part of the simulation
         public void PassingInstruction_Enter()
         {
-            //POSSIBLY ADD Time.timeScale = 1;
-            CameraFade.StartAlphaFade(Color.black, true, 2f, 0.5f);
+            CameraFade.StartAlphaFade(Color.black, true, 1f, 3f);
 
             Debug.Log("Entered: PassingInstruction");
             //GameObject[] go = GameObject.FindGameObjectsWithTag("Path");
             //WaypointCircuit wc = GameObject.Find("Figure8_North_3-22").GetComponent<WaypointCircuit>();
-            AIVehicleAI.Circuit = AITrack;
+            UserCar.GetComponent<CarUserControl>().StartCar();
+            AIVehicleAI.enabled = false;
+            userCarAI.enabled = false;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
-            ChangeState(States.WaitToPass);
+            //ChangeState(States.WaitToPass);
         }
 
         public void PassingInstruction_Update()
         {
             //Move to WaitToPass
-            //if (Input.GetKey(KeyCode.Return))
-            //{
-            //    ChangeState(States.WaitToPass);
-            //}
+            if (Input.GetButtonDown((VRAVEStrings.Right_Paddle)))
+            {
+                AIVehicleAI.enabled = true;
+                AIVehicleAI.Circuit = AITrack;
+                AIVehicleAI.IsCircuit = true;
+                ChangeState(States.WaitToPass);
+            }
         }
 
         /* WaitToPass */
@@ -353,8 +365,6 @@ namespace VRAVE
         {
             
             Debug.Log("Entered: WaitToPass");
-            AIVehicleAI.enabled = true;
-            AIVehicleAI.IsCircuit = true;
             //(AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;  Already called in PassingInstruction
 
             if (userMode)
@@ -381,13 +391,14 @@ namespace VRAVE
         {
             Debug.Log("Update: WaitToPass");
 
-            if (Input.GetButton("Fire3"))
+            if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
                 ChangeState(States.ChangeMode);
             }
 
-            if (Input.GetKey(KeyCode.Space) && canPass == true)
+            if (Input.GetButton(VRAVEStrings.Left_Paddle) && (canPass == true))
             {
+                Debug.Log("Should start passing");
                 getPassTrack();
                 lanePassingHandler.Enable = true;
             }
@@ -437,7 +448,7 @@ namespace VRAVE
             //userCarController.SetSpeed = new Vector3(0,0,40f);
 
 
-            if (userMode)
+            if (userMode)  //Should never be called
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
                 userCarAI.enabled = false;
@@ -456,19 +467,19 @@ namespace VRAVE
 
         public void ChangeMode_Enter()
         {
-            Time.timeScale = 0;
-            CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
             resetScenario();
-            Time.timeScale = 1;
             if(userMode)
             {
                 userMode = false;
                 userCarController.MaxSteeringAngle = 35f;
+                AIVehicle.SetActive(true);
+                UserCar.SetActive(true);
                 //Show AI passing and following
                 ChangeState(States.PassingInstruction);
             }
             else  //End scenario
             {
+                Debug.Log("End Scenario. Back to Lobby.");
                 userMode = true;
                 ChangeState(States.FollowingInstruction);
             }

@@ -43,11 +43,11 @@ namespace VRAVE
 
         private bool passingCheck(Dictionary<int, VRAVEObstacle> obstacles)
         {
-            if (obstacles.ContainsKey(7) && obstacles[7].obstacleTag.Equals("AI_Car"))
-            {;
-                if (obstacles[7].Distance <= 10f)
+            if (obstacles.ContainsKey(24) && obstacles[24].obstacleTag.Equals(VRAVEStrings.AI_Car))
+            {
+                if (obstacles[24].Distance <= 10f)
                 {
-                    if (!obstacles.ContainsKey(9) || ((obstacles.ContainsKey(9) && obstacles[9].Distance >= 20)))
+                    if (!obstacles.ContainsKey(26) || ((obstacles.ContainsKey(26) && obstacles[9].Distance >= 26)))
                     {
                         Debug.Log("Passing Conditions Met!");
                         return true;

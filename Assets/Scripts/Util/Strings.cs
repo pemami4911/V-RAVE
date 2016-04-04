@@ -9,6 +9,7 @@ namespace VRAVE
 		public static string Player = "Player";
 		public static string Obstacle = "Obstacle";
 		public static string Left_Paddle = "LeftPaddle";
+        public static string Right_Paddle = "RightPaddle";
 
         //Bryce's Scenario
         public static string PassingTrack5 = "Passing5";
