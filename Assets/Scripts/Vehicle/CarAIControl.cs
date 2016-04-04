@@ -88,6 +88,7 @@ namespace VRAVE
 		private bool m_isAvoidingObstacle;
 		private float m_obstacleAvoidanceSteerAmount;
 
+
 		/* Awake */
 
 		private void Awake ()
