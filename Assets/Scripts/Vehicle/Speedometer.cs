@@ -14,7 +14,7 @@ public class Speedometer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        int speed = (int)m_Car.CurrentSpeed;
+		int speed = (int)Mathf.Round(m_Car.CurrentSpeed);
         GetComponent<TextMesh>().text = speed.ToString();
 	}
 }

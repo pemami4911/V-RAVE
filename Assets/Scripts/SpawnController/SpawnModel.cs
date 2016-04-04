@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VRAVE {
 
-	//Extend this class with your own spawn model - it will contain the position & rotations of all the items you want to spawn
+	//Extend this class with your own spawn Model - it will contain the position & rotations of all the items you want to spawn
 	//Set the SpawnModel in SpawnController to use your SpawnModel for your scenario
 	//initial spawn items are spawned on scenario enter (call enterScenario() in SpawnController)
 	//on demand spawn items are spawned by index
@@ -16,7 +16,7 @@ namespace VRAVE {
 
 		//the name of the resource to use. 
 		//NOTE: the resource must be stored in the Resources folder
-		public static string AI_car_resource = "AICar";
+		public static string AI_car_resource = "AI_Vehicle_3-22";
 
 		public static Quaternion default_quaternion = Quaternion.Euler(0, 0, 0);
 
