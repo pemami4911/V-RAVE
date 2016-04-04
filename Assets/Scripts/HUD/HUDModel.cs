@@ -64,11 +64,13 @@ public class HUDModel {
 		topTextPosition = new Vector3(0,0, 0 );
 		bottomTextPosition = new Vector3(0,0, 0 );
 
-		centerText = "Alert!";
-		leftText = ">Senior Design Spring 2016";
-		rightText = "Vehicle:\n100%";
-		topText = "TOP";
-		bottomText = "BOTTOM";
+
+//		centerText = "Alert!";
+//		leftText = ">Hi, Dave.";
+//		rightText = "Vehicle:\n100%";
+//		topText = "TOP";
+//		bottomText = "BOTTOM";
+
 
 		centerCharSize = 0.005f;
 		leftCharSize = 0.0025f;
@@ -89,7 +91,7 @@ public class HUDModel {
 		isBottomTextEnabled = false;
 
 		//Image
-		centerImagePosition = new Vector3(0,0, 0 );
+		centerImagePosition = new Vector3(0, 0, 0);
 		centerImageScale = new Vector3 (0.5f, 0.5f, 0.5f);
 		isCenterImageEnabled = false;
 		centerBackingMaterial = Resources.Load("schedule", typeof(Material)) as Material;
