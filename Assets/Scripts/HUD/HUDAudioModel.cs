@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-//the model for audio used in your scenario
+//the Model for audio used in your scenario
 //its basically just a list, for your AudioModel you'll extend this class and add your own audio samples
 //from there, 
 public class HUDAudioModel {
