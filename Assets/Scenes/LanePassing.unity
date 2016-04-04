@@ -17676,7 +17676,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 404726, guid: 1a7c357295593a74d9a741f259eb36bb, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 8.3
       objectReference: {fileID: 0}
     - target: {fileID: 404726, guid: 1a7c357295593a74d9a741f259eb36bb, type: 2}
       propertyPath: m_LocalRotation.x
@@ -17696,7 +17696,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 404726, guid: 1a7c357295593a74d9a741f259eb36bb, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 11463636, guid: 1a7c357295593a74d9a741f259eb36bb, type: 2}
       propertyPath: circuit
@@ -22580,6 +22580,10 @@ Prefab:
     - target: {fileID: 11478288, guid: 181b0f998d73c954c9bd9695646d5c53, type: 2}
       propertyPath: m_FullTorqueOverAllWheels
       value: 750
+      objectReference: {fileID: 0}
+    - target: {fileID: 143998, guid: 181b0f998d73c954c9bd9695646d5c53, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8283624, guid: 181b0f998d73c954c9bd9695646d5c53, type: 2}

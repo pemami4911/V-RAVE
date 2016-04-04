@@ -24,7 +24,7 @@ namespace VRAVE
         private void onEnable()
         {
             //When switched to UserControl mode, expand steeringAngle
-            m_Car.MaxSteeringAngle = 60f;
+            //m_Car.MaxSteeringAngle = 60f;
         }
 
 

@@ -105,7 +105,7 @@ namespace VRAVE
 
                 case 1: //Slow Down
                     AIVehicleCarController.MaxSpeed = 10;
-                    if (!alreadyPassed)
+                    if (!userMode && !alreadyPassed)
                     {
                         userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
                     }
@@ -113,7 +113,7 @@ namespace VRAVE
 
                 case 2:  //Speed Up
                     AIVehicleCarController.MaxSpeed = 25;
-                    if (!alreadyPassed)
+                    if (!userMode &&!alreadyPassed)
                     {
                         userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
                     }
@@ -218,7 +218,7 @@ namespace VRAVE
         {
             if(userMode)
             {
-                //do things
+                userCarController.MaxSteeringAngle = 55f;
             }
             Debug.Log("Enter: InitState");
             //UseCar and AI Vehicles Created
@@ -463,6 +463,7 @@ namespace VRAVE
             if(userMode)
             {
                 userMode = false;
+                userCarController.MaxSteeringAngle = 35f;
                 //Show AI passing and following
                 ChangeState(States.PassingInstruction);
             }
