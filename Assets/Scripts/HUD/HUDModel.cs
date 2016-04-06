@@ -52,6 +52,9 @@ public class HUDModel {
 	public Vector3 rightImageScale { get; set; }
 	public bool isRightImageEnabled { get; set; }
 	public Material rightBackingMaterial;
+
+	public Material warningIcon { get; protected set; }
+	public Material collisionIcon { get; protected set; }
 	
 	public HUDModel() {
 
@@ -104,5 +107,7 @@ public class HUDModel {
 		isRightImageEnabled = false;
 		rightBackingMaterial = Resources.Load("alert", typeof(Material)) as Material;
 
+		warningIcon = Resources.Load ("warning", typeof(Material)) as Material;
+		collisionIcon = Resources.Load ("collision", typeof(Material)) as Material;
 	}
 }
