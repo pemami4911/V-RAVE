@@ -104,10 +104,11 @@ namespace VRAVE
             switch (id)
             {
                 case 0:
-                    Debug.Log("Case 0!!!");
-                    //WaypointCircuit wc = GameObject.Find("LeftTurn_Circuit").GetComponent<WaypointCircuit>();
-                    //userCarAI.switchCircuit(wc, 0);
-                    //userCarAI.IsCircuit = true;
+                    AIVehicleCarController.MaxSpeed = 15;
+                    if (!userMode && !alreadyPassed)
+                    {
+                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                    }
                     break;
 
                 case 1: //Slow Down
@@ -231,6 +232,7 @@ namespace VRAVE
         // HUD and Audio changes
         public void InitState_Enter()
         {
+            hudController.model = new HUD_LanePassing_Init();
             if(userMode)
             {
                 userCarController.MaxSteeringAngle = 55f;
@@ -336,8 +338,10 @@ namespace VRAVE
             if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-                CameraFade.StartAlphaFade(Color.black, false, 2f, 0f);
-                ChangeState(States.ChangeMode);
+                CameraFade.StartAlphaFade(Color.black, false, 3f, 0f, () =>
+                {
+                    ChangeState(States.ChangeMode);
+                });
             }
         }
 
@@ -345,16 +349,12 @@ namespace VRAVE
         //The AI part of the simulation
         public void PassingInstruction_Enter()
         {
-            CameraFade.StartAlphaFade(Color.black, true, 1f, 2f);
+            //CameraFade.StartAlphaFade(Color.black, true, 1.5f, 2f);   //Causes problems.
             mirror.SetActive(true);
-            Debug.Log("Entered: PassingInstruction");
-            //GameObject[] go = GameObject.FindGameObjectsWithTag("Path");
-            //WaypointCircuit wc = GameObject.Find("Figure8_North_3-22").GetComponent<WaypointCircuit>();
             UserCar.GetComponent<CarUserControl>().StartCar();
             AIVehicleAI.enabled = false;
             userCarAI.enabled = false;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
-            //ChangeState(States.WaitToPass);
         }
 
         public void PassingInstruction_Update()
