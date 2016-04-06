@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityStandardAssets.CrossPlatformInput;
 
+namespace VRAVE
+{
 public class HUDAudioController : MonoBehaviour {
 
 	public HUDAudioModel audioModel { get; set; } //set this property with your own HUDAudioModel
 	private AudioSource hudAudioSource; //the component that plays the sound
 
-	void Start () {
+	private void Awake () {
 		audioModel = new HUDAudioModel ();
-		hudAudioSource = GetComponent<AudioSource>();
+		hudAudioSource = GetComponentInParent<AudioSource>();
 	}
 
 	//plays audio from the HUDAudioModel
@@ -26,4 +28,5 @@ public class HUDAudioController : MonoBehaviour {
 		hudAudioSource.clip = audio;
 		hudAudioSource.Play ();
 	}
+}
 }
