@@ -15,6 +15,7 @@ namespace VRAVE
         public static string PassingTrack5 = "Passing5";
         public static string PassingTrack10 = "Passing10";
         public static string PassingTrack25 = "Passing25";
+        public static string Mirror = "Mirror";
 
 		// Patrick's scenario
 		public static string AI_Intersection_Path2 = "AI_IntersectionPath2";

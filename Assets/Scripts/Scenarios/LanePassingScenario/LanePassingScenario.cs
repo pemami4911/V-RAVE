@@ -35,6 +35,7 @@ namespace VRAVE
         private FollowingSensorResponseHandler followHandler;
 
         private WaypointCircuit passingTrack;
+        private GameObject mirror;
         private bool userMode;
         private bool canPass = false;
         private bool alreadyPassed = false;
@@ -84,8 +85,14 @@ namespace VRAVE
             followHandler = UserCar.GetComponent<FollowingSensorResponseHandler>();
 
             userMode = true;
+
+            UserCar.SetActive(true);
+            AIVehicle.SetActive(true);
+
+            mirror = GameObject.FindWithTag(VRAVEStrings.Mirror);
+
             //triggers[2].gameObject.SetActive(false);
-                
+
             ChangeState(States.InitState);
         }
 
@@ -98,9 +105,9 @@ namespace VRAVE
             {
                 case 0:
                     Debug.Log("Case 0!!!");
-                    WaypointCircuit wc = GameObject.Find("LeftTurn_Circuit").GetComponent<WaypointCircuit>();
-                    userCarAI.switchCircuit(wc, 0);
-                    userCarAI.IsCircuit = true;
+                    //WaypointCircuit wc = GameObject.Find("LeftTurn_Circuit").GetComponent<WaypointCircuit>();
+                    //userCarAI.switchCircuit(wc, 0);
+                    //userCarAI.IsCircuit = true;
                     break;
 
                 case 1: //Slow Down
@@ -198,7 +205,10 @@ namespace VRAVE
             userCarController.ResetSpeed();
             AIVehicleCarController.ResetSpeed();
 
-            //UserCar.GetComponent<WheelCollider>
+            if(mirror != null)
+            {
+                mirror.SetActive(false);
+            }
             UserCar.SetActive(false);
             AIVehicle.SetActive(false);
 
@@ -207,9 +217,6 @@ namespace VRAVE
 
             UserCar.transform.position = new Vector3(26f, 0.26f, -6f);
             UserCar.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-
-            //UnsuspectingAI.transform.position = new Vector3(-34f, 0.01f, 63.07f);
-            //UnsuspectingAI.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
 
             canPass = false;
 
@@ -258,10 +265,13 @@ namespace VRAVE
             Debug.Log("Enter: FollowingInstruction");
 
             //Play insructions here!!!
+            mirror.SetActive(true);
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
             if (userMode)
             {
+                UserCar.GetComponent<CarUserControl>().StartCar();
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
+                userCarAI.enabled = false;
             }
             else
             {
@@ -326,7 +336,7 @@ namespace VRAVE
             if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-                CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
+                CameraFade.StartAlphaFade(Color.black, false, 2f, 0f);
                 ChangeState(States.ChangeMode);
             }
         }
@@ -335,8 +345,8 @@ namespace VRAVE
         //The AI part of the simulation
         public void PassingInstruction_Enter()
         {
-            CameraFade.StartAlphaFade(Color.black, true, 1f, 3f);
-
+            CameraFade.StartAlphaFade(Color.black, true, 1f, 2f);
+            mirror.SetActive(true);
             Debug.Log("Entered: PassingInstruction");
             //GameObject[] go = GameObject.FindGameObjectsWithTag("Path");
             //WaypointCircuit wc = GameObject.Find("Figure8_North_3-22").GetComponent<WaypointCircuit>();
@@ -393,6 +403,7 @@ namespace VRAVE
 
             if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
+                CameraFade.StartAlphaFade(Color.black, false, 2f, 0f);
                 ChangeState(States.ChangeMode);
             }
 
@@ -480,6 +491,9 @@ namespace VRAVE
             else  //End scenario
             {
                 Debug.Log("End Scenario. Back to Lobby.");
+                userCarController.MaxSteeringAngle = 55f;
+                AIVehicle.SetActive(true);
+                UserCar.SetActive(true);
                 userMode = true;
                 ChangeState(States.FollowingInstruction);
             }
