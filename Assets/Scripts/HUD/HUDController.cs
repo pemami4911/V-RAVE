@@ -28,6 +28,9 @@ public class HUDController : MonoBehaviour {
 
 	public HUDModel model;
 
+	public HUDModel[] models;
+	public float[] durations;
+
 	// Use this for initialization
 	void Awake () {
 
