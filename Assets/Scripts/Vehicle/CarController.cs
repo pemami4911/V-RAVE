@@ -50,7 +50,7 @@ namespace VRAVE
 		private Rigidbody m_Rigidbody;
 		private const float k_ReversingThreshold = 0.01f;
 
-        public void ResetSpeed () {
+		public void ResetSpeed () {
 			GetComponent<Rigidbody> ().velocity = new Vector3 (0f, 0f, 0f);
 			GetComponent<Rigidbody> ().angularVelocity = new Vector3 (0f, 0f, 0f);
 		}

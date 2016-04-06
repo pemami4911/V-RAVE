@@ -32,8 +32,6 @@ namespace VRAVE
 	// and the short range sensors are for obstacles that we can't avoid
 	public class Sensors : MonoBehaviour 
 	{
-        public const int NUM_SENSORS = 9;
-
 		// adjustable values
 		[SerializeField] private float m_sensorsStart = 1f;
 		[Range(10f, 180f)][SerializeField] private float m_shortSensorAngleDelta = 30f;
@@ -56,17 +54,6 @@ namespace VRAVE
 
 		private VRAVESensor[] longRangeSensorsArray; 
 		private VRAVESensor[] shortRangeSensorsArray;
-
-        public int numShortSensors()
-        {
-            return numShortRangeSensors;
-        }
-
-        //Number of total sensors, not including the passing sensor.
-        public int numSensors()
-        {
-            return numShortRangeSensors + numLongRangeSensors;
-        }
 
 		private void Awake()
 		{
