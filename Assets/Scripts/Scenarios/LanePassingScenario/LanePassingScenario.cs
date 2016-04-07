@@ -121,7 +121,7 @@ namespace VRAVE
 
                 case 2:  //Speed Up
                     AIVehicleCarController.MaxSpeed = 25;
-                    if (!userMode &&!alreadyPassed)
+                    if (!userMode && !alreadyPassed)
                     {
                         userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
                     }
@@ -146,6 +146,8 @@ namespace VRAVE
                     userCarController.FullTorqueOverAllWheels = 750;
                     userCarAI.CautiousSpeedFactor = 0.4f;
                     alreadyPassed = true;
+					//triggerToggle = false;
+					userCarController.MaxSpeed = 20;
                     break;
 
                 case 10:
@@ -169,7 +171,7 @@ namespace VRAVE
                 case 30:  
                     //User Vehicle slows down before right turn
                     //Debug.Log("SLOW DOWN!");
-                    if (triggerToggle)
+                    if (triggerToggle && !alreadyPassed)
                     {
                         //userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed - 10.0f;
                         userCarAI.AvoidOtherCarTime = Time.time + 3f;
@@ -177,10 +179,13 @@ namespace VRAVE
                     }
                     break;
                 case 31:
-                    //User vehicle Speeds back up
-                    //Debug.Log("Speed back up!");
-                    userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
-                    break;
+					//User vehicle Speeds back up
+					//Debug.Log("Speed back up!");
+					if (triggerToggle && !alreadyPassed)
+					{
+						userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+					}
+					break;
 
                 case 32:
                     triggerToggle = false;
@@ -235,7 +240,7 @@ namespace VRAVE
             hudController.model = new HUD_LanePassing_Init();
             if(userMode)
             {
-                userCarController.MaxSteeringAngle = 55f;
+                userCarController.MaxSteeringAngle = 50f;
             }
             //Debug.Log("Enter: InitState");
             //UseCar and AI Vehicles Created
@@ -338,7 +343,7 @@ namespace VRAVE
             if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-                CameraFade.StartAlphaFade(Color.black, false, 3f, 0f, () =>
+                CameraFade.StartAlphaFade(Color.black, false, 2, 0f, () =>
                 {
                     ChangeState(States.ChangeMode);
                 });
@@ -491,7 +496,7 @@ namespace VRAVE
             else  //End scenario
             {
                 //Debug.Log("End Scenario. Back to Lobby.");
-                userCarController.MaxSteeringAngle = 55f;
+                userCarController.MaxSteeringAngle = 50f;
                 AIVehicle.SetActive(true);
                 UserCar.SetActive(true);
                 userMode = true;
