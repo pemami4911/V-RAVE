@@ -10,10 +10,11 @@ namespace VRAVE
 		private HUDAudioController hudAudioController;
 		private HUDController hudTextController;
 
-		private void Awake ()
+		// use GetComponentInParents<...> in your scenario
+		public void Configure(HUDAudioController hudAC, HUDController hudC)
 		{
-			hudAudioController = GetComponentInParent<HUDAudioController> ();
-			hudTextController = GetComponentInParent<HUDController> ();
+			hudAudioController = hudAC;
+			hudTextController = hudC;
 		}
 
 		public void RepeatAudio (int idx, int numTimes)

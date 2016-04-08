@@ -29,9 +29,9 @@ namespace VRAVE
 		// 4 - UserCar_Trashcan_Path2
 		[SerializeField] private UnityStandardAssets.Utility.WaypointCircuit[] ai_paths; 
 
-		private SpawnController manufacturer;
 		private HUDController hudController;
 		private HUDAudioController audioController;
+		private AmbientAudioController ambientAudioController;
 		private CarAIControl carAI;
 		private CarAIControl unsuspectingCarAI;
 		private CarController carController;
@@ -68,9 +68,16 @@ namespace VRAVE
 			crazyAI = CrazyIntersectionAI.GetComponent<CarAIControl> ();
 			crazyCarController = CrazyIntersectionAI.GetComponent<CarController> ();
 
-			manufacturer = GetComponent<SpawnController> ();
 			hudController = UserCar.GetComponentInChildren<HUDController> ();
-			audioController = UserCar.GetComponent<HUDAudioController> ();
+			audioController = UserCar.GetComponentInChildren<HUDAudioController> ();
+			ambientAudioController = UserCar.GetComponentInChildren<AmbientAudioController> ();
+
+			// configure audio model
+			audioController.audioModel.addClip("car crashing", 6f);
+				
+			// configure HUD models
+			hudController.model = new HUDPatrickScenario1();
+
 
 			unsuspectingCarAI = UnsuspectingAI.GetComponent<CarAIControl> ();
 
@@ -217,6 +224,7 @@ namespace VRAVE
 		{
 			// 	Change to steering wheel paddle
 			if (Input.GetButtonDown (VRAVEStrings.Left_Paddle)) {
+				ambientAudioController.StartLooping ();
 				ChangeState (States.HumanDrivingToIntersection);
 			}
 		}
@@ -242,6 +250,9 @@ namespace VRAVE
 			CrazyIntersectionAI.SetActive (true);
 			crazyCarController.MaxSpeed = 40f;
 			crazyCarController.SetSpeed = new Vector3 (-40f, 0f, 0f);
+			if (m_humanDrivingState) {
+				audioController.playAudio (0);
+			}
 		}
 
 		// disable hard stopping 
