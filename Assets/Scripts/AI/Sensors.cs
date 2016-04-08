@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace VRAVE  
 {
+
 	public class VRAVEObstacle 
 	{
 		public string obstacleTag {get; set;}
@@ -31,7 +32,6 @@ namespace VRAVE
 	// and the short range sensors are for obstacles that we can't avoid
 	public class Sensors : MonoBehaviour 
 	{
-
 		// adjustable values
 		[SerializeField] private float m_sensorsStart = 1f;
 		[Range(10f, 180f)][SerializeField] private float m_shortSensorAngleDelta = 30f;
@@ -109,6 +109,7 @@ namespace VRAVE
 							shortSensorsHit.collider.CompareTag (VRAVEStrings.AI_Car) ||
 							shortSensorsHit.collider.CompareTag (VRAVEStrings.Crazy_AI_Car)) 
 						{
+
 							if (!obstacles.ContainsKey(scan.ID))
 							{
 								Debug.DrawLine (shortRangeSensorsStart, shortSensorsHit.point, Color.yellow);

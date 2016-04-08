@@ -57,7 +57,7 @@ namespace UnityStandardAssets.Vehicles.Car
             m_Rigidbody = GetComponent<Rigidbody>();
 
 			progressNum = 0;
-			Debug.Log (progressNum);
+			//Debug.Log (progressNum);
 
 			SetTarget (circuit.Waypoints[progressNum]);
         }
