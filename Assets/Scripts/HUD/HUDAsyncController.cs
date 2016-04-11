@@ -32,9 +32,24 @@ namespace VRAVE
 			}
 		}
 
+		// cycle through the HUD models "repeats" num times in a row
+		public void DoHUDUpdates(int repeats, float timeBetween)
+		{
+			StartCoroutine (RepeatCycleThroughHUDModels (repeats, timeBetween));
+		}
+
 		public void DoHUDUpdates ()
 		{
 			StartCoroutine (CycleThroughHUDModels ());
+		}
+
+		private IEnumerator RepeatCycleThroughHUDModels(int repeats, float timeBetween)
+		{
+			for (int i = 0; i < repeats; ++i) 
+			{
+				DoHUDUpdates ();
+				yield return new WaitForSeconds (timeBetween);
+			}
 		}
 
 		private IEnumerator CycleThroughHUDModels ()

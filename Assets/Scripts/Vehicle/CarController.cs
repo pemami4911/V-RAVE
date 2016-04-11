@@ -34,7 +34,7 @@ namespace VRAVE
 		[SerializeField] private float m_MaxHandbrakeTorque;
 		[SerializeField] private float m_Downforce = 100f;
 		[SerializeField] private SpeedType m_SpeedType;
-		[SerializeField] private float m_Topspeed = 200;
+		[SerializeField] private float m_Topspeed = 20;
 		[SerializeField] private static int NoOfGears = 5;
 		[SerializeField] private float m_RevRangeBoundary = 1f;
 		[SerializeField] private float m_SlipLimit;
@@ -49,7 +49,6 @@ namespace VRAVE
 		private float m_CurrentTorque;
 		private Rigidbody m_Rigidbody;
 		private const float k_ReversingThreshold = 0.01f;
-
 
 		public void ResetSpeed () {
 			GetComponent<Rigidbody> ().velocity = new Vector3 (0f, 0f, 0f);
@@ -134,7 +133,6 @@ namespace VRAVE
 			var targetGearFactor = Mathf.InverseLerp (f * m_GearNum, f * (m_GearNum + 1), Mathf.Abs (CurrentSpeed / MaxSpeed));
 			m_GearFactor = Mathf.Lerp (m_GearFactor, targetGearFactor, Time.deltaTime * 5f);
 		}
-
 
 		private void CalculateRevs ()
 		{
@@ -362,7 +360,20 @@ namespace VRAVE
 			}
 		}
 
-		/*
+        public float FullTorqueOverAllWheels
+        {
+            get
+            {
+                return m_FullTorqueOverAllWheels;
+            }
+
+            set
+            {
+                m_FullTorqueOverAllWheels = value;
+            }
+        }
+
+        /*
         private bool AnySkidSoundPlaying()
         {
             for (int i = 0; i < 4; i++)
