@@ -18,7 +18,16 @@ public class ReactionTimeAudioModel : HUDAudioModel {
 			addClip ("intersection-briefing", 9f);
 			// #4 
 			addClip ("drive-to-stop-sign", 3f);
-
+			// #5
+			addClip ("intersection-AI-briefing", 4f);
+			// #6
+			addClip ("Tires", 2f);
+			// #7
+			addClip ("intersection-briefing-2", 6f);
+			// #8
+			addClip ("trashcan-briefing", 11f);
+			// #9
+			addClip ("trashcan-briefing-2", 4f);
 		}
 
 }

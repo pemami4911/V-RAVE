@@ -56,6 +56,18 @@ namespace VRAVE
 			}
 		}
 
+		public void Mute() 
+		{
+			citySounds.mute = true;
+			carDrivingAmbient.mute = true;
+		}
+
+		public void UnMute()
+		{
+			citySounds.mute = false;
+			carDrivingAmbient.mute = false;
+		}
+
 		public AudioSource CitySounds {
 			get {
 				return citySounds;

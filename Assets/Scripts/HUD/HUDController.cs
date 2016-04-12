@@ -92,9 +92,8 @@ namespace VRAVE
 			model.leftText = "Manual Mode";
 		}
 
-		public void ClearText()
+		public void Clear()
 		{
-			model.leftText = "";
 			model.centerText = "";
 			model.rightText = "";
 			model.topText = "";
