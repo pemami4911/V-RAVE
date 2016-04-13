@@ -26,6 +26,7 @@ namespace VRAVE
         private SpawnController manufacturer;
         private HUDController hudController;
         private HUDAudioController audioController;
+		private AmbientAudioController ambientAudioController;
         private Sensors userCarSensors;
         private CarAIControl userCarAI;
         private CarAIControl AIVehicleAI;
@@ -80,6 +81,7 @@ namespace VRAVE
             manufacturer = GetComponent<SpawnController>();
             hudController = UserCar.GetComponentInChildren<HUDController>();
             audioController = UserCar.GetComponent<HUDAudioController>();
+			ambientAudioController = UserCar.GetComponentInChildren<AmbientAudioController>();
 
             lanePassingHandler = UserCar.GetComponent<LanePassingSensorResponseHandler>();
             lanePassingHandler.Enable = false;
@@ -89,7 +91,7 @@ namespace VRAVE
 
             UserCar.SetActive(true);
             AIVehicle.SetActive(true);
-
+			
             mirror = GameObject.FindWithTag(VRAVEStrings.Mirror);
 
             //triggers[2].gameObject.SetActive(false);
