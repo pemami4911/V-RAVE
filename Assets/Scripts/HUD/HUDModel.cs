@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace VRAVE
 {
-    public class HUDModel
+	public class HUDModel
     {
 		public Material collisionIcon;
         //plane rotation
@@ -112,5 +112,50 @@ namespace VRAVE
             rightBackingMaterial = Resources.Load("alert", typeof(Material)) as Material;
 
         }
+
+		public HUDModel Clone()
+		{
+			HUDModel h = new HUDModel ();
+			h.HUDRotation = this.HUDRotation; 
+			h.centerTextPosition = this.centerTextPosition;
+			h.leftTextPosition = this.leftTextPosition;
+			h.rightTextPosition = this.rightTextPosition; 
+			h.topTextPosition = this.topTextPosition; 
+			h.bottomTextPosition = this.bottomTextPosition;
+			h.leftText = this.leftText;
+			h.rightText = this.rightText;
+			h.topText = this.topText;
+			h.bottomText = this.bottomText;
+			h.centerCharSize = this.centerCharSize;
+			h.leftCharSize = this.leftCharSize;
+			h.rightCharSize = this.rightCharSize;
+			h.topCharSize = this.topCharSize;
+			h.bottomCharSize = this.bottomCharSize;
+			h.centerFontSize = this.centerFontSize;
+			h.leftFontSize = this.leftFontSize;
+			h.rightFontSize = this.rightFontSize;
+			h.topFontSize = this.topFontSize;
+			h.bottomFontSize = this.bottomFontSize;
+			h.isCenterTextEnabled = this.isCenterTextEnabled; 
+			h.isLeftTextEnabled = this.isLeftTextEnabled; 
+			h.isRightTextEnabled = this.isRightTextEnabled; 
+			h.isTopTextEnabled = this.isTopTextEnabled;
+			h.isBottomTextEnabled = this.isBottomTextEnabled;
+			h.centerImagePosition = this.centerImagePosition; 
+			h.centerImageScale = this.centerImageScale; 
+			h.isCenterImageEnabled = this.isCenterImageEnabled; 
+			h.centerBackingMaterial = this.centerBackingMaterial; 
+
+			h.rightImagePosition = this.rightImagePosition; 
+			h.rightImageScale = this.rightImageScale; 
+			h.isRightImageEnabled = this.isRightImageEnabled; 
+			h.rightBackingMaterial = this.rightBackingMaterial; 
+
+			h.leftImagePosition = this.leftImagePosition; 
+			h.leftImageScale = this.leftImageScale; 
+			h.isLeftImageEnabled = this.isLeftImageEnabled; 
+			h.leftBackingMaterial = this.leftBackingMaterial; 
+			return h;
+		}
     }
 }
