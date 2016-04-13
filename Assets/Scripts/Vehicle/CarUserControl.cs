@@ -12,6 +12,7 @@ namespace VRAVE
 
         private CarController m_Car; // the car controller we want to use
         private VisualSteeringWheelController m_SteeringWheel; //SteeringWheelController
+
 		private double gain = 0.5; 
 		private float handbrake = 0f; 
 		public float Handbrake { get { return handbrake; } set { handbrake = value; } }
@@ -38,7 +39,7 @@ namespace VRAVE
         private void onEnable()
         {
             //When switched to UserControl mode, expand steeringAngle
-            m_Car.MaxSteeringAngle = 60f;
+            //m_Car.MaxSteeringAngle = 60f;
         }
 
 
@@ -53,8 +54,8 @@ namespace VRAVE
             //double h_raw = Input.GetAxisRaw("Horizontal");
             //double v_raw = Input.GetAxisRaw("Vertical");
 
-//           Debug.Log("Horizontal: " + h_raw.ToString());
-//           Debug.Log("Vertical: " + v_raw.ToString());
+            //Debug.Log("Horizontal: " + hh.ToString());
+            //Debug.Log("Vertical: " + vv.ToString());
 
 
             /*

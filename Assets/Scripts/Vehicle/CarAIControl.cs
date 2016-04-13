@@ -81,7 +81,12 @@ namespace VRAVE
 		private VisualSteeringWheelController m_SteeringWheel;
 		//SteeringWheelController
 		private bool m_isPassing;
-		// should be set to true if the car is passing
+        // should be set to true if the car is passing
+        private bool m_tooFar;
+        //should be set when the car is too far from the vehicle it is following. Auto sets TooClose to false, if true.
+        private bool m_tooClose;
+        //should be set when the car is too close to the vehicle it is following. Auto sets TooFar to false, if true;
+        private float m_accelMultiplier = 1;
 		private Sensors m_Sensors;
 		private SensorResponseHandler[] m_sensorResponseHandlers;
 		// for avoiding obstacles via steer updates
@@ -101,8 +106,8 @@ namespace VRAVE
 			IsAvoidingObstacle = false;
 			ObstacleAvoidanceSteerAmount = 1f;
 
-			// give the random perlin a random value
-			m_RandomPerlin = Random.value * 100;
+            // give the random perlin a random value
+            m_RandomPerlin = Random.value * 100;
 
 			if (m_isUser) {
 				IsUser = true;
@@ -244,7 +249,24 @@ namespace VRAVE
 					steer = Mathf.Clamp (ObstacleAvoidanceSteerAmount * m_SteerSensitivity, -1, 1) * Mathf.Sign (m_CarController.CurrentSpeed);
 				}
 
-				// feed input to the car controller.
+                /*
+                // FOLLOWING BEHAVIOR ONLY
+                Mathf.Clamp(AccelMultiplier, -10, 10);
+                if(TooClose)
+                {
+                    //m_CarController.MaxSpeed = Time.deltaTime * m_CarController.MaxSpeed;
+                    accel = -1*accel - m_accelMultiplier*(accel*Time.deltaTime);
+                    Debug.Log("Too Close Accel : " + accel + "  MaxSpeed: " + m_CarController.MaxSpeed);
+                    
+                }
+                else if(TooFar)
+                {
+                    //m_CarController.MaxSpeed = Time.deltaTime * m_CarController.MaxSpeed;
+                    accel = accel + m_accelMultiplier*(accel*Time.deltaTime);
+                    Debug.Log("Too Far Accel : " + accel + "  MaxSpeed: " + m_CarController.MaxSpeed);
+                }
+                */
+               
 				m_CarController.Move (steer, accel, accel, 0f);
 
 				if (m_isUser) {
@@ -273,32 +295,32 @@ namespace VRAVE
 		}
 
 
-		private void OnCollisionStay (Collision col)
-		{
-			// detect collision against other cars, so that we can take evasive action
-			if (col.rigidbody != null) {
-				var otherAI = col.rigidbody.GetComponent<CarAIControl> ();
-				if (otherAI != null) {
-					// we'll take evasive action for 1 second
-					m_AvoidOtherCarTime = Time.time + 1;
+		//private void OnCollisionStay (Collision col)
+		//{
+		//	// detect collision against other cars, so that we can take evasive action
+		//	if (col.rigidbody != null) {
+		//		var otherAI = col.rigidbody.GetComponent<CarAIControl> ();
+		//		if (otherAI != null) {
+		//			// we'll take evasive action for 1 second
+		//			m_AvoidOtherCarTime = Time.time + 1;
 
-					// but who's in front?...
-					if (Vector3.Angle (transform.forward, otherAI.transform.position - transform.position) < 90) {
-						// the other ai is in front, so it is only good manners that we ought to brake...
-						m_AvoidOtherCarSlowdown = 0.5f;
-					} else {
-						// we're in front! ain't slowing down for anybody...
-						m_AvoidOtherCarSlowdown = 1;
-					}
+		//			// but who's in front?...
+		//			if (Vector3.Angle (transform.forward, otherAI.transform.position - transform.position) < 90) {
+		//				// the other ai is in front, so it is only good manners that we ought to brake...
+		//				m_AvoidOtherCarSlowdown = 0.5f;
+		//			} else {
+		//				// we're in front! ain't slowing down for anybody...
+		//				m_AvoidOtherCarSlowdown = 1;
+		//			}
 
-					// both cars should take evasive action by driving along an offset from the path centre,
-					// away from the other car
-					var otherCarLocalDelta = transform.InverseTransformPoint (otherAI.transform.position);
-					float otherCarAngle = Mathf.Atan2 (otherCarLocalDelta.x, otherCarLocalDelta.z);
-					m_AvoidPathOffset = m_LateralWanderDistance * -Mathf.Sign (otherCarAngle);
-				}
-			}
-		}
+		//			// both cars should take evasive action by driving along an offset from the path centre,
+		//			// away from the other car
+		//			var otherCarLocalDelta = transform.InverseTransformPoint (otherAI.transform.position);
+		//			float otherCarAngle = Mathf.Atan2 (otherCarLocalDelta.x, otherCarLocalDelta.z);
+		//			m_AvoidPathOffset = m_LateralWanderDistance * -Mathf.Sign (otherCarAngle);
+		//		}
+		//	}
+		//}
 
 		public void SetTarget (Transform target, bool stopWhenTargetReached)
 		{
@@ -317,14 +339,15 @@ namespace VRAVE
 		/*Use this function if you want to choose the starting point of the circuit.*/
 		public void switchCircuit (WaypointCircuit c, int progress)
 		{
-			Circuit = c;
-			ProgressNum = progress;
-		}
+            circuit = c;
+            ProgressNum = progress;
+            SetTarget(circuit.Waypoints[ProgressNum], false);
+        }
 
 
-		/*Use this function just to set a new Circuit and start at the beginning*/
+        /*Use this function just to set a new Circuit and start at the beginning*/
 
-		public WaypointCircuit Circuit {
+        public WaypointCircuit Circuit {
 			get {
 				return circuit;
 			}
@@ -483,6 +506,79 @@ namespace VRAVE
 			}
 		}
 
+        public bool TooFar
+        {
+            get
+            {
+                return m_tooFar;
+            }
+
+            set
+            {
+                m_tooFar = value;
+                if (value == true)
+                {
+                    m_tooFar = false;
+                }
+            }
+        }
+
+        public bool TooClose
+        {
+            get
+            {
+                return m_tooClose;
+            }
+
+            set
+            {
+                m_tooClose = value;
+                if(value == true)
+                {
+                    m_tooFar = false;
+                }
+            }
+        }
+
+        public float AccelMultiplier
+        {
+            get
+            {
+                return m_accelMultiplier;
+            }
+
+            set
+            {
+                m_accelMultiplier = value;
+            }
+        }
+
+        public float AvoidOtherCarSlowdown
+        {
+            get
+            {
+                return m_AvoidOtherCarSlowdown;
+            }
+
+            set
+            {
+                m_AvoidOtherCarSlowdown = value;
+            }
+        }
+
+        public float AvoidOtherCarTime
+        {
+            get
+            {
+                return m_AvoidOtherCarTime;
+            }
+
+            set
+            {
+                m_AvoidOtherCarTime = value;
+            }
+        }
+
 		public bool Driving {
 			get {
 				return m_Driving;
@@ -508,4 +604,5 @@ namespace VRAVE
 			}
 		}
 	}
+
 }

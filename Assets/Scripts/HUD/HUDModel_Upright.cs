@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HUDModel_Upright : HUDModel {
+namespace VRAVE
+{
+    public class HUDModel_Upright : HUDModel {
 
 	public HUDModel_Upright () : base() {
 
@@ -28,3 +30,6 @@ public class HUDModel_Upright : HUDModel {
 		bottomFontSize = 500;
 	}
 }
+
+}
+
