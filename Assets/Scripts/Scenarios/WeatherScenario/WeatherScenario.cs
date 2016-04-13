@@ -87,9 +87,9 @@ namespace VRAVE {
 				}
 				break;
 			case 4:
-				Debug.Log ("CollisionTrigger triggered");
+				//Debug.Log ("CollisionTrigger triggered");
 				if (GetState ().Equals (States.UserWarnCollision)) { 
-					Debug.Log ("Switching to UserStopped state");
+					//Debug.Log ("Switching to UserStopped state");
 					ChangeState (States.UserStopped);
 				} else if (GetState().Equals (States.AIWarnCollision)) {
 					ChangeState (States.AIStopped);
@@ -112,7 +112,7 @@ namespace VRAVE {
 		}
 
 		public void AIDriveRoute_Enter() {
-			Debug.Log ("Entered AI Drive state");
+			//Debug.Log ("Entered AI Drive state");
 			spawnController.resetInitialSpawns ();
 
 			UserCar.GetComponent<CarAIControl> ().enabled = true;
@@ -121,7 +121,7 @@ namespace VRAVE {
 		}
 
 		public void UserApproachTraffic_Enter() {
-			Debug.Log("Entered State UserApproachTraffic");
+			//Debug.Log("Entered State UserApproachTraffic");
 			//increase fog in this state
 			RenderSettings.fogDensity = 0.3f;
 		}
@@ -139,7 +139,7 @@ namespace VRAVE {
 		}
 
 		public void UserStopped_Enter() {
-			Debug.Log ("Reached end of scenario for user drive");
+			//Debug.Log ("Reached end of scenario for user drive");
 			StartCoroutine (postStopStateChange (END_SCENARIO_WAIT_TIME));
 
 		}
@@ -149,12 +149,12 @@ namespace VRAVE {
 
 			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
 				if(GetState().Equals(States.UserStopped)) { //fix this so I'm not checking states all the time
-					Debug.Log("Preparing to reset scenario...");
+					//Debug.Log("Preparing to reset scenario...");
 					resetScenario ();
 					ChangeState (States.AIDriveRoute);
 				}
 				else {
-					Debug.Log("Else statement reached in postStopStateChange()");
+					//Debug.Log("Else statement reached in postStopStateChange()");
 				}
 			});
 		}

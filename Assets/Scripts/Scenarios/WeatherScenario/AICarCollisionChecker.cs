@@ -16,7 +16,7 @@ namespace VRAVE {
 		}
 
 		void OnCollisionEnter(Collision collision) {
-			Debug.Log ("Collision detected!");
+			//Debug.Log ("Collision detected!");
 			if (collision.gameObject.tag.Equals("AI_Car")) { 
 				//collect old values
 				bool oldIsEnabled = hudController.model.isLeftImageEnabled;
@@ -37,11 +37,6 @@ namespace VRAVE {
 
 			hudController.model.leftBackingMaterial = oldMaterial;
 			hudController.model.isLeftImageEnabled = oldIsEnabled;
-		}
-		
-		// Update is called once per frame
-		void Update () {
-		
 		}
 	}
 }
