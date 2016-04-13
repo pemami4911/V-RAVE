@@ -10,7 +10,8 @@ GameObject:
   - 4: {fileID: 487474}
   - 33: {fileID: 3358260}
   - 23: {fileID: 2358422}
-  m_Layer: 0
+  - 122: {fileID: 12239058}
+  m_Layer: 2
   m_Name: Stop sign 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,6 +63,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109056}
   m_Mesh: {fileID: 4300000, guid: 351c525cb090261429215b2abbf31006, type: 3}
+--- !u!122 &12239058
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 109056}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278190335
+  m_Size: 2.28
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
