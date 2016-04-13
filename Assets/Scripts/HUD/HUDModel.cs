@@ -5,7 +5,7 @@ namespace VRAVE
 {
     public class HUDModel
     {
-
+		public Material collisionIcon;
         //plane rotation
         public Vector3 HUDRotation { get; set; }
 
@@ -58,6 +58,7 @@ namespace VRAVE
 
         public HUDModel()
         {
+			collisionIcon = Resources.Load("collision", typeof(Material)) as Material;
 
             HUDRotation = new Vector3(34.9585f, 0, 180);
 
