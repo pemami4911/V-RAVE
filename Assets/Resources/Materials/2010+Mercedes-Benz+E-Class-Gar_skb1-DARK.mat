@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: highpoly5series-glass1
+  m_Name: 2010+Mercedes-Benz+E-Class-Gar_skb1-DARK
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _EMISSION
   m_LightmapFlags: 1
@@ -127,13 +127,13 @@ Material:
       data:
         first:
           name: _Metallic
-        second: 0
+        second: 1
     m_Colors:
       data:
         first:
           name: _EmissionColor
-        second: {r: 99, g: 99, b: 99, a: 1}
+        second: {r: 99, g: 0, b: 0, a: 1}
       data:
         first:
           name: _Color
-        second: {r: 0.5686275, g: 0.5686275, b: 0.5686275, a: 0.46}
+        second: {r: 0.22745098, g: 0.22745098, b: 0.22745098, a: 0.59}
