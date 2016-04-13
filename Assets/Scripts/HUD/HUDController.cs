@@ -81,6 +81,24 @@ namespace VRAVE
             bottomText = bottomTextField.GetComponent<TextMesh>();
 
         }
+			
+		public void EngageAIMode() 
+		{
+			model.leftText = "Autonomous Mode";
+		}
+
+		public void EngageManualMode() 
+		{
+			model.leftText = "Manual Mode";
+		}
+
+		public void Clear()
+		{
+			model.centerText = "";
+			model.rightText = "";
+			model.topText = "";
+			model.bottomText = "";
+		}
 
         // Update is called once per frame
         void Update()
