@@ -42,8 +42,11 @@ namespace VRAVE
 		private CarController crazyCarController;
 		private SensitiveSensorResponseHandler sensitiveSensorResponseHandler;
 		private TrashcanSensorResponseHandler trashCanSensorResponseHandler;
+		private GameObject mirror; 
 
 		private bool m_humanDrivingState;
+
+		private int mirrorFlag = 0;
 
 		public enum States
 		{
@@ -73,8 +76,10 @@ namespace VRAVE
 			hudController = UserCar.GetComponentInChildren<HUDController> ();
 			audioController = UserCar.GetComponentInChildren<HUDAudioController> ();
 			ambientAudioController = UserCar.GetComponentInChildren<AmbientAudioController> ();
+			ambientAudioController.Mute ();
 			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController> ();
 
+			mirror = GameObject.FindWithTag (VRAVEStrings.Mirror);
 			audioController.audioModel = new ReactionTimeAudioModel ();
 
 			// configure HUD models
@@ -111,6 +116,8 @@ namespace VRAVE
 		// DISABLES CAR-AI AND USER-DRIVING
 		private void resetIntersectionScenario ()
 		{
+			UserCar.SetActive (true);
+
 			carAI.enabled = false;
 			UserCar.GetComponent<CarUserControl> ().enabled = false;
 			UserCar.GetComponent<CarUserControl> ().StopCar();
@@ -236,7 +243,7 @@ namespace VRAVE
 				hudController.durations [0] = 0.5f;
 				hudController.durations [1] = 0.5f;
 				hudController.models [1] = hudController.model.Clone ();
-				hudController.models [1].leftBackingMaterial = Resources.Load ("stop", typeof(Material)) as Material;
+				hudController.models [1].leftBackingMaterial = Resources.Load (VRAVEStrings.Stop_Img, typeof(Material)) as Material;
 				hudController.models [1].isLeftImageEnabled = true;
 				hudController.models [1].leftImagePosition = new Vector3 (1.98f, 0.19f, -0.39f);
 				hudController.models [1].leftImageScale = new Vector3 (0.5f * 0.1280507f, 0, 0.5f * 0.1280507f);
@@ -251,7 +258,7 @@ namespace VRAVE
 					hudController.durations [0] = 0.5f;
 					hudController.durations [1] = 0.5f;
 					hudController.models [1] = hudController.model.Clone ();
-					hudController.models [1].leftBackingMaterial = Resources.Load ("right-turn", typeof(Material)) as Material;
+					hudController.models [1].leftBackingMaterial = Resources.Load (VRAVEStrings.Right_Turn, typeof(Material)) as Material;
 					hudController.models [1].isLeftImageEnabled = true;
 					hudController.models [1].leftImagePosition = new Vector3 (1.98f, 0.19f, -0.39f);
 					hudController.models [1].leftImageScale = new Vector3 (0.5f * 0.1280507f, 0, 0.5f * 0.1280507f);
@@ -282,7 +289,7 @@ namespace VRAVE
 		{
 			// 	Change to steering wheel paddle
 			if (Input.GetButtonDown (VRAVEStrings.Left_Paddle)) {
-				ambientAudioController.StartLooping ();
+				ambientAudioController.UnMute ();
 				ChangeState (States.HumanDrivingToIntersection);
 			}
 		}
@@ -303,13 +310,23 @@ namespace VRAVE
 
 		public void AIDrivingToIntersection_Enter ()
 		{
-			UserCar.SetActive (true);
 			m_humanDrivingState = false;
 			ambientAudioController.Mute ();
 			StartCoroutine (AIDrivingToIntersectionBriefing ());
 		}
 
-		/* going through intersection */
+		public void AIDrivingToIntersection_Update()
+		{
+			if (mirrorFlag == 0) {
+				mirrorFlag++; 
+				mirror.SetActive (false);
+			} else if (mirrorFlag == 1) {
+				mirror.SetActive (true);
+				mirrorFlag++;
+			}
+		}
+
+		// going through intersection 
 
 		public void AdvancingThroughIntersection_Enter ()
 		{
@@ -348,6 +365,17 @@ namespace VRAVE
 			StartCoroutine (TrashcanBriefing ());
 		}
 
+		public void TrashcanBriefing_Update()
+		{
+			if (mirrorFlag == 0) {
+				mirrorFlag++; 
+				mirror.SetActive (false);
+			} else if (mirrorFlag == 1) {
+				mirror.SetActive (true);
+				mirrorFlag++;
+			}
+		}
+
 		public void HumanDrivingToTrashcan_Enter() {
 			unsuspectingCarAI.enabled = true;
 			m_humanDrivingState = true;
@@ -356,15 +384,13 @@ namespace VRAVE
 			UserCar.GetComponent<CarUserControl> ().StartCar();
 			audioController.playAudio(1);
 			ambientAudioController.UnMute ();
-			ambientAudioController.StartLooping ();
 			hudController.EngageManualMode ();
-			hudController.model.centerText = "Follow the car";
+			hudController.model.centerText = VRAVEStrings.Follow_Car;
 		}
 
 		// change sensor angle to 100
 		public void AIDrivingToTrashcan_Enter() {
 			m_humanDrivingState = false;
-			UserCar.SetActive (true);
 			unsuspectingCarAI.enabled = false;
 			UnsuspectingAI.SetActive (true);
 			UnsuspectingAI.GetComponent<CarController> ().MaxSpeed = 15f;
@@ -382,8 +408,19 @@ namespace VRAVE
 			StartCoroutine (TrashcanBriefing2());
 		}
 
+		public void AIDrivingToTrashcan_Update()
+		{
+			if (mirrorFlag == 0) {
+				mirrorFlag++; 
+				mirror.SetActive (false);
+			} else if (mirrorFlag == 1) {
+				mirror.SetActive (true);
+				mirrorFlag++;
+			}
+		}
+
 		public void Finish_Enter() {
-			Debug.Log ("Finish!");
+			//Debug.Log ("Finish!");
 			carController.MaxSpeed = 0f;
 			// Application.LoadLevel(Lobby)
 		}
@@ -393,7 +430,7 @@ namespace VRAVE
 		private IEnumerator PostCollisionStateChange (float time)
 		{			
 			yield return new WaitForSeconds (time);
-		
+			mirrorFlag = 0;
 			// use a lambda expression to define the callback
 			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
 				if (m_humanDrivingState) {
@@ -424,7 +461,7 @@ namespace VRAVE
 		private IEnumerator PostTrashcanStateChange( float time )
 		{
 			yield return new WaitForSeconds (time); 
-
+			mirrorFlag = 0;
 			// use a lambda expression to define the callback
 			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
 				if (m_humanDrivingState) {
@@ -442,7 +479,7 @@ namespace VRAVE
 			yield return new WaitForSeconds (9f);
 
 			if (!GetState ().Equals(States.HumanDrivingToIntersection)) {
-				hudController.model.centerText = "Press the left paddle to continue"; 
+				hudController.model.centerText = VRAVEStrings.Left_Paddle_To_Continue; 
 			}
 		}
 
