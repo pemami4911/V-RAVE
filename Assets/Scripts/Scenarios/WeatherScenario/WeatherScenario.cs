@@ -127,7 +127,7 @@ namespace VRAVE {
 		}
 
 		public void AIApproachTraffic_Enter() {
-			//TODO
+			RenderSettings.fogDensity = 0.3f;
 		}
 
 		public void UserWarnCollision_Enter() {
@@ -135,7 +135,6 @@ namespace VRAVE {
 		}
 
 		public void AIWarnCollision_Enter() {
-			//TODO
 			hudController.model.isLeftImageEnabled = true;
 		}
 
@@ -162,6 +161,7 @@ namespace VRAVE {
 
 		public void AIStopped_Enter() {
 			//TODO
+			//How to exit scenario?q
 		}
 
 		// Extend abstract method "ChangeState(uint id)
