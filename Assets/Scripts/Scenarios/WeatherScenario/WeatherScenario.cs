@@ -106,6 +106,9 @@ namespace VRAVE {
 
 			UserCar.GetComponent<CarAIControl> ().enabled = false;
 			UserCar.GetComponent<CarUserControl> ().enabled = true;
+
+			//UserCar.GetComponent<CarAIControl> ().enabled = true;
+			//UserCar.GetComponent<CarUserControl> ().enabled = false;
 		}
 
 		public void AIDriveRoute_Enter() {
