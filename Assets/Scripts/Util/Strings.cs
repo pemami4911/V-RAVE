@@ -27,6 +27,12 @@ namespace VRAVE
         public static string Crazy_AI_Car = "Crazy_AI_Car";
         public static string Unsuspecting_AI = "Unsuspecting_AI";
 
+		public static string Stop_Img = "stop";
+		public static string Right_Turn = "right-turn";
+
+		public static string Follow_Car = "Follow the car";
+		public static string Left_Paddle_To_Continue = "Press the left paddle to continue";
+
     }
 
 }
