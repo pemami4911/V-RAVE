@@ -56,6 +56,7 @@ namespace VRAVE
             //Debug.Log("Horizontal: " + hh.ToString());
             //Debug.Log("Vertical: " + vv.ToString());
 
+
             /*
             #if !MOBILE_INPUT
                         float handbrake = CrossPlatformInputManager.GetAxis("Jump");

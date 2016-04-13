@@ -11,8 +11,8 @@ namespace VRAVE {
 	public class SpawnModel {
 
 		//Stores the mapping between the Resource string and a mapping of coordinates to rotation
-		public List<SpawnTriple> initialSpawns { get; private set;}
-		public List<SpawnTriple> onDemandSpawns { get; private set;}
+		public List<SpawnTriple> initialSpawns { get; protected set;}
+		public List<SpawnTriple> onDemandSpawns { get; protected set;}
 
 		//the name of the resource to use. 
 		//NOTE: the resource must be stored in the Resources folder
