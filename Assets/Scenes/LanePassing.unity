@@ -18078,7 +18078,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 107972, guid: 1a7c357295593a74d9a741f259eb36bb, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11463636, guid: 1a7c357295593a74d9a741f259eb36bb, type: 2}
       propertyPath: m_LateralWanderDistance
