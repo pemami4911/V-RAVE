@@ -76,6 +76,7 @@ namespace VRAVE
 			hudController = UserCar.GetComponentInChildren<HUDController> ();
 			audioController = UserCar.GetComponentInChildren<HUDAudioController> ();
 			ambientAudioController = UserCar.GetComponentInChildren<AmbientAudioController> ();
+			ambientAudioController.Mute ();
 			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController> ();
 
 			mirror = GameObject.FindWithTag (VRAVEStrings.Mirror);
@@ -288,7 +289,7 @@ namespace VRAVE
 		{
 			// 	Change to steering wheel paddle
 			if (Input.GetButtonDown (VRAVEStrings.Left_Paddle)) {
-				ambientAudioController.StartLooping ();
+				ambientAudioController.UnMute ();
 				ChangeState (States.HumanDrivingToIntersection);
 			}
 		}
@@ -383,7 +384,6 @@ namespace VRAVE
 			UserCar.GetComponent<CarUserControl> ().StartCar();
 			audioController.playAudio(1);
 			ambientAudioController.UnMute ();
-			ambientAudioController.StartLooping ();
 			hudController.EngageManualMode ();
 			hudController.model.centerText = VRAVEStrings.Follow_Car;
 		}
