@@ -35,10 +35,8 @@ public class PlayMusic : MonoBehaviour {
 			case 0:
 				musicSource.clip = titleMusic;
 				break;
-			//If scene index is 1 (usually main scene) assign the clip mainMusic to musicSource
-			case 1:
-				musicSource.clip = mainMusic;
-				break;
+			default: 
+				return;
 		}
 		//Fade up the volume very quickly, over resetTime seconds (.01 by default)
 		FadeUp (resetTime);
