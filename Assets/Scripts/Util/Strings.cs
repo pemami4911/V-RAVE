@@ -33,6 +33,8 @@ namespace VRAVE
 		public static string Follow_Car = "Follow the car";
 		public static string Left_Paddle_To_Continue = "Press the left paddle to continue";
 
+		public static string Lobby_Menu = "LobbyMenu";
+
     }
 
 }
