@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
+namespace VRAVE
+{
 public class PlayMusic : MonoBehaviour {
 
 
@@ -77,4 +79,5 @@ public class PlayMusic : MonoBehaviour {
 		//call the TransitionTo function of the audioMixerSnapshot volumeDown;
 		volumeDown.TransitionTo (fadeTime);
 	}
+}
 }

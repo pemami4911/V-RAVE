@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
+namespace VRAVE
+{
 public class SetAudioLevels : MonoBehaviour {
 
 	public AudioMixer mainMixer;					//Used to hold a reference to the AudioMixer mainMixer
@@ -19,4 +21,5 @@ public class SetAudioLevels : MonoBehaviour {
 	{
 		mainMixer.SetFloat("sfxVol", sfxLevel);
 	}
+}
 }

@@ -2,16 +2,17 @@
 using System.Collections;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-
+namespace VRAVE
+{
 public class StartOptions : MonoBehaviour {
 
 
 
-	public int sceneToStart = 1;										//Index number in build settings of scene to load if changeScenes is true
+	private int sceneToStart = 1;										//Index number in build settings of scene to load if changeScenes is true
 	public bool changeScenes;											//If true, load a new scene when Start is pressed, if false, fade out UI and continue in single scene
 	public bool changeMusicOnStart;										//Choose whether to continue playing menu music or start a new music clip
-
 
 	[HideInInspector] public bool inMainMenu = true;					//If true, pause button disabled in main menu (Cancel in input manager, default escape key)
 	[HideInInspector] public Animator animColorFade; 					//Reference to animator which will fade to and from black when starting game.
@@ -24,7 +25,6 @@ public class StartOptions : MonoBehaviour {
 	private float fastFadeIn = .01f;									//Very short fade time (10 milliseconds) to start playing music immediately without a click/glitch
 	private ShowPanels showPanels;										//Reference to ShowPanels script on UI GameObject, to show and hide panels
 
-	
 	void Awake()
 	{
 		//Get a reference to ShowPanels attached to UI object
@@ -32,8 +32,27 @@ public class StartOptions : MonoBehaviour {
 
 		//Get a reference to PlayMusic attached to UI object
 		playMusic = GetComponent<PlayMusic> ();
+					
 	}
 
+
+	public void CollisionAvoidance()
+	{
+		sceneToStart = 1;
+		StartButtonClicked ();
+	}
+
+	public void LanePassing() 
+	{
+		sceneToStart = 2;
+		StartButtonClicked ();
+	}
+
+	public void Weather() 
+	{
+		sceneToStart = 3;
+		StartButtonClicked ();
+	}
 
 	public void StartButtonClicked()
 	{
@@ -69,7 +88,7 @@ public class StartOptions : MonoBehaviour {
 		//if changeMusicOnStart is true, call the PlayLevelMusic function of playMusic
 		if (changeMusicOnStart)
 		{
-			playMusic.PlayLevelMusic ();
+			//playMusic.PlayLevelMusic ();
 		}	
 	}
 
@@ -118,4 +137,6 @@ public class StartOptions : MonoBehaviour {
 		//Play music clip assigned to mainMusic in PlayMusic script
 		playMusic.PlaySelectedMusic (1);
 	}
+}
+
 }

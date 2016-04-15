@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace VRAVE
+{
 public class QuitApplication : MonoBehaviour {
 
 	public void Quit()
@@ -17,4 +19,5 @@ public class QuitApplication : MonoBehaviour {
 		UnityEditor.EditorApplication.isPlaying = false;
 	#endif
 	}
+}
 }

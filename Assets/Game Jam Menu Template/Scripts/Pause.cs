@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace VRAVE
+{
 public class Pause : MonoBehaviour {
 
 
@@ -58,4 +60,5 @@ public class Pause : MonoBehaviour {
 	}
 
 
+}
 }

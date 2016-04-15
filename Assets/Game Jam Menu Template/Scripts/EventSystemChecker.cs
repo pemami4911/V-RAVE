@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+namespace VRAVE
+{
 public class EventSystemChecker : MonoBehaviour
 {
 	//OnLevelWasLoaded is called after a new scene has finished loading
@@ -19,4 +21,5 @@ public class EventSystemChecker : MonoBehaviour
 			obj.AddComponent<StandaloneInputModule>().forceModuleActive = true;
 		}
 	}
+}
 }
