@@ -10,10 +10,13 @@ namespace VRAVE {
 
 		public SpawnModel spawnModel {get; set;}
 		private Dictionary<string, GameObject> loadedResources;
+		//list of spawned items
+		public Dictionary<SpawnTriple, GameObject> initialSpawnedObjects { get; protected set; }
 
 		public SpawnController() {
 			loadedResources = new Dictionary<string, GameObject> ();
-			spawnModel = new SpawnModel ();
+			//spawnModel = new SpawnModel ();
+			initialSpawnedObjects = new Dictionary<SpawnTriple, GameObject>();
 		}
 
 		public void enterScenario() {
@@ -21,7 +24,8 @@ namespace VRAVE {
 			List<SpawnTriple> spawns = spawnModel.initialSpawns;
 
 			foreach(SpawnTriple spawn in spawns) {
-				spawnObject (spawn);
+				GameObject spawnedObject = spawnObject (spawn);
+				initialSpawnedObjects.Add (spawn, spawnedObject);
 			}
 		}
 
@@ -35,7 +39,8 @@ namespace VRAVE {
 			SpawnTriple spawn = spawnModel.onDemandSpawns [index];
 		}
 
-		private Object spawnObject(SpawnTriple spawn) {
+
+		private GameObject spawnObject(SpawnTriple spawn) {
 			GameObject spawnObject;
 
 			if (!loadedResources.ContainsKey (spawn.resourceString)) {
@@ -47,10 +52,17 @@ namespace VRAVE {
 				spawnObject = loadedResources[spawn.resourceString];
 
 			//spawn @ position & rotation
-			return Instantiate (spawnObject, spawn.position, spawn.rotation);
+			GameObject spawnedObject = (GameObject) Instantiate (spawnObject, spawn.position, spawn.rotation);
+			return spawnedObject;
 		}
 
-
+		public void resetInitialSpawns() {
+			foreach (SpawnTriple spawn in initialSpawnedObjects.Keys) {
+				GameObject spawnedObject = initialSpawnedObjects [spawn];
+				spawnedObject.transform.position = spawn.position;
+				spawnedObject.transform.rotation = spawn.rotation;
+			}
+		}
 			
 		public void exitScenario() {
 			//will need this method... someday
