@@ -7,7 +7,7 @@ namespace VRAVE {
 
 		private GameObject UserCar;
 		private HUDController hudController;
-		private float displayTime = 2.0f;
+		[SerializeField] private float displayTime = 2.0f;
 
 		// Use this for initialization
 		void Start () {
@@ -17,7 +17,8 @@ namespace VRAVE {
 
 		void OnCollisionEnter(Collision collision) {
 			//Debug.Log ("Collision detected!");
-			if (collision.gameObject.tag.Equals("AI_Car")) { 
+			if (collision.gameObject.tag.Equals(VRAVEStrings.AI_Car) ||
+				collision.gameObject.tag.Equals(VRAVEStrings.Obstacle)) { 
 				//collect old values
 				bool oldIsEnabled = hudController.model.isLeftImageEnabled;
 				Material oldMaterial = hudController.model.leftBackingMaterial;

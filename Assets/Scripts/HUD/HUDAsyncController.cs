@@ -58,6 +58,10 @@ namespace VRAVE
 			{
 				hudTextController.model = hudTextController.models [i]; 
 				yield return new WaitForSeconds (hudTextController.durations [i]); 
+
+				if (i == hudTextController.models.Length) {
+					hudTextController.model = hudTextController.models [0];
+				}
 			}
 		}
 	}

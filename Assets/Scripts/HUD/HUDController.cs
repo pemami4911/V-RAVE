@@ -84,12 +84,25 @@ namespace VRAVE
 			
 		public void EngageAIMode() 
 		{
-			model.leftText = "Autonomous Mode";
+			model.leftText = VRAVEStrings.Autonomous_Mode;
 		}
 
 		public void EngageManualMode() 
 		{
-			model.leftText = "Manual Mode";
+			model.leftText = VRAVEStrings.Manual_Mode;
+		}
+
+		public void FlashImage(Material img, float timeOn, float timeOff, float imgScale, int numberOfTimesToFlash, HUDAsyncController contrllr)
+		{
+			models [0] = model;
+			durations [0] = timeOn;
+			durations [1] = timeOff;
+			models [1] = model.Clone ();
+			models [1].leftBackingMaterial = img;
+			models [1].isLeftImageEnabled = true;
+			models [1].leftImagePosition = new Vector3 (1.98f, 0.19f, -0.39f);
+			models [1].leftImageScale = new Vector3 (imgScale * 0.1280507f, 0, imgScale * 0.1280507f);
+			contrllr.DoHUDUpdates (numberOfTimesToFlash, timeOn + timeOff);
 		}
 
 		public void Clear()
@@ -98,6 +111,7 @@ namespace VRAVE
 			model.rightText = "";
 			model.topText = "";
 			model.bottomText = "";
+			model.isLeftImageEnabled = false;
 		}
 
         // Update is called once per frame

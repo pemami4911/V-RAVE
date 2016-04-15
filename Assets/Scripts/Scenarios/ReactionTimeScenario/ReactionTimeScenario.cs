@@ -87,7 +87,7 @@ namespace VRAVE
 			hudController.durations = new float[2];
 			hudController.models[0] = new HUDVRAVE_Default();
 			hudController.model = hudController.models[0];
-				
+
 			// configure ASYNC controller
 			hudAsyncController.Configure(audioController, hudController);
 
@@ -97,11 +97,13 @@ namespace VRAVE
 				o2.SetActive(false);
 			}
 				
-			resetIntersectionScenario ();
-			//resetTrashCanScenario();
+			//resetIntersectionScenario ();
 
-			//ChangeState (States.TrashcanBriefing);
-			ChangeState (States.IntersectionBriefing);
+			resetTrashCanScenario();
+			hudController.model.centerText = VRAVEStrings.Collision_Avoidance;
+
+			ChangeState (States.TrashcanBriefing);
+			//ChangeState (States.IntersectionBriefing);
 			//ChangeState(States.AIDrivingToIntersection);
 
 			CameraFade.StartAlphaFade (Color.black, true, 3f, 0f, () => {
@@ -136,6 +138,8 @@ namespace VRAVE
 			UnsuspectingAI.transform.position = new Vector3 (-34f, 0.01f, 63.07f);
 			UnsuspectingAI.transform.rotation = Quaternion.Euler (0f, 90f, 0f);
 
+			hudController.Clear ();
+
 			// reset circuits
 			crazyAI.Circuit = crazyAI.Circuit;
 			unsuspectingCarAI.Circuit = unsuspectingCarAI.Circuit;
@@ -143,6 +147,7 @@ namespace VRAVE
 			
 		private void resetTrashCanScenario() 
 		{
+			UserCar.SetActive (true);
 			carAI.enabled = false;
 			trashCan.SetActive (false);
 			UserCar.GetComponent<CarUserControl> ().enabled = false;
@@ -156,12 +161,13 @@ namespace VRAVE
 			UserCar.transform.rotation = Quaternion.Euler (0f, 0f, 0f);
 
 			carController.ResetSpeed ();
+			hudController.Clear ();
 
 			UnsuspectingAI.transform.position = new Vector3 (26.09f, 0.01f, -2.24f);
 			UnsuspectingAI.transform.rotation = Quaternion.Euler (0f, 0f, 0f);
 			UnsuspectingAI.GetComponent<CarController> ().ResetSpeed ();
 
-			trashCan.transform.position = new Vector3 (47.663f, 0.4394f, 121.95f);
+			trashCan.transform.position = new Vector3 (47.663f, 0.4394f, 124.6f);
 			trashCan.transform.rotation = Quaternion.Euler (90f, 310.44f, 133f);
 			trashCan.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 			trashCan.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
@@ -210,14 +216,23 @@ namespace VRAVE
 				UserCar.GetComponent<CarUserControl> ().enabled = false;
 				StartCoroutine (PostCollisionStateChange (4f));
 				break;
-			case 4: 
-				hudController.model.isLeftImageEnabled = false;
+			case 4: // trash can trigger
+				hudController.Clear();
+
+				if (GetState ().Equals (States.HumanDrivingToTrashcan)) {
+					trashCan.GetComponent<TrashCanAnimator> ().trashCanForce = 800;
+				} else {
+					trashCan.GetComponent<TrashCanAnimator> ().trashCanForce = 500;
+					hudController.FlashImage (Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material,
+						0.25f, 0.25f, 0.75f, 5, hudAsyncController);
+				}
+					
 				trashCan.SetActive (true);
 				trashCan.GetComponent<TrashCanAnimator> ().roll ();
 				trashCanSensorResponseHandler.Enable = true;
 				StartCoroutine (PostTrashcanStateChange (6f));
 				break;
-			case 5: 
+			case 5: // trash can change AI path 
 				StartCoroutine (ChangeAIPaths (4f, ai_paths [2], unsuspectingCarAI, () => {
 					unsuspectingCarAI.ReachTargetThreshold = 2f;
 					UnsuspectingAI.GetComponent<CarController> ().MaxSpeed = 30f;
@@ -226,7 +241,7 @@ namespace VRAVE
 			case 6:
 				unsuspectingCarAI.CautiousSpeedFactor = 0.8f;
 				break;
-			case 7: 
+			case 7: // trash can change User path
 				StartCoroutine (ChangeAIPaths (4f, ai_paths [4], carAI, () => {
 					carAI.ReachTargetThreshold = 2f;
 					carController.MaxSpeed = 32f;
@@ -235,34 +250,19 @@ namespace VRAVE
 			case 8:
 				carAI.CautiousSpeedFactor = 0.8f;
 				break;
-			case 9:
+			case 9: // stop sign trigger
 				// display stop sign on HUD, 
-				hudController.Clear ();
-				hudController.model.isLeftImageEnabled = false;
-				hudController.models [0] = hudController.model;
-				hudController.durations [0] = 0.5f;
-				hudController.durations [1] = 0.5f;
-				hudController.models [1] = hudController.model.Clone ();
-				hudController.models [1].leftBackingMaterial = Resources.Load (VRAVEStrings.Stop_Img, typeof(Material)) as Material;
-				hudController.models [1].isLeftImageEnabled = true;
-				hudController.models [1].leftImagePosition = new Vector3 (1.98f, 0.19f, -0.39f);
-				hudController.models [1].leftImageScale = new Vector3 (0.5f * 0.1280507f, 0, 0.5f * 0.1280507f);
-				hudAsyncController.DoHUDUpdates (5, 1f);
+				hudController.model.centerText = VRAVEStrings.Stop_Sign;
+				hudController.FlashImage (Resources.Load (VRAVEStrings.Stop_Img, typeof(Material)) as Material,
+					0.5f, 0.5f, 0.5f, 5, hudAsyncController);
 				break;
-			case 10:
+			case 10: // right turn trigger
 				// display right turn sign on HUD, 
+				hudController.model.centerText = VRAVEStrings.Approaching_Right_Turn;
+
 				if (GetState ().Equals (States.HumanDrivingToTrashcan) || GetState ().Equals (States.AIDrivingToTrashcan)) {
-					hudController.Clear();
-					hudController.models [1].isLeftImageEnabled = false;
-					hudController.models [0] = hudController.model;
-					hudController.durations [0] = 0.5f;
-					hudController.durations [1] = 0.5f;
-					hudController.models [1] = hudController.model.Clone ();
-					hudController.models [1].leftBackingMaterial = Resources.Load (VRAVEStrings.Right_Turn, typeof(Material)) as Material;
-					hudController.models [1].isLeftImageEnabled = true;
-					hudController.models [1].leftImagePosition = new Vector3 (1.98f, 0.19f, -0.39f);
-					hudController.models [1].leftImageScale = new Vector3 (0.5f * 0.1280507f, 0, 0.5f * 0.1280507f);
-					hudAsyncController.DoHUDUpdates (5, 1f);
+					hudController.FlashImage (Resources.Load (VRAVEStrings.Right_Turn, typeof(Material)) as Material,
+						0.5f, 0.5f, 0.75f, 5, hudAsyncController);
 				}
 				break;
 			}
@@ -330,15 +330,18 @@ namespace VRAVE
 
 		public void AdvancingThroughIntersection_Enter ()
 		{
+			hudController.Clear ();
+
 			CrazyIntersectionAI.SetActive (true);
 			crazyCarController.MaxSpeed = 40f;
 			crazyCarController.SetSpeed = new Vector3 (-40f, 0f, 0f);
-			hudController.model = hudController.models [0];
 
 			if (m_humanDrivingState) {
 				// tire screech and crash
 				audioController.playAudio (2);
 			} else {
+				hudController.FlashImage (Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material,
+					0.25f, 0.25f, 0.6f, 5, hudAsyncController);
 				// tire screeching
 				audioController.playAudio (6);
 			}
@@ -350,6 +353,8 @@ namespace VRAVE
 			if (sensitiveSensorResponseHandler.Enable) {
 				sensitiveSensorResponseHandler.Enable = false;
 			}
+
+			hudController.Clear ();
 		}
 			
 		/**************************** Trash can states *********************/ 
