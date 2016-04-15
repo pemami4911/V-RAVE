@@ -25,10 +25,10 @@ namespace VRAVE
             bottomFontSize = 300;
 
             centerText = "Welcome to Scenario #3!";
-            leftText = "Left Text";
-            rightText = "Right Text";
-            topText = "Top Text";
-            bottomText = "Bottom Text";
+            leftText = "";
+            rightText = "";
+            topText = "";
+            bottomText = "";
 
             isCenterTextEnabled = true;
             isLeftTextEnabled = true;

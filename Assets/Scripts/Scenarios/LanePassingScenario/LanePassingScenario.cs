@@ -25,7 +25,8 @@ namespace VRAVE
 
         private SpawnController manufacturer;
         private HUDController hudController;
-        private HUDAudioController audioController;
+		private HUDAsyncController hudAsyncController;
+		private HUDAudioController audioController;
 		private AmbientAudioController ambientAudioController;
         private Sensors userCarSensors;
         private CarAIControl userCarAI;
@@ -80,21 +81,33 @@ namespace VRAVE
 
             manufacturer = GetComponent<SpawnController>();
             hudController = UserCar.GetComponentInChildren<HUDController>();
-            audioController = UserCar.GetComponent<HUDAudioController>();
+			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController>();
+			audioController = UserCar.GetComponentInChildren<HUDAudioController>();
 			ambientAudioController = UserCar.GetComponentInChildren<AmbientAudioController>();
 
             lanePassingHandler = UserCar.GetComponent<LanePassingSensorResponseHandler>();
             lanePassingHandler.Enable = false;
             followHandler = UserCar.GetComponent<FollowingSensorResponseHandler>();
 
-            userMode = true;
+			// configure HUD models
+			hudController.models = new HUDModel[2];
+			hudController.durations = new float[2];
+			hudController.models[0] = new HUDVRAVE_Default();
+			hudController.model = hudController.models[0];
+
+			// configure ASYNC controller
+			hudAsyncController.Configure(audioController, hudController);
+
+			//configure audio
+			audioController.audioModel = new LanePassingAudioModel();
+			ambientAudioController.Mute();
+
+			userMode = true;
 
             UserCar.SetActive(true);
             AIVehicle.SetActive(true);
 			
             mirror = GameObject.FindWithTag(VRAVEStrings.Mirror);
-
-            //triggers[2].gameObject.SetActive(false);
 
             ChangeState(States.InitState);
         }
@@ -197,7 +210,27 @@ namespace VRAVE
                 case 33:
                     triggerToggle = true;
                     break;
-            }
+
+				case 101:
+					StartCoroutine(SpeedChangesBriefing());
+					break;
+
+				case 102:
+					// display right turn sign on HUD.
+					hudController.Clear();
+					hudController.model.isLeftImageEnabled = false;
+					hudController.models[1] = hudController.model;
+					hudController.models[0] = hudController.model.Clone();
+					hudController.durations[0] = 0.3f;
+					hudController.durations[1] = 0.2f;
+					hudController.models[0].leftBackingMaterial = Resources.Load(VRAVEStrings.Right_Turn, typeof(Material)) as Material;
+					hudController.models[0].isLeftImageEnabled = true;
+					hudController.models[0].leftImagePosition = new Vector3(1.98f, 0.19f, -0.39f);
+					hudController.models[0].leftImageScale = new Vector3(0.5f * 0.1280507f, 0, 0.5f * 0.1280507f);
+					hudAsyncController.DoHUDUpdates(5, 0.5f);
+					break;
+
+			}
         }
 
 
@@ -244,24 +277,22 @@ namespace VRAVE
             if(userMode)
             {
                 userCarController.MaxSteeringAngle = 50f;
-            }
-            //Debug.Log("Enter: InitState");
-            //UseCar and AI Vehicles Created
-            //Display Scenario Information on HUD
+				(AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+				StartCoroutine("IntroBriefing");
+				//Welcome to the Adaptive Cruise Control and Lane Passing Scenario.
+				//Pull right trigger to continue.
+			}
+			//Display Scenario Information on HUD
 
-        }
+		}
 
         // Wait for the user to press OK
         public void InitState_Update()
         {
-
-            ChangeState(States.FollowingInstruction);
-
-            //POSSIBLY DONT NEED THIS
-            // 	Change to steering wheel paddle
-            //Debug.Log("Waiting for Input");
-            if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
+			if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
+				StopCoroutine("IntroBriefing");
+				StopCoroutine("IntroBriefAudio");
                 ChangeState(States.FollowingInstruction);
             }
 
@@ -272,18 +303,20 @@ namespace VRAVE
         public void FollowingInstruction_Enter()
         {
 
-            //Debug.Log("Enter: FollowingInstruction");
-
-            //Play insructions here!!!
-            mirror.SetActive(true);
-            (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+			//You are inside a semi-autonomous vehicle. The glowing vehicle ahead of you is a fully autonomous.
+			//Please attempt to follow this vehicle at a safe, constant distance.
+			//HUD UPDATE after instructions. Start driving to begin scenario. 
+			mirror.SetActive(true);
+			hudController.Clear();
+			StartCoroutine(FollowBriefing());
             if (userMode)
             {
                 UserCar.GetComponent<CarUserControl>().StartCar();
-                (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
+                //(UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
                 userCarAI.enabled = false;
-            }
-            else
+				
+			}
+			else
             {
                 //followHandler.Enable = true;
             }
@@ -293,11 +326,12 @@ namespace VRAVE
         public void FollowingInstruction_Update()
         {
             if (userMode)
-            {
-                //Once user begins driving, start AI
+            {		
+                //Once user begins driving, start AI vehicle
                 if (userCarController.AccelInput >= 0.05f)  //Change to left trigger
                 {
-                    //Debug.Log("Update: FollowingInstruction");
+					//Remove HUD driving instructions.
+					ambientAudioController.UnMute();
                     ChangeState(States.Following);
                 }
             }
@@ -316,7 +350,7 @@ namespace VRAVE
 
         public void Following_Enter()
         {
-            //Debug.Log("Entered: Following");
+            
             (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
             AIVehicleAI.Circuit = AITrack;
             AIVehicleAI.enabled = true;
@@ -327,6 +361,7 @@ namespace VRAVE
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
                 userCarAI.enabled = false;
+				alreadyPassed = true; //Turns off speed up and slow down triggers for user car during following.
             }
             else  //Not used
             {
@@ -364,6 +399,7 @@ namespace VRAVE
             AIVehicleAI.enabled = false;
             userCarAI.enabled = false;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+			alreadyPassed = false; //Reset if the car has already passed
         }
 
         public void PassingInstruction_Update()
@@ -538,5 +574,47 @@ namespace VRAVE
 
             }
         }
-    }
+
+		private IEnumerator IntroBriefing()
+		{
+			//Pause before beginning to speak.
+			yield return new WaitForSeconds(2f);
+			StartCoroutine("IntroBriefAudio");
+		}
+
+		private IEnumerator IntroBriefAudio()
+		{
+			//Actually start introduction audio briefing.
+			ambientAudioController.Mute();
+			audioController.playAudio (0);
+			yield return new WaitForSeconds(5f);
+			hudController.model.centerText = "Pull right trigger to continue.";
+		}
+
+		private IEnumerator FollowBriefing()
+		{
+			hudController.Clear();
+			StopCoroutine("IntroBriefing");
+			StopCoroutine("IntroBriefAudio");
+			//Actually start introduction audio briefing.
+			ambientAudioController.Mute();
+			audioController.playAudio(1);
+			//yield return new WaitForSeconds(7f);
+			(UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
+			hudController.model.centerText = "Follow vehicle.";
+			hudController.model.leftText = "Manual Mode";
+			yield return new WaitForSeconds(12f);
+			hudController.Clear();
+		}
+
+		private IEnumerator SpeedChangesBriefing()
+		{
+			//Notify the user of speed changes.
+			ambientAudioController.Mute();
+			audioController.playAudio(2);
+			yield return new WaitForSeconds(5f);
+			ambientAudioController.UnMute();
+			triggers[3].SetActive(false);
+		}
+	}
 }
