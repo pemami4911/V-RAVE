@@ -19,11 +19,6 @@ public class HUDAudioModel {
 	public HUDAudioModel() {
 		audioClips = new List<AudioClip> ();
 		durations = new List<float>();
-		//example of what your HUDAudioModel should look like
-		/*
-		audioClips = new List<AudioClip> ();
-		AudioClip dave = Resources.Load("Hey Dave", typeof(AudioClip)) as AudioClip;
-		audioClips.Add (dave);*/
 	}
 
 	public void addClip(string name, float duration) {
