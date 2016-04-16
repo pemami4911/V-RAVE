@@ -15778,6 +15778,10 @@ Prefab:
       propertyPath: m_isUser
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11432736, guid: c6234fe42d6bdca44b830b8ec6f3905d, type: 2}
+      propertyPath: m_Topspeed
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11491326, guid: c6234fe42d6bdca44b830b8ec6f3905d, type: 2}
     - {fileID: 11440744, guid: c6234fe42d6bdca44b830b8ec6f3905d, type: 2}

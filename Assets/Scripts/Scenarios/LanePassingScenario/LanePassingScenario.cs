@@ -212,12 +212,12 @@ namespace VRAVE
                     break;
 
 				case 101:
-					StartCoroutine(SpeedChangesBriefing());
+					StartCoroutine("SpeedChangesBriefing");
 					break;
 
 				case 102:
 					// display right turn sign on HUD.
-					hudController.Clear();
+					//hudController.Clear();
 					hudController.model.isLeftImageEnabled = false;
 					hudController.models[1] = hudController.model;
 					hudController.models[0] = hudController.model.Clone();
@@ -230,6 +230,36 @@ namespace VRAVE
 					hudAsyncController.DoHUDUpdates(5, 0.5f);
 					break;
 
+				case 103:
+					// display left turn sign on HUD.
+					//hudController.Clear();
+					hudController.model.isLeftImageEnabled = false;
+					hudController.models[1] = hudController.model;
+					hudController.models[0] = hudController.model.Clone();
+					hudController.durations[0] = 0.3f;
+					hudController.durations[1] = 0.2f;
+					hudController.models[0].leftBackingMaterial = Resources.Load(VRAVEStrings.Left_Turn, typeof(Material)) as Material;
+					hudController.models[0].isLeftImageEnabled = true;
+					hudController.models[0].leftImagePosition = new Vector3(1.98f, 0.19f, -0.39f);
+					hudController.models[0].leftImageScale = new Vector3(0.5f * 0.1280507f, 0, 0.5f * 0.1280507f);
+					hudAsyncController.DoHUDUpdates(5, 0.5f);
+					break;
+
+				case 104:
+					//Passing Briefing
+					if (userMode)
+					{
+						StartCoroutine("PassingBriefing");
+					}
+					break;
+
+				case 105:
+					//User mode end
+					if(userMode)
+					{
+						StartCoroutine("UserConclusion");
+					}
+					break;
 			}
         }
 
@@ -246,6 +276,8 @@ namespace VRAVE
 
             userCarController.ResetSpeed();
             AIVehicleCarController.ResetSpeed();
+
+			hudController.Clear();
 
             if(mirror != null)
             {
@@ -388,12 +420,40 @@ namespace VRAVE
             }
         }
 
+		public void ChangeMode_Enter()
+		{
+			resetScenario();
+			if (userMode)
+			{
+				userMode = false;
+				userCarController.MaxSteeringAngle = 35f;
+				AIVehicle.SetActive(true);
+				UserCar.SetActive(true);
+				//Show AI passing and following
+				ChangeState(States.PassingInstruction);
+			}
+			else  //End scenario
+			{
+				//Fade out.
+				//SceneManager.LoadScene(0);
+				//Debug.Log("End Scenario. Back to Lobby.");
+				userCarController.MaxSteeringAngle = 50f;
+				AIVehicle.SetActive(true);
+				UserCar.SetActive(true);
+				userMode = true;
+				ChangeState(States.FollowingInstruction);
+			}
+		}
 
-        /* PASSING INSTRUCTION */
-        //The AI part of the simulation
-        public void PassingInstruction_Enter()
+
+		/* PASSING INSTRUCTION */
+		//The AI part of the simulation
+		public void PassingInstruction_Enter()
         {
-            //CameraFade.StartAlphaFade(Color.black, true, 1.5f, 2f);   //Causes problems.
+			hudController.model.leftText = "AI Mode";
+
+
+			//CameraFade.StartAlphaFade(Color.black, true, 1.5f, 2f);   //Causes problems.
             mirror.SetActive(true);
             UserCar.GetComponent<CarUserControl>().StartCar();
             AIVehicleAI.enabled = false;
@@ -524,31 +584,6 @@ namespace VRAVE
 
         }
 
-        public void ChangeMode_Enter()
-        {
-            resetScenario();
-            if(userMode)
-            {
-                userMode = false;
-                userCarController.MaxSteeringAngle = 35f;
-                AIVehicle.SetActive(true);
-                UserCar.SetActive(true);
-                //Show AI passing and following
-                ChangeState(States.PassingInstruction);
-            }
-            else  //End scenario
-            {
-				//Fade out.
-				//SceneManager.LoadScene(0);
-                //Debug.Log("End Scenario. Back to Lobby.");
-                userCarController.MaxSteeringAngle = 50f;
-                AIVehicle.SetActive(true);
-                UserCar.SetActive(true);
-                userMode = true;
-                ChangeState(States.FollowingInstruction);
-            }
-        }
-
         private void getPassTrack()
         {
             switch (Mathf.RoundToInt(AIVehicleCarController.MaxSpeed).ToString())
@@ -615,6 +650,33 @@ namespace VRAVE
 			yield return new WaitForSeconds(5f);
 			ambientAudioController.UnMute();
 			triggers[3].SetActive(false);
+		}
+
+		private IEnumerator PassingBriefing()
+		{
+			//Instruct the user to pass on the next straightaway.
+			ambientAudioController.Mute();
+			audioController.playAudio(3);
+			yield return new WaitForSeconds(4f);
+			hudController.model.centerText = "Safely Pass Vehicle";
+			ambientAudioController.UnMute();
+			triggers[10].SetActive(false);
+			//yield return new WaitForSeconds(6f);
+			//hudController.Clear();
+		}
+
+		private IEnumerator UserConclusion()
+		{
+			//End of the user part of the scenario.
+			//Allow user to enter AI scenario by pulling right trigger.
+
+			ambientAudioController.Mute();
+			audioController.playAudio(4);
+			yield return new WaitForSeconds(1f);
+			hudController.model.centerText = "Pull right trigger to enter AI Mode.";
+			yield return new WaitForSeconds(5f);
+			ambientAudioController.UnMute();
+			triggers[11].SetActive(false);
 		}
 	}
 }

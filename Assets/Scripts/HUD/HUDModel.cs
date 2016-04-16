@@ -126,6 +126,7 @@ namespace VRAVE
 			h.rightText = this.rightText;
 			h.topText = this.topText;
 			h.bottomText = this.bottomText;
+			h.centerText = this.centerText;
 			h.centerCharSize = this.centerCharSize;
 			h.leftCharSize = this.leftCharSize;
 			h.rightCharSize = this.rightCharSize;

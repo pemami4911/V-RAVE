@@ -15,10 +15,10 @@ namespace VRAVE
 			addClip("follow-briefing", 13f);
 			// #2
 			addClip("speed-changes-briefing", 5f);
-		//	// #3
-		//	addClip("leave-following", 9f);
-		//	// #4 
-		//	addClip("drive-to-stop-sign", 3f);
+			// #3
+			addClip("passing-briefing", 5f);
+			// #4 
+			addClip("end-user-mode", 7f);
 		//	// #5
 		//	addClip("intersection-AI-briefing", 4f);
 		//	// #6

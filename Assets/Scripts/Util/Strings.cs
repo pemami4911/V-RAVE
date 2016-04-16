@@ -29,6 +29,7 @@ namespace VRAVE
 
 		public static string Stop_Img = "stop";
 		public static string Right_Turn = "right-turn";
+		public static string Left_Turn = "left-turn";
 
 		public static string Follow_Car = "Follow the car";
 		public static string Left_Paddle_To_Continue = "Press the left paddle to continue";
