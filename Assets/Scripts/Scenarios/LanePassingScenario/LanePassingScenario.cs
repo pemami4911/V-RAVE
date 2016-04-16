@@ -3,6 +3,7 @@ using System.Collections;
 using MonsterLove.StateMachine;
 using UnityStandardAssets.Utility;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace VRAVE
 {
@@ -25,6 +26,7 @@ namespace VRAVE
         private SpawnController manufacturer;
         private HUDController hudController;
         private HUDAudioController audioController;
+		private AmbientAudioController ambientAudioController;
         private Sensors userCarSensors;
         private CarAIControl userCarAI;
         private CarAIControl AIVehicleAI;
@@ -79,6 +81,7 @@ namespace VRAVE
             manufacturer = GetComponent<SpawnController>();
             hudController = UserCar.GetComponentInChildren<HUDController>();
             audioController = UserCar.GetComponent<HUDAudioController>();
+			ambientAudioController = UserCar.GetComponentInChildren<AmbientAudioController>();
 
             lanePassingHandler = UserCar.GetComponent<LanePassingSensorResponseHandler>();
             lanePassingHandler.Enable = false;
@@ -88,7 +91,7 @@ namespace VRAVE
 
             UserCar.SetActive(true);
             AIVehicle.SetActive(true);
-
+			
             mirror = GameObject.FindWithTag(VRAVEStrings.Mirror);
 
             //triggers[2].gameObject.SetActive(false);
@@ -343,12 +346,13 @@ namespace VRAVE
             if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-                CameraFade.StartAlphaFade(Color.black, false, 2, 0f, () =>
+                CameraFade.StartAlphaFade(Color.black, false, 2f, 0f, () =>
                 {
                     ChangeState(States.ChangeMode);
                 });
             }
         }
+
 
         /* PASSING INSTRUCTION */
         //The AI part of the simulation
@@ -408,8 +412,11 @@ namespace VRAVE
 
             if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
-                CameraFade.StartAlphaFade(Color.black, false, 2f, 0f);
-                ChangeState(States.ChangeMode);
+                CameraFade.StartAlphaFade(Color.black, false, 2f, 0f, () =>
+				{
+					ChangeState(States.ChangeMode);
+				});
+                
             }
 
             if (Input.GetButton(VRAVEStrings.Left_Paddle) && (canPass == true))
@@ -495,6 +502,8 @@ namespace VRAVE
             }
             else  //End scenario
             {
+				//Fade out.
+				//SceneManager.LoadScene(0);
                 //Debug.Log("End Scenario. Back to Lobby.");
                 userCarController.MaxSteeringAngle = 50f;
                 AIVehicle.SetActive(true);

@@ -43,6 +43,9 @@ namespace VRAVE
 
 		public static string Autonomous_Mode = "Autonomous Mode";
 		public static string Manual_Mode = "Manual Mode";
+
+		public static string Lobby_Menu = "LobbyMenu";
+
     }
 
 }

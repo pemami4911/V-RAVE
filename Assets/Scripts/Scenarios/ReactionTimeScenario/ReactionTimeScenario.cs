@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using MonsterLove.StateMachine;
+using UnityEngine.SceneManagement;
 
 namespace VRAVE
 {
@@ -57,7 +58,6 @@ namespace VRAVE
 			TrashcanBriefing,
 			HumanDrivingToTrashcan,
 			AIDrivingToTrashcan,
-			Finish
 		}
 
 		void Awake ()
@@ -424,12 +424,6 @@ namespace VRAVE
 			}
 		}
 
-		public void Finish_Enter() {
-			//Debug.Log ("Finish!");
-			carController.MaxSpeed = 0f;
-			// Application.LoadLevel(Lobby)
-		}
-
 		/************* Coroutines *****************/
 
 		private IEnumerator PostCollisionStateChange (float time)
@@ -474,7 +468,7 @@ namespace VRAVE
 					resetTrashCanScenario ();
 					ChangeState (States.AIDrivingToTrashcan);
 				} else {					
-					ChangeState (States.Finish);
+					SceneManager.LoadScene (VRAVEStrings.Lobby_Menu);
 				}
 			});
 		}
