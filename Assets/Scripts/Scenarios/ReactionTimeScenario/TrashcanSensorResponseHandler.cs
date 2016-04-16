@@ -40,11 +40,11 @@ namespace VRAVE
 						float targetAngle = Mathf.Atan2 (localTarget.x, localTarget.z) * Mathf.Rad2Deg;
 
 						if (targetAngle <= 0)
-							targetAngle = -90 - targetAngle;
+							targetAngle = -90 + targetAngle;
 						else
 							targetAngle = 90 - targetAngle;
 						
-						controller.ObstacleAvoidanceSteerAmount = -targetAngle;
+						controller.ObstacleAvoidanceSteerAmount = -targetAngle * 2f;
 
 						return;						
 					}
