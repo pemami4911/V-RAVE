@@ -247,6 +247,7 @@ namespace VRAVE
 					steer = Mathf.Clamp (targetAngle * m_SteerSensitivity, -1, 1) * Mathf.Sign (m_CarController.CurrentSpeed);
 				} else {
 					steer = Mathf.Clamp (ObstacleAvoidanceSteerAmount * m_SteerSensitivity, -1, 1) * Mathf.Sign (m_CarController.CurrentSpeed);
+					accel = accel * 10f;
 				}
 
                 /*

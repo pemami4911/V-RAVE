@@ -58,7 +58,7 @@ namespace VRAVE
 
         public HUDModel()
         {
-			collisionIcon = Resources.Load("collision", typeof(Material)) as Material;
+			collisionIcon = Resources.Load(VRAVEStrings.Collision_Img, typeof(Material)) as Material;
 
             HUDRotation = new Vector3(34.9585f, 0, 180);
 
@@ -116,6 +116,7 @@ namespace VRAVE
 		public HUDModel Clone()
 		{
 			HUDModel h = new HUDModel ();
+
 			h.HUDRotation = this.HUDRotation; 
 			h.centerTextPosition = this.centerTextPosition;
 			h.leftTextPosition = this.leftTextPosition;
@@ -125,6 +126,7 @@ namespace VRAVE
 			h.leftText = this.leftText;
 			h.rightText = this.rightText;
 			h.topText = this.topText;
+			h.centerText = this.centerText;
 			h.bottomText = this.bottomText;
 			h.centerCharSize = this.centerCharSize;
 			h.leftCharSize = this.leftCharSize;
