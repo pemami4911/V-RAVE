@@ -119,11 +119,11 @@ namespace VRAVE
         {
             switch (id)
             {
-                case 0:
+                case 0:  //Back to original speed
                     AIVehicleCarController.MaxSpeed = 15;
                     if (!userMode && !alreadyPassed)
                     {
-                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
                     }
                     break;
 
@@ -131,15 +131,15 @@ namespace VRAVE
                     AIVehicleCarController.MaxSpeed = 10;
                     if (!userMode && !alreadyPassed)
                     {
-                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
                     }
                     break;
 
                 case 2:  //Speed Up
-                    AIVehicleCarController.MaxSpeed = 25;
+                    AIVehicleCarController.MaxSpeed = 20;
                     if (!userMode && !alreadyPassed)
                     {
-                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
                     }
                     break;
 
@@ -166,14 +166,48 @@ namespace VRAVE
 					userCarController.MaxSpeed = 20;
                     break;
 
-                case 10:
+				case 6: //Speed Up North
+					if(userMode)
+					{
+						AIVehicleCarController.MaxSpeed = 25;
+					}
+					else if(!alreadyPassed)
+					{
+						AIVehicleCarController.MaxSpeed = 35;
+						userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
+					}
+					break;
+
+				case 7: //Slow Down North
+					if (userMode)
+					{
+						
+						AIVehicleCarController.MaxSpeed = 15;
+					}
+					else if(!alreadyPassed)
+					{
+						AIVehicleCarController.MaxSpeed = 15;
+						userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
+						AIVehicle.transform.GetChild(3).gameObject.SetActive(true);
+					}
+					break;
+
+				case 10:
                     //Debug.Log("Can Pass");
                     canPass = true;
+					if (!alreadyPassed)
+					{
+						hudController.model.bottomText = "CAN PASS";
+					}
                     break;
                 case 11:
                     //Debug.Log("Cannot Pass");
                     canPass = false;
-                    break;
+					if (!alreadyPassed)
+					{
+						hudController.model.bottomText = "CANNOT PASS";
+					}
+					break;
 
                 case 20:
                     //AI Car gets to turn at 15 mph
@@ -189,6 +223,8 @@ namespace VRAVE
                     //Debug.Log("SLOW DOWN!");
                     if (triggerToggle && !alreadyPassed)
                     {
+						AIVehicle.transform.GetChild(3).gameObject.SetActive(false);
+						StartCoroutine("SlowingAtTurn");
                         //userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed - 10.0f;
                         userCarAI.AvoidOtherCarTime = Time.time + 3f;
                         userCarAI.AvoidOtherCarSlowdown = 0.5f;
@@ -199,7 +235,8 @@ namespace VRAVE
 					//Debug.Log("Speed back up!");
 					if (triggerToggle && !alreadyPassed)
 					{
-						userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+						userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
+						StartCoroutine("SpeedingAfterTurn");
 					}
 					break;
 
@@ -258,6 +295,22 @@ namespace VRAVE
 					if(userMode)
 					{
 						StartCoroutine("UserConclusion");
+					}
+					break;
+
+				case 106:
+					//Adaptive Cruise Control
+					if (!userMode)
+					{
+						StartCoroutine("AdaptiveCruiseControl");
+					}
+					break;
+
+				case 107:
+					//AI Passing Brief
+					if(!userMode)
+					{
+						StartCoroutine("AIPassingBrief");
 					}
 					break;
 			}
@@ -339,7 +392,8 @@ namespace VRAVE
 			//Please attempt to follow this vehicle at a safe, constant distance.
 			//HUD UPDATE after instructions. Start driving to begin scenario. 
 			mirror.SetActive(true);
-			hudController.Clear();
+			//hudController.Clear();
+			hudController.model.centerText = "";
 			StartCoroutine(FollowBriefing());
             if (userMode)
             {
@@ -398,9 +452,10 @@ namespace VRAVE
             else  //Not used
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
+				userCarController.FullTorqueOverAllWheels = 1000;
                 userCarAI.Circuit = UserTrack;
                 userCarAI.enabled = true;
-                userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
             }
 
         }
@@ -450,6 +505,7 @@ namespace VRAVE
 		//The AI part of the simulation
 		public void PassingInstruction_Enter()
         {
+			StartCoroutine("AIBriefing");
 			hudController.model.leftText = "AI Mode";
 
 
@@ -478,10 +534,6 @@ namespace VRAVE
 
         public void WaitToPass_Enter()
         {
-            
-            //Debug.Log("Entered: WaitToPass");
-            //(AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;  Already called in PassingInstruction
-
             if (userMode)
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
@@ -492,11 +544,9 @@ namespace VRAVE
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
                 circuitProgressNum = Mathf.CeilToInt((userCarAI.ProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
                 userCarAI.switchCircuit(UserTrack, circuitProgressNum);
-                //Debug.Log(circuitProgressNum);
-                //Debug.Log(initialTrack.ToString());
                 userCarAI.IsCircuit = true;
                 userCarAI.enabled = true;
-                userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
             }
 
         }
@@ -535,6 +585,7 @@ namespace VRAVE
         /* Wait while passing other vehicle as to not attempt to pass again until finished. */
         public void Passing_Enter()
         {
+			hudController.model.centerText = "Passing Vehicle";
             //Move passing track to 2 units ahead of the UserCar and set rotation to forward.
             passingTrack.transform.position = (UserCar.transform.position + UserCar.transform.forward * 2f);
             float newAngle = Mathf.RoundToInt(UserCar.transform.eulerAngles.y / 90f) * 90f;
@@ -545,7 +596,9 @@ namespace VRAVE
             userCarAI.IsCircuit = false;
 
             circuitProgressNum = userCarAI.ProgressNum;
-            userCarAI.switchCircuit(passingTrack, 0);
+			Debug.Log("CircuitNum: " + circuitProgressNum);
+
+			userCarAI.switchCircuit(passingTrack, 0);
 
             (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
             userCarController.FullTorqueOverAllWheels = 1500;
@@ -559,9 +612,9 @@ namespace VRAVE
 
         public void Passing_Exit()
         {
-            //Debug.Log("Exit: Passing");
+			StartCoroutine("CompletedPass");
             userCarAI.IsPassing = false;
-            userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+            userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
             userCarAI.CautiousMaxAngle = 25f;
             //float AISpeed = AIVehicleCarController.CurrentSpeed;
             //userCarController.SetSpeed = new Vector3(0,0,40f);
@@ -575,9 +628,8 @@ namespace VRAVE
             else
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-                circuitProgressNum = Mathf.CeilToInt((userCarAI.ProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
+                circuitProgressNum = Mathf.CeilToInt((circuitProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
                 userCarAI.switchCircuit(UserTrack, circuitProgressNum);
-                //Debug.Log(circuitProgressNum);
                 userCarAI.IsCircuit = true;
                 userCarAI.enabled = true;
             }
@@ -595,15 +647,19 @@ namespace VRAVE
                     break;
                 case "10":
                 case "15":
-                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack10).GetComponent<WaypointCircuit>();
+                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack25).GetComponent<WaypointCircuit>();
                     passingSpeed = 25f;
                     break;
-                case "25":
+				case "20":
+					passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack25).GetComponent<WaypointCircuit>();
+					passingSpeed = 30f;
+					break;
+				case "25":
                     passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack25).GetComponent<WaypointCircuit>();
                     passingSpeed = 30f;
                     break;
                 default:
-                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack10).GetComponent<WaypointCircuit>();
+                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack25).GetComponent<WaypointCircuit>();
                     passingSpeed = 25f;
                     break;
 
@@ -612,14 +668,8 @@ namespace VRAVE
 
 		private IEnumerator IntroBriefing()
 		{
-			//Pause before beginning to speak.
-			yield return new WaitForSeconds(2f);
-			StartCoroutine("IntroBriefAudio");
-		}
-
-		private IEnumerator IntroBriefAudio()
-		{
 			//Actually start introduction audio briefing.
+			yield return new WaitForSeconds(2f);
 			ambientAudioController.Mute();
 			audioController.playAudio (0);
 			yield return new WaitForSeconds(5f);
@@ -628,7 +678,8 @@ namespace VRAVE
 
 		private IEnumerator FollowBriefing()
 		{
-			hudController.Clear();
+			//hudController.Clear();
+			hudController.model.centerText = "";
 			StopCoroutine("IntroBriefing");
 			StopCoroutine("IntroBriefAudio");
 			//Actually start introduction audio briefing.
@@ -639,7 +690,8 @@ namespace VRAVE
 			hudController.model.centerText = "Follow vehicle.";
 			hudController.model.leftText = "Manual Mode";
 			yield return new WaitForSeconds(12f);
-			hudController.Clear();
+			//hudController.Clear();
+			hudController.model.centerText = "";
 		}
 
 		private IEnumerator SpeedChangesBriefing()
@@ -657,12 +709,13 @@ namespace VRAVE
 			//Instruct the user to pass on the next straightaway.
 			ambientAudioController.Mute();
 			audioController.playAudio(3);
-			yield return new WaitForSeconds(4f);
+			yield return new WaitForSeconds(9f);
 			hudController.model.centerText = "Safely Pass Vehicle";
 			ambientAudioController.UnMute();
 			triggers[10].SetActive(false);
-			//yield return new WaitForSeconds(6f);
-			//hudController.Clear();
+			yield return new WaitForSeconds(6f);
+			//hudController.Clear();	
+			hudController.model.centerText = "";
 		}
 
 		private IEnumerator UserConclusion()
@@ -677,6 +730,60 @@ namespace VRAVE
 			yield return new WaitForSeconds(5f);
 			ambientAudioController.UnMute();
 			triggers[11].SetActive(false);
+		}
+
+		private IEnumerator AIBriefing()
+		{
+			//Introduction to AI scenario
+			yield return new WaitForSeconds(2f);
+			ambientAudioController.Mute();
+			audioController.playAudio(5);
+			yield return new WaitForSeconds(7f);
+			ambientAudioController.UnMute();
+		}
+
+		private IEnumerator AIPassingBrief()
+		{
+			ambientAudioController.Mute();
+			audioController.playAudio(6);
+			yield return new WaitForSeconds(5f);
+		}
+
+		private IEnumerator CompletedPass()
+		{
+			hudController.model.centerText = "Pass Completed";
+			yield return new WaitForSeconds(2f);
+			hudController.model.centerText = "";
+
+		}
+
+		private IEnumerator AdaptiveCruiseControl()
+		{
+			//Notice how your vehicle accelerates and decelerates as the leading vehicle varies in speed.
+			yield return new WaitForSeconds(2f);
+			audioController.playAudio(7);
+			yield return new WaitForSeconds(3f);
+			hudController.model.centerText = "Accelerating";
+			yield return new WaitForSeconds(4f);
+			hudController.model.centerText = "Decelerating";
+			yield return new WaitForSeconds(2f);
+			hudController.model.centerText = "";
+
+		}
+
+		private IEnumerator SlowingAtTurn()
+		{
+			hudController.model.centerText = "Slowing for turn";
+			yield return new WaitForSeconds(1f);
+			hudController.model.centerText = "";
+		}
+
+		private IEnumerator SpeedingAfterTurn()
+		{
+			hudController.model.centerText = "Speeding up";
+			yield return new WaitForSeconds(1f);
+			hudController.model.centerText = "";
+
 		}
 	}
 }

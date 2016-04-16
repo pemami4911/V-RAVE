@@ -19,7 +19,7 @@ namespace VRAVE
             }
             else
             {
-                if (passingCheck(obstacles))
+				if (passingCheck(obstacles))
                 {
                     Enable = false;
                     controller.IsPassing = true;
