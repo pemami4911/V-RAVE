@@ -25,6 +25,7 @@ namespace VRAVE {
 
 				//set collision icon
 				hudController.model.leftBackingMaterial = hudController.model.collisionIcon;
+				hudController.model.leftImageScale = new Vector3 (0.6f * 0.1280507f, 0, 0.6f * 0.1280507f);
 				hudController.model.isLeftImageEnabled = true;
 
 				//restore old values after a waiting period
@@ -36,8 +37,9 @@ namespace VRAVE {
 		private IEnumerator resetCollisionIcon (float time, bool oldIsEnabled, Material oldMaterial) {
 			yield return new WaitForSeconds(time);
 
-			hudController.model.leftBackingMaterial = oldMaterial;
-			hudController.model.isLeftImageEnabled = oldIsEnabled;
+			//hudController.model.leftBackingMaterial = oldMaterial;
+			//hudController.model.isLeftImageEnabled = oldIsEnabled;
+			hudController.model.isLeftImageEnabled = false;
 		}
 	}
 }

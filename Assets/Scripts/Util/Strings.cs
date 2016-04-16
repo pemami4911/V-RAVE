@@ -31,6 +31,7 @@ namespace VRAVE
 		public static string Stop_Sign = "Approaching stop sign";
 		public static string Continue_Straight = "Continue straight";
 		public static string Approaching_Right_Turn = "Approaching right turn";
+		public static string Stop_at_Stop_Sign = "Stop at the stop sign";
 
         public static string Crazy_AI_Car = "Crazy_AI_Car";
         public static string Unsuspecting_AI = "Unsuspecting_AI";
