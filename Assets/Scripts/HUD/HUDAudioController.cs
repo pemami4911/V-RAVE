@@ -39,7 +39,7 @@ namespace VRAVE
 			hudAudioSources[0].Play ();
 		}
 
-		public void PlayAudio (int index, int source)
+		public void playAudio (int index, int source)
 		{
 			AudioClip audio = audioModel.audioClips [index];
 			hudAudioSources [source].clip = audio;

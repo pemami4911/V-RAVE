@@ -148,14 +148,11 @@ namespace VRAVE
                     break;
 
                 case 3: //Beginning of passing track
-                    //Debug.Log("Inside Case 3");
 
 
                     break;
                 case 4: //End of passing track
-                    //Debug.Log("Inside Case 4");
                     //userCarController.MaxSpeed = 30;
-                    //Debug.Log("Speeding up quickly!");
                     ChangeState(States.WaitToPass);
 
 
@@ -217,7 +214,7 @@ namespace VRAVE
 					break;
 
 				case 10:
-                    //Debug.Log("Can Pass");
+                    //Can Pass
                     canPass = true;
 					hudController.model.bottomText = "";
 					if (!alreadyPassed)
@@ -226,7 +223,7 @@ namespace VRAVE
 					}
                     break;
                 case 11:
-                    //Debug.Log("Cannot Pass");
+                    //Cannot Pass
                     canPass = false;
 					hudController.model.bottomText = "";
 					if (!alreadyPassed)
@@ -246,7 +243,6 @@ namespace VRAVE
 
                 case 30:  
                     //User Vehicle slows down before right turn
-                    //Debug.Log("SLOW DOWN!");
                     if (triggerToggle && !alreadyPassed)
                     {
 						StartCoroutine("SlowingAtTurn");
@@ -257,7 +253,6 @@ namespace VRAVE
                     break;
                 case 31:
 					//User vehicle Speeds back up
-					//Debug.Log("Speed back up!");
 					if (triggerToggle && !alreadyPassed)
 					{
 						userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
@@ -527,7 +522,6 @@ namespace VRAVE
 			{
 				//Fades out to LobbyMenu.
 				SceneManager.LoadScene(VRAVEStrings.Lobby_Menu);
-				//Debug.Log("End Scenario. Back to Lobby.");
 
 				//userCarController.MaxSteeringAngle = 50f;
 				//AIVehicle.SetActive(true);
@@ -595,7 +589,6 @@ namespace VRAVE
 
         public void WaitToPass_Update()
         {
-            //Debug.Log("Update: WaitToPass");
 
             if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
@@ -608,7 +601,7 @@ namespace VRAVE
 
             if (Input.GetButton(VRAVEStrings.Left_Paddle) && (canPass == true))
             {
-				//Debug.Log("Should start passing");
+				//Should start passing
 				GameObject leftPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Left_Paddle);
 				(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
 				getPassTrack();
@@ -634,12 +627,10 @@ namespace VRAVE
             float newAngle = Mathf.RoundToInt(UserCar.transform.eulerAngles.y / 90f) * 90f;
             passingTrack.transform.eulerAngles = new Vector3(0, newAngle, 0);
 
-            //Debug.Log("Enter: Passing");
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = false;  //Turn off glow as you pass.
             userCarAI.IsCircuit = false;
 
             circuitProgressNum = userCarAI.ProgressNum;
-			Debug.Log("CircuitNum: " + circuitProgressNum);
 
 			userCarAI.switchCircuit(passingTrack, 0);
 
@@ -854,7 +845,7 @@ namespace VRAVE
 
 		private IEnumerator ScenarioEnd()
 		{
-			//The AI vehicle has successfully demonsrated its adaptive cruise control, 
+			//The AI vehicle has successfully demonstrated its adaptive cruise control, 
 			//following, and vehicle passing capabilities all with minimal to no human input required.
 			ambientAudioController.Mute();
 			//audioController.playAudio(9);
