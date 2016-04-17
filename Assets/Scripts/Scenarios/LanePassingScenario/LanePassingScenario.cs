@@ -243,7 +243,7 @@ namespace VRAVE
 
                 case 30:  
                     //User Vehicle slows down before right turn
-                    if (triggerToggle && !alreadyPassed)
+                    if (!userMode && triggerToggle && !alreadyPassed)
                     {
 						StartCoroutine("SlowingAtTurn");
                         //userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed - 10.0f;
@@ -253,7 +253,7 @@ namespace VRAVE
                     break;
                 case 31:
 					//User vehicle Speeds back up
-					if (triggerToggle && !alreadyPassed)
+					if (!userMode && triggerToggle && !alreadyPassed)
 					{
 						userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
 						StartCoroutine("SpeedingAfterTurn");
@@ -261,11 +261,11 @@ namespace VRAVE
 					break;
 
                 case 32:
-                    triggerToggle = false;
+                    //triggerToggle = false;
                     break;
 
                 case 33:
-                    triggerToggle = true;
+                    //triggerToggle = true;
                     break;
 
 				case 101:
@@ -508,9 +508,9 @@ namespace VRAVE
 
 		public void ChangeMode_Enter()
 		{
-			resetScenario();
 			if (userMode)
 			{
+				resetScenario();
 				userMode = false;
 				userCarController.MaxSteeringAngle = 35f;
 				AIVehicle.SetActive(true);
@@ -706,6 +706,7 @@ namespace VRAVE
 			ambientAudioController.Mute();
 			audioController.playAudio (0);
 			yield return new WaitForSeconds(5f);
+			//audioController.playAudio(10);
 			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
 			GameObject rightPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Right_Paddle);
 			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = true;
@@ -758,11 +759,11 @@ namespace VRAVE
 			audioController.playAudio(3);
 			userCarController.FullTorqueOverAllWheels = 1000f;
 			//userCarController.MaxSpeed = 25f;
-			yield return new WaitForSeconds(8f);
+			yield return new WaitForSeconds(10f);
 			hudController.model.centerText = VRAVEStrings.SafelyPassVehicle;
 			ambientAudioController.UnMute();
 			triggers[10].SetActive(false);
-			yield return new WaitForSeconds(6f);
+			yield return new WaitForSeconds(4f);
 			//hudController.Clear();	
 			hudController.model.centerText = "";
 		}
@@ -778,7 +779,7 @@ namespace VRAVE
 			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
 			yield return new WaitForSeconds(5f);
 			ambientAudioController.UnMute();
-			triggers[11].SetActive(false);
+			//triggers[11].SetActive(false);
 		}
 
 		private IEnumerator AIBriefing()
@@ -788,6 +789,7 @@ namespace VRAVE
 			ambientAudioController.Mute();
 			audioController.playAudio(5);
 			yield return new WaitForSeconds(5f);
+			//audioController.playAudio(10); // Pull the right paddle to continue.
 			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
 			GameObject rightPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Right_Paddle);
 			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = true;
@@ -811,6 +813,7 @@ namespace VRAVE
 		{
 			ambientAudioController.Mute();
 			audioController.playAudio(6);
+			hudController.model.bottomText = VRAVEStrings.CannotPass;
 			yield return new WaitForSeconds(5f);
 		}
 
@@ -839,11 +842,8 @@ namespace VRAVE
 			yield return new WaitForSeconds(0.5f);
 			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
 			yield return new WaitForSeconds(2f);
-			audioController.HudAudioSource.volume = 0f;
-			yield return new WaitForSeconds(4f);
-			audioController.HudAudioSource.volume = 0.5f;
 			//Ensure paddle glow is turned off.
-			yield return new WaitForSeconds(3f);
+			yield return new WaitForSeconds(2f);
 			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = false;
 		}
 
@@ -860,11 +860,8 @@ namespace VRAVE
 			//following, and vehicle passing capabilities all with minimal to no human input required.
 			ambientAudioController.Mute();
 			audioController.playAudio(9);
-			yield return new WaitForSeconds(11f);
+			yield return new WaitForSeconds(7f);
 			hudController.model.centerText = "Pull right paddle to return to menu.";
-			audioController.HudAudioSource.volume = 0f;
-			yield return new WaitForSeconds(2.5f);
-			audioController.HudAudioSource.volume = 0.5f;
 			//Pull the right trigger to return to the lobby
 		}
 

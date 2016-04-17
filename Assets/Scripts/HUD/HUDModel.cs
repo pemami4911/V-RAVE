@@ -101,7 +101,7 @@ namespace VRAVE
             isCenterImageEnabled = false;
             centerBackingMaterial = Resources.Load("schedule", typeof(Material)) as Material;
 
-            leftImagePosition = new Vector3(2, 0, 0);
+			leftImagePosition = new Vector3(1.98f, 0.19f, -0.39f);
             leftImageScale = new Vector3(0.1280507f, 0, 0.1280507f);
             isLeftImageEnabled = true;
             leftBackingMaterial = Resources.Load("alert", typeof(Material)) as Material;

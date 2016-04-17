@@ -16851,7 +16851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1253429386
 Transform:
   m_ObjectHideFlags: 0
@@ -24040,7 +24040,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1719436291
 Transform:
   m_ObjectHideFlags: 0
@@ -28273,6 +28273,10 @@ Prefab:
     - target: {fileID: 186042, guid: 61020298c6cc0ed4487a7ae85157bab5, type: 2}
       propertyPath: m_Name
       value: Paddles
+      objectReference: {fileID: 0}
+    - target: {fileID: 152476, guid: 61020298c6cc0ed4487a7ae85157bab5, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 61020298c6cc0ed4487a7ae85157bab5, type: 2}

@@ -30,7 +30,9 @@ namespace VRAVE
 			// #9
 			addClip("scenario-end", 10f);
 		//  // #10
-		//	addClip("leave-scenario", 5f);
+		//	addClip("right-paddle", 5f);
+		//	// #11
+		//	addClip("left-paddle", 5f);
 		}
 
 	}
