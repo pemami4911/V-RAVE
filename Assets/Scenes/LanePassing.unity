@@ -11582,7 +11582,12 @@ MonoBehaviour:
   - {fileID: 130750824}
   - {fileID: 1651620700}
   - {fileID: 653469052}
+  - {fileID: 694008762}
   - {fileID: 404693927}
+  - {fileID: 90696689}
+  - {fileID: 1705959459}
+  - {fileID: 1465529620}
+  - {fileID: 196066121}
   passingZones:
   - {fileID: 1253429385}
   - {fileID: 1719436290}
@@ -18494,7 +18499,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 11452302, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
       propertyPath: triggers.Array.size
-      value: 12
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 11452302, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
       propertyPath: passingZones.Array.size
@@ -18615,7 +18620,27 @@ Prefab:
     - target: {fileID: 11452302, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
       propertyPath: triggers.Array.data[11]
       value: 
+      objectReference: {fileID: 694008762}
+    - target: {fileID: 11452302, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
+      propertyPath: triggers.Array.data[12]
+      value: 
       objectReference: {fileID: 404693927}
+    - target: {fileID: 11452302, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
+      propertyPath: triggers.Array.data[13]
+      value: 
+      objectReference: {fileID: 90696689}
+    - target: {fileID: 11452302, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
+      propertyPath: triggers.Array.data[14]
+      value: 
+      objectReference: {fileID: 1705959459}
+    - target: {fileID: 11452302, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
+      propertyPath: triggers.Array.data[15]
+      value: 
+      objectReference: {fileID: 1465529620}
+    - target: {fileID: 11452302, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
+      propertyPath: triggers.Array.data[17]
+      value: 
+      objectReference: {fileID: 196066121}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bafb96a01dc98134b881b8ca0318883a, type: 2}
   m_IsPrefabParent: 0

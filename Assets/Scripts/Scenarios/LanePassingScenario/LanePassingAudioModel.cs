@@ -25,10 +25,10 @@ namespace VRAVE
 			addClip("ai-passing-briefing", 5f);
 			// #7
 			addClip("adaptive-cruise-control", 7f);
-		//	// #8
-		//	addClip("ai-passing-command", 11f);
-		//	// #9
-		//	addClip("scenario-end", 4f);
+			// #8
+			addClip("ai-passing-command", 4f);
+			// #9
+			addClip("scenario-end", 10f);
 		//  // #10
 		//	addClip("leave-scenario", 5f);
 		}

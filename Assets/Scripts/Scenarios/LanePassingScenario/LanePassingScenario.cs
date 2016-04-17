@@ -818,7 +818,7 @@ namespace VRAVE
 		{
 			//When allowed, pull the left trigger to initiate passing sequence.
 			ambientAudioController.Mute();
-			//audioController.playAudio(8);
+			audioController.playAudio(8);
 			yield return new WaitForSeconds(2f);
 			GameObject leftPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Left_Paddle);
 			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
@@ -830,7 +830,18 @@ namespace VRAVE
 			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = false;
 			yield return new WaitForSeconds(0.5f);
 			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
-			
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			yield return new WaitForSeconds(2f);
+			audioController.HudAudioSource.volume = 0f;
+			yield return new WaitForSeconds(4f);
+			audioController.HudAudioSource.volume = 0.5f;
 			//Ensure paddle glow is turned off.
 			yield return new WaitForSeconds(3f);
 			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = false;
@@ -848,9 +859,12 @@ namespace VRAVE
 			//The AI vehicle has successfully demonstrated its adaptive cruise control, 
 			//following, and vehicle passing capabilities all with minimal to no human input required.
 			ambientAudioController.Mute();
-			//audioController.playAudio(9);
-			yield return new WaitForSeconds(7f);
+			audioController.playAudio(9);
+			yield return new WaitForSeconds(11f);
 			hudController.model.centerText = "Pull right paddle to return to menu.";
+			audioController.HudAudioSource.volume = 0f;
+			yield return new WaitForSeconds(2.5f);
+			audioController.HudAudioSource.volume = 0.5f;
 			//Pull the right trigger to return to the lobby
 		}
 
