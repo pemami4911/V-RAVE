@@ -13,7 +13,6 @@ namespace VRAVE
         private CarController m_Car; // the car controller we want to use
         private VisualSteeringWheelController m_SteeringWheel; //SteeringWheelController
 
-		private double gain = 0.5; 
 		private float handbrake = 0f; 
 		public float Handbrake { get { return handbrake; } set { handbrake = value; } }
 
@@ -73,7 +72,7 @@ namespace VRAVE
 					StartCar ();
 				}
 			}
-
+				
 			m_Car.Move((float)hh, (float)vv, (float)vv, Handbrake);
 
 			m_SteeringWheel.turnSteeringWheel((float)hh, m_Car.CurrentSteerAngle);
