@@ -7,7 +7,7 @@ using System.Collections.Generic;
 //from there, 
 namespace VRAVE
 {
-public class HUDAudioModel {
+	public class HUDAudioModel {
 
 	public List<AudioClip> audioClips { get; set; }
 

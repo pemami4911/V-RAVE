@@ -26,10 +26,8 @@ public class VisualSteeringWheelController : MonoBehaviour {
         //transform.localEulerAngles = new Vector3(0, steering * maxSteerAngle, 0);
 		Vector3 from = new Vector3(0, currentSteerAngle, 0);
 		Vector3 to = new Vector3(0, steering, 0);
-		/*Debug.Log("localEulerAngles.y: " + transform.localEulerAngles.y);
-		Debug.Log ("Steering: " + steering);
-		float newSteering = Mathf.LerpAngle (transform.localEulerAngles.y, steering, Time.deltaTime) * maxSteerAngle;
-		transform.localEulerAngles = new Vector3(0, newSteering, 0);*/
+		//float newSteering = Mathf.LerpAngle (transform.localEulerAngles.y, steering, Time.deltaTime) * maxSteerAngle;
+		//transform.localEulerAngles = new Vector3(0, newSteering, 0);*/
 		transform.localEulerAngles = Vector3.Lerp (from, to, Time.deltaTime);
 	}
 }

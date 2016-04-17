@@ -9,8 +9,6 @@ namespace VRAVE
 	public class StartOptions : MonoBehaviour
 	{
 
-
-
 		private int sceneToStart = 1;
 		//Index number in build settings of scene to load if changeScenes is true
 		public bool changeScenes;

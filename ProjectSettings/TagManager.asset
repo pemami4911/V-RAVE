@@ -9,6 +9,8 @@ TagManager:
   - Crazy_AI_Car
   - PassingPath
   - Mirror
+  - LeftPaddle
+  - RightPaddle
   layers:
   - Default
   - TransparentFX

@@ -195,14 +195,14 @@ namespace VRAVE
 		public override void TriggerCb (uint id)
 		{
 			switch (id) {
-			case 0: 
+			case 0: // AI intersection Path 1 waypoint 01 
 				if (GetState ().Equals (States.AIDrivingToIntersection)) {
 					StartCoroutine (ChangeAIPaths (3f, ai_paths [0], carAI, () => { 
 						carController.MaxSpeed = 18f;
 					}));
 				}
 				break;
-			case 1: 
+			case 1: // Approaching intersection trigger
 				if (GetState ().Equals (States.AIDrivingToIntersection) || GetState ().Equals (States.HumanDrivingToIntersection)) {
 					ChangeState (States.AdvancingThroughIntersection);				
 				} else {
@@ -243,7 +243,7 @@ namespace VRAVE
 					UnsuspectingAI.GetComponent<CarController> ().MaxSpeed = 30f;
 				}));
 				break;
-			case 6:
+			case 6: // AI car trashcan path 2 waypoint 4
 				unsuspectingCarAI.CautiousSpeedFactor = 0.8f;
 				break;
 			case 7: // trash can change User path
@@ -264,8 +264,6 @@ namespace VRAVE
 				break;
 			case 10: // right turn trigger
 				// display right turn sign on HUD, 
-				hudController.model.centerText = VRAVEStrings.Approaching_Right_Turn;
-
 				if (GetState ().Equals (States.HumanDrivingToTrashcan) || GetState ().Equals (States.AIDrivingToTrashcan)) {
 					hudController.FlashImage (Resources.Load (VRAVEStrings.Right_Turn, typeof(Material)) as Material,
 						0.5f, 0.5f, 0.75f, 5, hudAsyncController);
@@ -294,7 +292,7 @@ namespace VRAVE
 		public void IntersectionBriefing_Update ()
 		{
 			// 	Change to steering wheel paddle
-			if (Input.GetButtonDown (VRAVEStrings.Left_Paddle)) {
+			if (Input.GetButtonDown (VRAVEStrings.Right_Paddle)) {
 				ambientAudioController.UnMute ();
 				ChangeState (States.HumanDrivingToIntersection);
 			}
@@ -319,7 +317,7 @@ namespace VRAVE
 		{
 			m_humanDrivingState = false;
 			ambientAudioController.Mute ();
-			hudController.model.centerText = VRAVEStrings.Left_Paddle_To_Continue;
+			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
 		}
 
 		// Wait for the user to press OK
@@ -328,7 +326,7 @@ namespace VRAVE
 			ResetMirror ();
 
 			// 	Change to steering wheel paddle
-			if (Input.GetButtonDown (VRAVEStrings.Left_Paddle)) {
+			if (Input.GetButtonDown (VRAVEStrings.Right_Paddle)) {
 				hudController.Clear ();
 				StartCoroutine (AIDrivingToIntersectionBriefing ());
 			}
@@ -388,14 +386,16 @@ namespace VRAVE
 			unsuspectingCarAI.Circuit = ai_paths[1];
 			ambientAudioController.Mute ();
 
-			hudController.model.centerText = VRAVEStrings.Left_Paddle_To_Continue;
+			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
+			audioController.playAudio (11);
+
 		}
 
 		public void TrashcanBriefing_Update()
 		{
 			ResetMirror ();
 
-			if (Input.GetButtonDown (VRAVEStrings.Left_Paddle)) {
+			if (Input.GetButtonDown (VRAVEStrings.Right_Paddle)) {
 				hudController.Clear ();
 				StartCoroutine (TrashcanBriefing ());
 			}
@@ -429,14 +429,15 @@ namespace VRAVE
 
 			unsuspectingCarAI.Circuit = ai_paths[1];
 			carAI.GetComponent<CarAIControl> ().Circuit = ai_paths[3];
-			hudController.model.centerText = VRAVEStrings.Left_Paddle_To_Continue;
+			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
+			audioController.playAudio (11);
 		}
 
 		public void AIDrivingToTrashcanBriefing_Update()
 		{
 			ResetMirror ();
 
-			if (Input.GetButtonDown (VRAVEStrings.Left_Paddle)) {
+			if (Input.GetButtonDown (VRAVEStrings.Right_Paddle)) {
 				hudController.Clear ();
 				StartCoroutine (TrashcanBriefing2());
 			}
@@ -505,10 +506,11 @@ namespace VRAVE
 
 		private IEnumerator PostIntersectionScenarioBriefingHUDChange() 
 		{
-			yield return new WaitForSeconds (9f);
+			yield return new WaitForSeconds (10f);
 
 			if (!GetState ().Equals(States.HumanDrivingToIntersection)) {
-				hudController.model.centerText = VRAVEStrings.Left_Paddle_To_Continue; 
+				hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue; 
+				audioController.playAudio (11);
 			}
 		}
 
@@ -516,6 +518,7 @@ namespace VRAVE
 		{
 			audioController.playAudio (5);
 			yield return new WaitForSeconds (5.5f);
+			audioController.playAudio (11);
 			ChangeState (States.AIDrivingToIntersection);
 		}
 
@@ -531,7 +534,8 @@ namespace VRAVE
 		{
 			ambientAudioController.Mute ();
 			audioController.playAudio (9);
-			yield return new WaitForSeconds (5.5f);
+			yield return new WaitForSeconds (6f);
+			audioController.playAudio (11);
 			ChangeState (States.AIDrivingToTrashcan);
 		}
 			
