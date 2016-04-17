@@ -15874,6 +15874,10 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4506406, guid: c6234fe42d6bdca44b830b8ec6f3905d, type: 2}
+      propertyPath: m_CustomSkybox
+      value: 
+      objectReference: {fileID: 2100000, guid: da976b1a4f7ebb949b0f71341e4f1821, type: 2}
     m_RemovedComponents:
     - {fileID: 11491326, guid: c6234fe42d6bdca44b830b8ec6f3905d, type: 2}
     - {fileID: 11440744, guid: c6234fe42d6bdca44b830b8ec6f3905d, type: 2}
