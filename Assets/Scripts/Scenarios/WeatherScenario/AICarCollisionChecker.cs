@@ -7,12 +7,14 @@ namespace VRAVE {
 
 		private GameObject UserCar;
 		private HUDController hudController;
+		//private HUDAudioController audioController;
 		[SerializeField] private float displayTime = 2.0f;
 
 		// Use this for initialization
 		void Start () {
 			UserCar = gameObject;
 			hudController = UserCar.GetComponentInChildren<HUDController>();
+			//audioController = UserCar.GetComponentInChildren<HUDAudioController>();
 		}
 
 		void OnCollisionEnter(Collision collision) {
@@ -27,6 +29,8 @@ namespace VRAVE {
 				hudController.model.leftBackingMaterial = hudController.model.collisionIcon;
 				hudController.model.leftImageScale = new Vector3 (0.6f * 0.1280507f, 0, 0.6f * 0.1280507f);
 				hudController.model.isLeftImageEnabled = true;
+
+				//audioController.playAudio((AudioClip)Resources.Load("beep"));
 
 				//restore old values after a waiting period
 				StartCoroutine(resetCollisionIcon (displayTime, oldIsEnabled, oldMaterial));

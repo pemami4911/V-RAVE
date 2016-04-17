@@ -26,6 +26,7 @@ namespace VRAVE
 			for (int i = 1; i < numberOfAudioSources; ++i) {
 				hudAudioSources[i] = transform.parent.gameObject.AddComponent<AudioSource>();
 				hudAudioSources [i].playOnAwake = false;
+				hudAudioSources [i].volume = 0.5f;
 			}
 		}
 
@@ -39,7 +40,7 @@ namespace VRAVE
 			hudAudioSources[0].Play ();
 		}
 
-		public void PlayAudio (int index, int source)
+		public void playAudio (int index, int source)
 		{
 			AudioClip audio = audioModel.audioClips [index];
 			hudAudioSources [source].clip = audio;

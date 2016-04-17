@@ -18,7 +18,7 @@ public class ChangeSelected : MonoBehaviour {
 		
 		// Update is called once per frame
 		void Update () {
-			if (Input.GetButtonUp (VRAVEStrings.Right_Paddle)) {
+			if (Input.GetButtonUp (VRAVEStrings.Left_Paddle)) {
 				currentSelected++;
 				if (currentSelected == buttons.Length) {
 					currentSelected = 0;

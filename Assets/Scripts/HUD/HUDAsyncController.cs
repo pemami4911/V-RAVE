@@ -28,7 +28,7 @@ namespace VRAVE
 			for (int i = 0; i < numTimes; ++i) 
 			{
 				if (source > -1 && source < hudAudioController.NumberOfAudioSources) {
-					hudAudioController.PlayAudio (idx, source);
+					hudAudioController.playAudio (idx, source);
 				} else {
 					hudAudioController.playAudio (idx);
 				}
