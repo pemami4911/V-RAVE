@@ -24,14 +24,28 @@ namespace VRAVE
         public static string UserCar_TrashcanPath1 = "UserCar_TrashcanPath1";
         public static string UserCar_TrashcanPath2 = "UserCar_TrashcanPath2";
 
+		// HUD strings
+		public static string Follow_Car = "Follow the car";
+		public static string Left_Paddle_To_Continue = "Pull the left paddle to continue";
+		public static string Collision_Avoidance = "Collision Avoidance Scenario";
+		public static string Stop_Sign = "Approaching stop sign";
+		public static string Continue_Straight = "Continue straight";
+		public static string Approaching_Right_Turn = "Approaching right turn";
+		public static string Stop_at_Stop_Sign = "Stop at the stop sign";
+
         public static string Crazy_AI_Car = "Crazy_AI_Car";
         public static string Unsuspecting_AI = "Unsuspecting_AI";
 
+		// Images
 		public static string Stop_Img = "stop";
 		public static string Right_Turn = "right-turn";
+		public static string Warning_Img = "warning";
+		public static string Collision_Img = "collision";
 
-		public static string Follow_Car = "Follow the car";
-		public static string Left_Paddle_To_Continue = "Press the left paddle to continue";
+		public static string Autonomous_Mode = "Autonomous Mode";
+		public static string Manual_Mode = "Manual Mode";
+
+		public static string Lobby_Menu = "LobbyMenu";
 
     }
 
