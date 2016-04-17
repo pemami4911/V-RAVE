@@ -12,6 +12,7 @@ namespace VRAVE {
 		private SpawnModel spawnModel;
 		private HUDController hudController;
 		private HUDAudioController audioController;
+		private AmbientAudioController ambientAudioController;
 
 		private Vector3 USER_STARTING_POSITION = new Vector3 (25.92f, 0.26f, 1.9f);
 		private Quaternion USER_STARTING_ROTATION = Quaternion.Euler (0f, 0f, 0f);
@@ -40,6 +41,9 @@ namespace VRAVE {
 			spawnController = GetComponent<SpawnController>();
 			hudController = UserCar.GetComponentInChildren<HUDController>();
 			audioController = UserCar.GetComponent<HUDAudioController>();
+
+			ambientAudioController = UserCar.GetComponentInChildren<AmbientAudioController> ();
+			//ambientAudioController.Mute();
 
 			spawnModel = new WeatherSpawnModel ();
 			spawnController.spawnModel = spawnModel;
