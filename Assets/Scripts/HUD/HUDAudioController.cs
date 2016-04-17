@@ -26,6 +26,7 @@ namespace VRAVE
 			for (int i = 1; i < numberOfAudioSources; ++i) {
 				hudAudioSources[i] = transform.parent.gameObject.AddComponent<AudioSource>();
 				hudAudioSources [i].playOnAwake = false;
+				hudAudioSources [i].volume = 0.5f;
 			}
 		}
 
