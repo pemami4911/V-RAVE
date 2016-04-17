@@ -26,9 +26,11 @@ namespace VRAVE
 			// #7
 			addClip("adaptive-cruise-control", 7f);
 		//	// #8
-		//	addClip("trashcan-briefing", 11f);
+		//	addClip("ai-passing-command", 11f);
 		//	// #9
-		//	addClip("trashcan-briefing-2", 4f);
+		//	addClip("scenario-end", 4f);
+		//  // #10
+		//	addClip("leave-scenario", 5f);
 		}
 
 	}
