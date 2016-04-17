@@ -30,6 +30,8 @@ public class ReactionTimeAudioModel : HUDAudioModel {
 			addClip ("trashcan-briefing-2", 4f);
 			// #10 
 			addClip ("beep", 0.5f);
+			// #11
+			addClip ("right-paddle", 2f); 
 		}
 
 }
