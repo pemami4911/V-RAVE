@@ -64,7 +64,7 @@ namespace VRAVE
                                             //just in case we want to use them. 
             transform.eulerAngles = model.HUDRotation;
 
-            //centerImageField = transform.Find("HUDImage_Center");
+            centerImageField = transform.Find("HUDImage_Center");
             leftImageField = transform.Find("HUDImage_Left");
             rightImageField = transform.Find("HUDImage_Right");
 
@@ -118,7 +118,7 @@ namespace VRAVE
         void Update()
         {
 
-            //updateCenterImageField();
+            updateCenterImageField();
             updateLeftImageField();
             updateRightImageField();
 
