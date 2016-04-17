@@ -84,12 +84,25 @@ namespace VRAVE
 			
 		public void EngageAIMode() 
 		{
-			model.leftText = "Autonomous Mode";
+			model.leftText = VRAVEStrings.Autonomous_Mode;
 		}
 
 		public void EngageManualMode() 
 		{
-			model.leftText = "Manual Mode";
+			model.leftText = VRAVEStrings.Manual_Mode;
+		}
+
+		public void FlashImage(Material img, float timeOn, float timeOff, float imgScale, int numberOfTimesToFlash, HUDAsyncController contrllr)
+		{
+			models [1] = model;
+			durations [0] = timeOn;
+			durations [1] = timeOff;
+			models [0] = model.Clone ();
+			models [0].leftBackingMaterial = img;
+			models [0].isLeftImageEnabled = true;
+			models [0].leftImagePosition = new Vector3 (1.98f, 0.19f, -0.39f);
+			models [0].leftImageScale = new Vector3 (imgScale * 0.1280507f, 0, imgScale * 0.1280507f);
+			contrllr.DoHUDUpdates (numberOfTimesToFlash, timeOn + timeOff);
 		}
 
 		public void Clear()
@@ -98,6 +111,7 @@ namespace VRAVE
 			model.rightText = "";
 			model.topText = "";
 			model.bottomText = "";
+			model.isLeftImageEnabled = false;
 		}
 
         // Update is called once per frame
@@ -129,72 +143,71 @@ namespace VRAVE
 
         void updateCenterImageField()
         {
-            centerImageField.transform.localPosition = model.centerImagePosition;
-            centerImageField.transform.localScale = model.centerImageScale;
-            centerImageField.GetComponent<MeshRenderer>().enabled = model.isCenterImageEnabled && isHUDImageEnabled;
-            centerImageField.GetComponent<MeshRenderer>().material = model.centerBackingMaterial;
+			centerImageField.transform.localPosition = model.centerImagePosition;
+			centerImageField.transform.localScale = model.centerImageScale;
+			centerImageField.GetComponent<MeshRenderer> ().enabled = model.isCenterImageEnabled && isHUDImageEnabled;
+			centerImageField.GetComponent<MeshRenderer> ().material = model.centerBackingMaterial;
         }
 
         void updateLeftImageField()
         {
-            leftImageField.transform.localPosition = model.leftImagePosition;
-            leftImageField.transform.localScale = model.leftImageScale;
-            leftImageField.GetComponent<MeshRenderer>().enabled = model.isLeftImageEnabled && isHUDImageEnabled;
-            leftImageField.GetComponent<MeshRenderer>().material = model.leftBackingMaterial;
+			leftImageField.transform.localPosition = model.leftImagePosition;
+			leftImageField.transform.localScale = model.leftImageScale;
+			leftImageField.GetComponent<MeshRenderer> ().enabled = model.isLeftImageEnabled && isHUDImageEnabled;
+			leftImageField.GetComponent<MeshRenderer> ().material = model.leftBackingMaterial;
         }
 
         void updateRightImageField()
         {
-            rightImageField.transform.localPosition = model.rightImagePosition;
-            rightImageField.transform.localScale = model.rightImageScale;
-            rightImageField.GetComponent<MeshRenderer>().enabled = model.isRightImageEnabled && isHUDImageEnabled;
-            rightImageField.GetComponent<MeshRenderer>().material = model.rightBackingMaterial;
+			rightImageField.transform.localPosition = model.rightImagePosition;
+			rightImageField.transform.localScale = model.rightImageScale;
+			rightImageField.GetComponent<MeshRenderer> ().enabled = model.isRightImageEnabled && isHUDImageEnabled;
+			rightImageField.GetComponent<MeshRenderer> ().material = model.rightBackingMaterial;
         }
 
         void updateCenterTextField()
         {
-            centerText.text = model.centerText;
-            centerTextField.transform.localPosition = model.centerTextPosition;
-            centerText.characterSize = model.centerCharSize;
-            centerText.fontSize = model.centerFontSize;
-            centerTextField.GetComponent<MeshRenderer>().enabled = model.isCenterTextEnabled && isHUDTextEnabled;
+			centerText.text = model.centerText;
+			centerTextField.transform.localPosition = model.centerTextPosition;
+			centerText.characterSize = model.centerCharSize;
+			centerText.fontSize = model.centerFontSize;
+			centerTextField.GetComponent<MeshRenderer> ().enabled = model.isCenterTextEnabled && isHUDTextEnabled;
         }
 
         void updateLeftTextField()
         {
-            leftText.text = model.leftText;
-            leftTextField.transform.localPosition = model.leftTextPosition;
-            leftText.characterSize = model.leftCharSize;
-            leftText.fontSize = model.leftFontSize;
-            leftTextField.GetComponent<MeshRenderer>().enabled = model.isLeftTextEnabled && isHUDTextEnabled;
+			leftText.text = model.leftText;
+			leftTextField.transform.localPosition = model.leftTextPosition;
+			leftText.characterSize = model.leftCharSize;
+			leftText.fontSize = model.leftFontSize;
+			leftTextField.GetComponent<MeshRenderer> ().enabled = model.isLeftTextEnabled && isHUDTextEnabled;
         }
 
         void updateRightTextField()
         {
-            rightText.text = model.rightText;
-            rightTextField.transform.localPosition = model.rightTextPosition;
-            rightText.characterSize = model.rightCharSize;
-            rightText.fontSize = model.rightFontSize;
-            rightTextField.GetComponent<MeshRenderer>().enabled = model.isRightTextEnabled && isHUDTextEnabled;
+			rightText.text = model.rightText;
+			rightTextField.transform.localPosition = model.rightTextPosition;
+			rightText.characterSize = model.rightCharSize;
+			rightText.fontSize = model.rightFontSize;
+			rightTextField.GetComponent<MeshRenderer> ().enabled = model.isRightTextEnabled && isHUDTextEnabled;
         }
 
         void updateBottomTextField()
         {
-            bottomText.text = model.bottomText;
-            bottomTextField.transform.localPosition = model.bottomTextPosition;
-            bottomText.characterSize = model.bottomCharSize;
-            bottomText.fontSize = model.bottomFontSize;
-            bottomTextField.GetComponent<MeshRenderer>().enabled = model.isBottomTextEnabled && isHUDTextEnabled;
-
+			bottomText.text = model.bottomText;
+			bottomTextField.transform.localPosition = model.bottomTextPosition;
+			bottomText.characterSize = model.bottomCharSize;
+			bottomText.fontSize = model.bottomFontSize;
+			bottomTextField.GetComponent<MeshRenderer> ().enabled = model.isBottomTextEnabled && isHUDTextEnabled;
         }
 
         void updateTopTextField()
         {
-            topText.text = model.topText;
-            topTextField.transform.localPosition = model.topTextPosition;
-            topText.characterSize = model.topCharSize;
-            topText.fontSize = model.topFontSize;
-            topTextField.GetComponent<MeshRenderer>().enabled = model.isTopTextEnabled && isHUDTextEnabled;
+			topText.text = model.topText;
+			topTextField.transform.localPosition = model.topTextPosition;
+			topText.characterSize = model.topCharSize;
+			topText.fontSize = model.topFontSize;
+			topTextField.GetComponent<MeshRenderer> ().enabled = model.isTopTextEnabled && isHUDTextEnabled;
         }
 
     }

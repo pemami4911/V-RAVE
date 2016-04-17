@@ -17,17 +17,22 @@ namespace VRAVE
 			hudTextController = hudC;
 		}
 
-		public void RepeatAudio (int idx, int numTimes)
+		public void RepeatAudio (int idx, int source, int numTimes)
 		{
-			StartCoroutine (CycleThroughAudio (idx, numTimes));
+			StartCoroutine (CycleThroughAudio (idx, source, numTimes));
 		}
 
-		private IEnumerator CycleThroughAudio (int idx, int numTimes)
+		private IEnumerator CycleThroughAudio (int idx, int source, int numTimes)
 		{
 			
 			for (int i = 0; i < numTimes; ++i) 
 			{
-				hudAudioController.playAudio (idx);
+				if (source > -1 && source < hudAudioController.NumberOfAudioSources) {
+					hudAudioController.PlayAudio (idx, source);
+				} else {
+					hudAudioController.playAudio (idx);
+				}
+
 				yield return new WaitForSeconds (hudAudioController.audioModel.durations [idx]);
 			}
 		}
@@ -58,6 +63,10 @@ namespace VRAVE
 			{
 				hudTextController.model = hudTextController.models [i]; 
 				yield return new WaitForSeconds (hudTextController.durations [i]); 
+
+				if (i == hudTextController.models.Length) {
+					hudTextController.model = hudTextController.models [0];
+				}
 			}
 		}
 	}
