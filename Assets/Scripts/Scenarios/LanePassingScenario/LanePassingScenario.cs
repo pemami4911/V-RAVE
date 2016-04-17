@@ -706,7 +706,7 @@ namespace VRAVE
 			ambientAudioController.Mute();
 			audioController.playAudio (0);
 			yield return new WaitForSeconds(5f);
-			//audioController.playAudio(10);
+			audioController.playAudio(10);
 			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
 			GameObject rightPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Right_Paddle);
 			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = true;
@@ -762,7 +762,6 @@ namespace VRAVE
 			yield return new WaitForSeconds(10f);
 			hudController.model.centerText = VRAVEStrings.SafelyPassVehicle;
 			ambientAudioController.UnMute();
-			triggers[10].SetActive(false);
 			yield return new WaitForSeconds(4f);
 			//hudController.Clear();	
 			hudController.model.centerText = "";
@@ -789,7 +788,7 @@ namespace VRAVE
 			ambientAudioController.Mute();
 			audioController.playAudio(5);
 			yield return new WaitForSeconds(5f);
-			//audioController.playAudio(10); // Pull the right paddle to continue.
+			audioController.playAudio(10); // Pull the right paddle to continue.
 			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
 			GameObject rightPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Right_Paddle);
 			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = true;
@@ -815,6 +814,7 @@ namespace VRAVE
 			audioController.playAudio(6);
 			hudController.model.bottomText = VRAVEStrings.CannotPass;
 			yield return new WaitForSeconds(5f);
+			ambientAudioController.UnMute();
 		}
 
 		private IEnumerator AIPassingCommand()
