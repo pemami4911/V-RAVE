@@ -2,7 +2,7 @@
 using System.Collections;
 
 namespace VRAVE{ 
-	public class WeatherHUDModel : HUDModel_Upright {
+	public class WeatherHUDModel : HUDVRAVE_Default {
 
 		public static Material collisionWarning = Resources.Load("warning", typeof(Material)) as Material;
 
@@ -11,10 +11,10 @@ namespace VRAVE{
 			leftImageScale = new Vector3 (0.07f, 0.07f, 0.07f);
 			leftBackingMaterial = collisionWarning;
 
-			leftText = "SEVERE WEATHER ALERT";
+			centerText = "SEVERE WEATHER ALERT";
 
-			centerText = "DRIVE WITH CAUTION";
-			centerTextPosition = new Vector3 (0.438f, 0.109f, 0.059f);
+			//centerText = "DRIVE WITH CAUTION";
+			//centerTextPosition = new Vector3 (0.438f, 0.109f, 0.059f);
 		}
 	}
 }

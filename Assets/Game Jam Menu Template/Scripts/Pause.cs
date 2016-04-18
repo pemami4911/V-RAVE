@@ -9,10 +9,12 @@ public class Pause : MonoBehaviour {
 
 	private ShowPanels showPanels;						//Reference to the ShowPanels script used to hide and show UI panels
 	private bool isPaused;								//Boolean to check if the game is paused or not
-	private StartOptions startScript;					//Reference to the StartButton script
-	
-	//Awake is called before Start()
-	void Awake()
+	private StartOptions startScript;                   //Reference to the StartButton script
+
+
+
+		//Awake is called before Start()
+		void Awake()
 	{
 		//Get a component reference to ShowPanels attached to this object, store in showPanels variable
 		showPanels = GetComponent<ShowPanels> ();
@@ -70,5 +72,18 @@ public class Pause : MonoBehaviour {
 
 	}
 
-}
+	public bool IsPaused
+		{
+			get
+			{
+				return isPaused;
+			}
+
+			set
+			{
+				isPaused = value;
+			}
+		}
+
+	}
 }
