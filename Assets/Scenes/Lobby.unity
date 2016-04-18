@@ -17214,7 +17214,7 @@ MonoBehaviour:
   m_StopWhenTargetReached: 0
   m_ReachTargetThreshold: 2
   circuit: {fileID: 31359835}
-  m_isCircuit: 1
+  m_isCircuit: 0
   m_isUser: 1
 --- !u!114 &825109860
 MonoBehaviour:
