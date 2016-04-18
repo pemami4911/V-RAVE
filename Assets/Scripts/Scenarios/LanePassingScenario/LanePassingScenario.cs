@@ -23,12 +23,10 @@ namespace VRAVE
         [SerializeField]
         private GameObject[] passingZones;
 
-        private SpawnController manufacturer;
         private HUDController hudController;
 		private HUDAsyncController hudAsyncController;
 		private HUDAudioController audioController;
 		private AudioSource ambientAudioSource;
-        private Sensors userCarSensors;
         private CarAIControl userCarAI;
         private CarAIControl AIVehicleAI;
         private CarController userCarController;
@@ -71,7 +69,6 @@ namespace VRAVE
             userCarAI = UserCar.GetComponent<CarAIControl>();
             userCarAI.enabled = false;
             UserCar.GetComponent<CarUserControl>().enabled = false;
-            userCarSensors = UserCar.GetComponent<Sensors>();
 
 
             AIVehicleCarController = AIVehicle.GetComponent<CarController>();
@@ -80,7 +77,6 @@ namespace VRAVE
             AIVehicleAI.enabled = false;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = false;
 
-            manufacturer = GetComponent<SpawnController>();
             hudController = UserCar.GetComponentInChildren<HUDController>();
 			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController>();
 			audioController = UserCar.GetComponentInChildren<HUDAudioController>();
@@ -448,7 +444,7 @@ namespace VRAVE
             if (userMode)
             {		
                 //Once user begins driving, start AI vehicle
-                if (userCarController.AccelInput >= 0.05f)  //Change to left trigger
+                if (userCarController.AccelInput >= 0.05f)
                 {
 					//Remove HUD driving instructions.
 					ambientAudioSource.mute = false;
@@ -768,7 +764,6 @@ namespace VRAVE
 			yield return new WaitForSeconds(10f);
 			hudController.model.centerText = VRAVEStrings.SafelyPassVehicle;
 			ambientAudioSource.mute = false;
-			triggers[10].SetActive(false);
 			yield return new WaitForSeconds(4f);
 			//hudController.Clear();	
 			hudController.model.centerText = "";
@@ -821,6 +816,7 @@ namespace VRAVE
 			audioController.playAudio(6);
 			hudController.model.bottomText = VRAVEStrings.CannotPass;
 			yield return new WaitForSeconds(5f);
+			ambientAudioSource.mute = false;
 		}
 
 		private IEnumerator AIPassingCommand()
@@ -847,6 +843,7 @@ namespace VRAVE
 			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = false;
 			yield return new WaitForSeconds(0.5f);
 			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			ambientAudioSource.mute = false;
 			yield return new WaitForSeconds(2f);
 			//Ensure paddle glow is turned off.
 			yield return new WaitForSeconds(2f);
@@ -868,6 +865,8 @@ namespace VRAVE
 			audioController.playAudio(9);
 			yield return new WaitForSeconds(7f);
 			hudController.model.centerText = "Pull right paddle to return to menu.";
+			yield return new WaitForSeconds(5f);
+			ambientAudioSource.mute = false;
 			//Pull the right trigger to return to the lobby
 		}
 
