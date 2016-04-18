@@ -8,7 +8,7 @@ namespace VRAVE {
 		private GameObject UserCar;
 		private HUDController hudController;
 		//private HUDAudioController audioController;
-		[SerializeField] private float displayTime = 2.0f;
+		[SerializeField] private float displayTime = 6.0f;
 
 		// Use this for initialization
 		void Start () {
