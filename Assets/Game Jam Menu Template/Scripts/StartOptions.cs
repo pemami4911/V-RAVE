@@ -53,24 +53,28 @@ namespace VRAVE
 		public void CollisionAvoidance ()
 		{
 			sceneToStart = 1;
+			CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
 			StartButtonClicked ();
 		}
 
 		public void LanePassing ()
 		{
 			sceneToStart = 2;
+			CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
 			StartButtonClicked ();
 		}
 
 		public void Weather ()
 		{
 			sceneToStart = 3;
+			CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
 			StartButtonClicked ();
 		}
 
 		public void Lobby ()
 		{
 			sceneToStart = 4;
+			CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
 			StartButtonClicked ();
 		}
 

@@ -2959,18 +2959,18 @@ TextMesh:
   m_GameObject: {fileID: 323455455}
   m_Text: Collision Avoidance
   m_OffsetZ: 0
-  m_CharacterSize: 1
+  m_CharacterSize: 4
   m_LineSpacing: 1
   m_Anchor: 0
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 100
+  m_FontSize: 25
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 65650c8865f91f4439156d19ec415767, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4281479730
 --- !u!23 &323455458
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10352,7 +10352,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1074570201}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -55.4, y: 8.4, z: -19.8}
+  m_LocalPosition: {x: -61.9, y: 7.5, z: -19.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1153302717}
@@ -10366,18 +10366,18 @@ TextMesh:
   m_GameObject: {fileID: 1074570201}
   m_Text: Adaptive Cruise Control
   m_OffsetZ: 0
-  m_CharacterSize: 1
+  m_CharacterSize: 4
   m_LineSpacing: 1
   m_Anchor: 0
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 100
+  m_FontSize: 25
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 65650c8865f91f4439156d19ec415767, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4281479730
 --- !u!23 &1074570204
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12877,7 +12877,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1310213626}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -45.4, y: 8.9, z: -27.9}
+  m_LocalPosition: {x: -44.4, y: 8.2, z: -27.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 106425910}
@@ -12891,18 +12891,18 @@ TextMesh:
   m_GameObject: {fileID: 1310213626}
   m_Text: Extreme Weather
   m_OffsetZ: 0
-  m_CharacterSize: 1
+  m_CharacterSize: 4
   m_LineSpacing: 1
   m_Anchor: 0
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 100
+  m_FontSize: 25
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 65650c8865f91f4439156d19ec415767, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4281479730
 --- !u!23 &1310213629
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14057,7 +14057,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1419031350}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.2, y: 9.1, z: -27.89997}
+  m_LocalPosition: {x: -16.4, y: 9.1, z: -27.89997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1557814768}
@@ -14071,18 +14071,18 @@ TextMesh:
   m_GameObject: {fileID: 1419031350}
   m_Text: Lobby
   m_OffsetZ: 0
-  m_CharacterSize: 1
+  m_CharacterSize: 4
   m_LineSpacing: 1
   m_Anchor: 0
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 100
+  m_FontSize: 25
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 65650c8865f91f4439156d19ec415767, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4281479730
 --- !u!23 &1419031353
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16366,10 +16366,10 @@ MonoBehaviour:
     m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 4
+    m_MaxSize: 42
     m_Alignment: 4
-    m_AlignByGeometry: 0
+    m_AlignByGeometry: 1
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
@@ -18235,18 +18235,18 @@ TextMesh:
   m_GameObject: {fileID: 1844711753}
   m_Text: Quit
   m_OffsetZ: 0
-  m_CharacterSize: 1
+  m_CharacterSize: 4
   m_LineSpacing: 1
   m_Anchor: 0
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 100
+  m_FontSize: 25
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 65650c8865f91f4439156d19ec415767, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4281479730
 --- !u!23 &1844711756
 MeshRenderer:
   m_ObjectHideFlags: 0
