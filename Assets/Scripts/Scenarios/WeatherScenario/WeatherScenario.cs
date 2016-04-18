@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MonsterLove.StateMachine;
 using UnityEngine.SceneManagement;
+using VRStandardAssets.Utils;
 
 namespace VRAVE {
 
@@ -13,6 +14,7 @@ namespace VRAVE {
 		[SerializeField] private GameObject movingAI1;
 		[SerializeField] private GameObject movingAI2;
 		[SerializeField] private GameObject movingAI3;
+		[SerializeField] private VRCameraFade cameraFade;
 
 		/*[SerializeField] private GameObject staticAI0;
 		[SerializeField] private GameObject staticAI1;
@@ -111,7 +113,7 @@ namespace VRAVE {
 			resetScenario ();
 			ChangeState(States.ScenarioBriefing);
 
-			CameraFade.StartAlphaFade (Color.black, true, 3f, 0f, () => {
+			cameraFade.StartAlphaFade (Color.black, true, 3f, () => {
 				audioController.playAudio (3);
 				StartCoroutine (PostIntersectionScenarioBriefingHUDChange ());
 			});
@@ -259,7 +261,7 @@ namespace VRAVE {
 		public void AIDriveRoute_Enter() {
 			mirrorFlag = 0;
 
-			UserCar.GetComponent<CarController> ().MaxSpeed = 30f;
+			UserCar.GetComponent<CarController> ().MaxSpeed = 25f;
 
 			//Debug.Log ("Entered AI Drive state");
 			spawnController.resetInitialSpawns ();
@@ -320,7 +322,7 @@ namespace VRAVE {
 		private IEnumerator postStopStateChange(float time) {
 			yield return new WaitForSeconds (time);
 
-			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
+			cameraFade.StartAlphaFade (Color.black, false, 3f, () => {
 				if(GetState().Equals(States.UserStopped)) { //fix this so I'm not checking states all the time
 					//Debug.Log("Preparing to reset scenario...");
 					resetScenario ();
@@ -335,7 +337,7 @@ namespace VRAVE {
 		private IEnumerator postStopExitScenario(float time) {
 			yield return new WaitForSeconds (time);
 
-			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
+			cameraFade.StartAlphaFade (Color.black, false, 3f, () => {
 				if(GetState().Equals(States.AIStopped)) { //fix this so I'm not checking states all the time
 					//Debug.Log("Preparing to reset scenario...");
 					resetScenario ();

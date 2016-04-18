@@ -4,6 +4,7 @@ using MonsterLove.StateMachine;
 using UnityStandardAssets.Utility;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using VRStandardAssets.Utils;
 
 namespace VRAVE
 {
@@ -22,6 +23,8 @@ namespace VRAVE
         private GameObject[] triggers;
         [SerializeField]
         private GameObject[] passingZones;
+		[SerializeField]
+		private VRCameraFade cameraFade;
 
         private HUDController hudController;
 		private HUDAsyncController hudAsyncController;
@@ -60,7 +63,7 @@ namespace VRAVE
 
         void Awake()
         {
-            CameraFade.StartAlphaFade(Color.black, true, 2f, 0.5f);
+			cameraFade.StartAlphaFade (Color.black, true, 2f);
 
             Initialize<States>();
 
@@ -105,8 +108,9 @@ namespace VRAVE
             AIVehicle.SetActive(true);
 			
             mirror = GameObject.FindWithTag(VRAVEStrings.Mirror);
+			ChangeState(States.InitState);
 
-            ChangeState(States.InitState);
+
         }
 
         // Extend abstract method "ChangeState(uint id)
@@ -498,7 +502,7 @@ namespace VRAVE
             if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-                CameraFade.StartAlphaFade(Color.black, false, 2f, 0f, () =>
+                cameraFade.StartAlphaFade(Color.black, false, 2f, () =>
                 {
                     ChangeState(States.ChangeMode);
                 });
@@ -594,7 +598,7 @@ namespace VRAVE
 
             if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
-                CameraFade.StartAlphaFade(Color.black, false, 3f, 0f, () =>
+                cameraFade.StartAlphaFade(Color.black, false, 3f, () =>
 				{
 					ChangeState(States.ChangeMode);
 				});

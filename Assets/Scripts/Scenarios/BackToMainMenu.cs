@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using VRStandardAssets.Utils;
 
 namespace VRAVE
 {
 	public class BackToMainMenu : MonoBehaviour
 	{
+		[SerializeField] 
+		private VRCameraFade cameraFade; 
 
 		// Use this for initialization
 		void Start()
@@ -18,7 +21,7 @@ namespace VRAVE
 		{
 			if (Input.GetButtonDown("Cancel"))
 			{
-				CameraFade.StartAlphaFade(Color.black, false, 2f, 0f, () =>
+				cameraFade.StartAlphaFade(Color.black, false, 2f, () =>
 				{
 					SceneManager.LoadScene(VRAVEStrings.Lobby_Menu);
 				});
