@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace VRAVE
 {
-	public class HUDModel
+	public class HUDModel : Object
     {
 		public Material collisionIcon;
         //plane rotation
@@ -101,7 +101,7 @@ namespace VRAVE
             isCenterImageEnabled = false;
             centerBackingMaterial = Resources.Load("schedule", typeof(Material)) as Material;
 
-            leftImagePosition = new Vector3(2, 0, 0);
+			leftImagePosition = new Vector3(1.98f, 0.19f, -0.39f);
             leftImageScale = new Vector3(0.1280507f, 0, 0.1280507f);
             isLeftImageEnabled = true;
             leftBackingMaterial = Resources.Load("alert", typeof(Material)) as Material;
@@ -128,6 +128,7 @@ namespace VRAVE
 			h.topText = this.topText;
 			h.centerText = this.centerText;
 			h.bottomText = this.bottomText;
+			h.centerText = this.centerText;
 			h.centerCharSize = this.centerCharSize;
 			h.leftCharSize = this.leftCharSize;
 			h.rightCharSize = this.rightCharSize;

@@ -6,7 +6,7 @@ namespace VRAVE
 	public class AmbientAudioController : MonoBehaviour
 	{
 
-		[SerializeField] private AudioSource citySounds; 
+		public AudioSource citySounds; 
 
 		private HUDAudioController cityAudioController; 
 		private HUDAudioModel cityAudioModel;
@@ -19,7 +19,7 @@ namespace VRAVE
 
 			cityAudioController = GetComponent<HUDAudioController> ();
 
-			cityAudioController.HudAudioSource = CitySounds;
+			cityAudioController.primaryAudioSource = citySounds;
 
 			cityAudioController.audioModel = cityAudioModel;
 
@@ -34,12 +34,6 @@ namespace VRAVE
 		public void UnMute()
 		{
 			citySounds.mute = false;
-		}
-
-		public AudioSource CitySounds {
-			get {
-				return citySounds;
-			}
 		}
 	}
 }

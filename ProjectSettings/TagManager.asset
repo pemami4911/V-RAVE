@@ -9,6 +9,9 @@ TagManager:
   - Crazy_AI_Car
   - PassingPath
   - Mirror
+  - LeftPaddle
+  - RightPaddle
+  - AmbientAudio
   layers:
   - Default
   - TransparentFX

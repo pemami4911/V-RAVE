@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 namespace VRAVE
 {
@@ -23,13 +24,13 @@ public class Pause : MonoBehaviour {
 	void Update () {
 
 		//Check if the Cancel button in Input Manager is down this frame (default is Escape key) and that game is not paused, and that we're not in main menu
-		if (Input.GetButtonDown ("Cancel") && !isPaused && !startScript.inMainMenu) 
+		if (Input.GetButtonDown ("Cancel") && !isPaused) 
 		{
 			//Call the DoPause function to pause the game
 			DoPause();
 		} 
 		//If the button is pressed and the game is paused and not in main menu
-		else if (Input.GetButtonDown ("Cancel") && isPaused && !startScript.inMainMenu) 
+		else if (Input.GetButtonDown ("Cancel") && isPaused) 
 		{
 			//Call the UnPause function to unpause the game
 			UnPause ();
@@ -59,6 +60,15 @@ public class Pause : MonoBehaviour {
 		showPanels.HidePausePanel ();
 	}
 
+	public void MainMenu()
+	{
+
+		isPaused = false;
+		Time.timeScale = 1;
+		showPanels.HidePausePanel ();
+		SceneManager.LoadScene (VRAVEStrings.Lobby_Menu);
+
+	}
 
 }
 }

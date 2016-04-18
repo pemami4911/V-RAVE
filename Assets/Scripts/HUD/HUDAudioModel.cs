@@ -7,23 +7,17 @@ using System.Collections.Generic;
 //from there, 
 namespace VRAVE
 {
-public class HUDAudioModel {
+	public class HUDAudioModel : MonoBehaviour {
 
-	public List<AudioClip> audioClips { get; set; }
+		public List<AudioClip> audioClips = new List<AudioClip> ();
 
-	// for storing how much time between switching between clips
-	// should have same num of elements as audioClips and be in the same order 
-	public List<float> durations; 
+		// for storing how much time between switching between clips
+		// should have same num of elements as audioClips and be in the same order 
+		public List<float> durations = new List<float>(); 
 
-	// Use this for initialization
-	public HUDAudioModel() {
-		audioClips = new List<AudioClip> ();
-		durations = new List<float>();
+		public void addClip(string name, float duration) {
+			audioClips.Add(Resources.Load (name, typeof(AudioClip)) as AudioClip);
+			durations.Add (duration);
+		}
 	}
-
-	public void addClip(string name, float duration) {
-		audioClips.Add(Resources.Load (name, typeof(AudioClip)) as AudioClip);
-		durations.Add (duration);
-	}
-}
 }
