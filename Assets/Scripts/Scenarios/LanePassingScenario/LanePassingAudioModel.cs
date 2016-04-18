@@ -29,8 +29,8 @@ namespace VRAVE
 			addClip("ai-passing-command", 4f);
 			// #9
 			addClip("scenario-end", 10f);
-		//  // #10
-		//	addClip("right-paddle", 5f);
+		  // #10
+			addClip("right-paddle", 5f);
 		//	// #11
 		//	addClip("left-paddle", 5f);
 		}
