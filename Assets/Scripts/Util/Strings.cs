@@ -55,6 +55,7 @@ namespace VRAVE
 		public static string Manual_Mode = "Manual Mode";
 
 		public static string Lobby_Menu = "LobbyMenu";
+		public static string Ambient_Audio = "AmbientAudio";
 
     }
 

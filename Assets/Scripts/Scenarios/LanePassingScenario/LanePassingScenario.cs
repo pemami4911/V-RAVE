@@ -27,7 +27,7 @@ namespace VRAVE
         private HUDController hudController;
 		private HUDAsyncController hudAsyncController;
 		private HUDAudioController audioController;
-		private AmbientAudioController ambientAudioController;
+		private AudioSource ambientAudioSource;
         private Sensors userCarSensors;
         private CarAIControl userCarAI;
         private CarAIControl AIVehicleAI;
@@ -83,7 +83,7 @@ namespace VRAVE
             hudController = UserCar.GetComponentInChildren<HUDController>();
 			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController>();
 			audioController = UserCar.GetComponentInChildren<HUDAudioController>();
-			ambientAudioController = UserCar.GetComponentInChildren<AmbientAudioController>();
+			ambientAudioSource = GameObject.FindWithTag (VRAVEStrings.Ambient_Audio).GetComponent<AudioSource>();
 
             lanePassingHandler = UserCar.GetComponent<LanePassingSensorResponseHandler>();
             lanePassingHandler.Enable = false;
@@ -99,8 +99,8 @@ namespace VRAVE
 			hudAsyncController.Configure(audioController, hudController);
 
 			//configure audio
-			audioController.audioModel = new LanePassingAudioModel();
-			ambientAudioController.Mute();
+			audioController.audioModel = GameObject.FindObjectOfType<LanePassingAudioModel>();
+			ambientAudioSource.mute = true;
 
 			userMode = true;
 
@@ -448,7 +448,7 @@ namespace VRAVE
                 if (userCarController.AccelInput >= 0.05f)  //Change to left trigger
                 {
 					//Remove HUD driving instructions.
-					ambientAudioController.UnMute();
+					ambientAudioSource.mute = false;
                     ChangeState(States.Following);
                 }
             }
@@ -703,7 +703,7 @@ namespace VRAVE
 			//Actually start introduction audio briefing.
 			hudController.model.centerText = "Welcome to Bryce's Scenario!";
 			yield return new WaitForSeconds(2f);
-			ambientAudioController.Mute();
+			ambientAudioSource.mute = true;
 			audioController.playAudio (0);
 			yield return new WaitForSeconds(5f);
 			//audioController.playAudio(10);
@@ -731,7 +731,7 @@ namespace VRAVE
 			StopCoroutine("IntroBriefing");
 			StopCoroutine("IntroBriefAudio");
 			//Actually start introduction audio briefing.
-			ambientAudioController.Mute();
+			ambientAudioSource.mute = true;
 			audioController.playAudio(1);
 			yield return new WaitForSeconds(7f);
 			(UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
@@ -745,23 +745,23 @@ namespace VRAVE
 		private IEnumerator SpeedChangesBriefing()
 		{
 			//Notify the user of speed changes.
-			ambientAudioController.Mute();
+			ambientAudioSource.mute = true;
 			audioController.playAudio(2);
 			yield return new WaitForSeconds(5f);
-			ambientAudioController.UnMute();
+			ambientAudioSource.mute = false;
 			triggers[3].SetActive(false);
 		}
 
 		private IEnumerator PassingBriefing()
 		{
 			//Instruct the user to pass on the next straightaway.
-			ambientAudioController.Mute();
+			ambientAudioSource.mute = true;
 			audioController.playAudio(3);
 			userCarController.FullTorqueOverAllWheels = 1000f;
 			//userCarController.MaxSpeed = 25f;
 			yield return new WaitForSeconds(10f);
 			hudController.model.centerText = VRAVEStrings.SafelyPassVehicle;
-			ambientAudioController.UnMute();
+			ambientAudioSource.mute = false;
 			triggers[10].SetActive(false);
 			yield return new WaitForSeconds(4f);
 			//hudController.Clear();	
@@ -773,12 +773,12 @@ namespace VRAVE
 			//End of the user part of the scenario.
 			//Allow user to enter AI scenario by pulling right trigger.
 
-			ambientAudioController.Mute();
+			ambientAudioSource.mute = true;
 			audioController.playAudio(4);
 			yield return new WaitForSeconds(1f);
 			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
 			yield return new WaitForSeconds(5f);
-			ambientAudioController.UnMute();
+			ambientAudioSource.mute = false;
 			//triggers[11].SetActive(false);
 		}
 
@@ -786,7 +786,7 @@ namespace VRAVE
 		{
 			//Introduction to AI scenario
 			yield return new WaitForSeconds(2f);
-			ambientAudioController.Mute();
+			ambientAudioSource.mute = true;
 			audioController.playAudio(5);
 			yield return new WaitForSeconds(5f);
 			//audioController.playAudio(10); // Pull the right paddle to continue.
@@ -806,12 +806,12 @@ namespace VRAVE
 			yield return new WaitForSeconds(3f);
 			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = false;
 
-			ambientAudioController.UnMute();
+			ambientAudioSource.mute = false;
 		}
 
 		private IEnumerator AIPassingBriefing()
 		{
-			ambientAudioController.Mute();
+			ambientAudioSource.mute = true;
 			audioController.playAudio(6);
 			hudController.model.bottomText = VRAVEStrings.CannotPass;
 			yield return new WaitForSeconds(5f);
@@ -820,7 +820,7 @@ namespace VRAVE
 		private IEnumerator AIPassingCommand()
 		{
 			//When allowed, pull the left trigger to initiate passing sequence.
-			ambientAudioController.Mute();
+			ambientAudioSource.mute = true;
 			audioController.playAudio(8);
 			yield return new WaitForSeconds(2f);
 			GameObject leftPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Left_Paddle);
@@ -858,7 +858,7 @@ namespace VRAVE
 		{
 			//The AI vehicle has successfully demonstrated its adaptive cruise control, 
 			//following, and vehicle passing capabilities all with minimal to no human input required.
-			ambientAudioController.Mute();
+			ambientAudioSource.mute = true;
 			audioController.playAudio(9);
 			yield return new WaitForSeconds(7f);
 			hudController.model.centerText = "Pull right paddle to return to menu.";

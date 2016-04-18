@@ -6,8 +6,10 @@ namespace VRAVE
 {
 public class ReactionTimeAudioModel : HUDAudioModel {
 
-		public ReactionTimeAudioModel() : base()
-		{
+		private void Awake() {
+			audioClips = new List<AudioClip> ();
+			durations = new List<float>();
+
 			// #0
 			addClip ("changing-to-AI-mode", 2f);
 			// #1
@@ -33,6 +35,5 @@ public class ReactionTimeAudioModel : HUDAudioModel {
 			// #11
 			addClip ("right-paddle", 2f); 
 		}
-
 }
 }
