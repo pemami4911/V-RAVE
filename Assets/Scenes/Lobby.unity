@@ -17179,6 +17179,7 @@ GameObject:
   - 114: {fileID: 825109861}
   - 114: {fileID: 825109860}
   - 114: {fileID: 825109859}
+  - 114: {fileID: 825109865}
   m_Layer: 0
   m_Name: UserCar_4-15
   m_TagString: Player
@@ -17319,6 +17320,18 @@ Transform:
   - {fileID: 75782852}
   m_Father: {fileID: 0}
   m_RootOrder: 3
+--- !u!114 &825109865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 825109858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbebc2f25d21b4b728711a29004a34bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayTime: 2
 --- !u!1001 &827310334
 Prefab:
   m_ObjectHideFlags: 0
