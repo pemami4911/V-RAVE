@@ -16,7 +16,7 @@ namespace VRAVE
 			//Behind Glass
             //bottomTextPosition = new Vector3(2.59f, 0, 0.08f);
 			//In front of glass
-            bottomTextPosition = new Vector3(1.86f, 0.39f, 0.08f);
+            bottomTextPosition = new Vector3(1.86f, 0.39f, 0.05f);
 
             centerFontSize = 300;
             leftFontSize = 350;
