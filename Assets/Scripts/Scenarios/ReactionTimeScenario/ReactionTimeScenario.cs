@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using MonsterLove.StateMachine;
 using UnityEngine.SceneManagement;
+using VRStandardAssets.Utils;
 
 namespace VRAVE
 {
@@ -14,6 +15,7 @@ namespace VRAVE
 		[SerializeField] private GameObject CrazyIntersectionAI;
 		[SerializeField] private GameObject UnsuspectingAI;
 		[SerializeField] private GameObject trashCan; 
+		[SerializeField] private VRCameraFade cameraFade;
 
 		// 0 - unsuspecting car trigger
 		// 1 - approaching intersection trigger
@@ -107,7 +109,8 @@ namespace VRAVE
 			ChangeState (States.IntersectionBriefing);
 			//ChangeState(States.AIDrivingToTrashcanBriefing);
 
-			CameraFade.StartAlphaFade (Color.black, true, 3f, 0f, () => {
+
+			cameraFade.StartAlphaFade (Color.black, true, 3f, () => {
 				audioController.playAudio (3);
 				StartCoroutine (PostIntersectionScenarioBriefingHUDChange());
 			});
@@ -461,7 +464,7 @@ namespace VRAVE
 			yield return new WaitForSeconds (time);
 			mirrorFlag = 0;
 			// use a lambda expression to define the callback
-			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
+			cameraFade.StartAlphaFade (Color.black, false, 3f, () => {
 				if (m_humanDrivingState) {
 					UserCar.SetActive(false);
 					resetIntersectionScenario ();
@@ -494,7 +497,7 @@ namespace VRAVE
 			yield return new WaitForSeconds (time); 
 			mirrorFlag = 0;
 			// use a lambda expression to define the callback
-			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
+			cameraFade.StartAlphaFade (Color.black, false, 3f, () => {
 				if (m_humanDrivingState) {
 					UserCar.SetActive(false);
 					resetTrashCanScenario ();

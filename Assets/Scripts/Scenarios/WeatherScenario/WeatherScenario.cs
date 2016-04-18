@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MonsterLove.StateMachine;
 using UnityEngine.SceneManagement;
+using VRStandardAssets.Utils;
 
 namespace VRAVE {
 
@@ -13,6 +14,7 @@ namespace VRAVE {
 		[SerializeField] private GameObject movingAI1;
 		[SerializeField] private GameObject movingAI2;
 		[SerializeField] private GameObject movingAI3;
+		[SerializeField] private VRCameraFade cameraFade;
 
 		/*[SerializeField] private GameObject staticAI0;
 		[SerializeField] private GameObject staticAI1;
@@ -74,6 +76,9 @@ namespace VRAVE {
 			ambientAudioSource = GameObject.FindGameObjectWithTag(VRAVEStrings.Ambient_Audio).GetComponent<AudioSource>();
 			ambientAudioSource.mute = true;
 
+			hudController.models = new HUDModel[2];
+			hudController.durations = new float[2];
+
 			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController> ();
 			hudAsyncController.Configure(audioController, hudController);
 
@@ -108,7 +113,7 @@ namespace VRAVE {
 			resetScenario ();
 			ChangeState(States.ScenarioBriefing);
 
-			CameraFade.StartAlphaFade (Color.black, true, 3f, 0f, () => {
+			cameraFade.StartAlphaFade (Color.black, true, 3f, () => {
 				audioController.playAudio (3);
 				StartCoroutine (PostIntersectionScenarioBriefingHUDChange ());
 			});
@@ -170,7 +175,12 @@ namespace VRAVE {
 				break;
 			case 3:
 				if (GetState ().Equals (States.UserDriveRoute) || GetState ().Equals (States.AIDriveRoute)) {
+					hudController.Clear ();
 					hudController.model.centerText = "Turn right";
+
+					hudController.FlashImage (Resources.Load (VRAVEStrings.Right_Turn, typeof(Material)) as Material,
+						0.5f, 0.5f, 0.75f, 5, hudAsyncController);
+					
 				}
 				break;
 			case 4:
@@ -189,7 +199,11 @@ namespace VRAVE {
 				break;
 			case 6:
 				if (GetState ().Equals (States.UserApproachTraffic) || GetState ().Equals (States.AIApproachTraffic)) {
+					hudController.Clear ();
 					hudController.model.centerText = "Turn left";
+					hudController.FlashImage (Resources.Load (VRAVEStrings.Left_Turn, typeof(Material)) as Material,
+						0.5f, 0.5f, 0.75f, 5, hudAsyncController);
+					
 				}
 				break;
 			case 7:
@@ -222,6 +236,8 @@ namespace VRAVE {
 
 		public void UserDriveRoute_Enter() {
 
+			hudController.EngageManualMode();
+
 			UserCar.GetComponent<CarController> ().MaxSpeed = 25f;
 			
 			movingAI0.GetComponent<CarAIControl> ().enabled = true;
@@ -245,7 +261,7 @@ namespace VRAVE {
 		public void AIDriveRoute_Enter() {
 			mirrorFlag = 0;
 
-			UserCar.GetComponent<CarController> ().MaxSpeed = 30f;
+			UserCar.GetComponent<CarController> ().MaxSpeed = 25f;
 
 			//Debug.Log ("Entered AI Drive state");
 			spawnController.resetInitialSpawns ();
@@ -275,12 +291,14 @@ namespace VRAVE {
 		}
 
 		public void UserWarnCollision_Enter() {
+			hudController.model.centerText = "Go straight";
 			hudController.model.leftBackingMaterial = Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material;
 			hudController.model.isLeftImageEnabled = true;
 			hudAsyncController.RepeatAudio (5, 1, 3);
 		}
 
 		public void AIWarnCollision_Enter() {
+			hudController.model.centerText = "Go straight";
 			hudController.model.leftBackingMaterial = Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material;
 			hudController.model.isLeftImageEnabled = true;
 			hudAsyncController.RepeatAudio (5, 1, 3);
@@ -304,7 +322,7 @@ namespace VRAVE {
 		private IEnumerator postStopStateChange(float time) {
 			yield return new WaitForSeconds (time);
 
-			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
+			cameraFade.StartAlphaFade (Color.black, false, 3f, () => {
 				if(GetState().Equals(States.UserStopped)) { //fix this so I'm not checking states all the time
 					//Debug.Log("Preparing to reset scenario...");
 					resetScenario ();
@@ -319,7 +337,7 @@ namespace VRAVE {
 		private IEnumerator postStopExitScenario(float time) {
 			yield return new WaitForSeconds (time);
 
-			CameraFade.StartAlphaFade (Color.black, false, 3f, 0f, () => {
+			cameraFade.StartAlphaFade (Color.black, false, 3f, () => {
 				if(GetState().Equals(States.AIStopped)) { //fix this so I'm not checking states all the time
 					//Debug.Log("Preparing to reset scenario...");
 					resetScenario ();
