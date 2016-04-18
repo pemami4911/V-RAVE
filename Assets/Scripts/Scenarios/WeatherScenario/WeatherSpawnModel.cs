@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace VRAVE {
 	public class WeatherSpawnModel : SpawnModel {
 
-		public static string Dark_AI_car_resource = "AI_Vehicle_DARK_4-12";
+		public static string Dark_AI_car_resource = "AI_Vehicle_DARK_4-17";
 		private static float stoppedCarX = 15.445f;
 		private static float stoppedCarY = 0.266f;
 		private static float stoppedCarZ = -20.697f;
