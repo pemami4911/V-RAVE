@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace VRAVE
 {
-	public class HUDModel
+	public class HUDModel : Object
     {
 		public Material collisionIcon;
         //plane rotation

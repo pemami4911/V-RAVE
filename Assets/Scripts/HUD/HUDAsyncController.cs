@@ -19,19 +19,29 @@ namespace VRAVE
 
 		public void RepeatAudio (int idx, int source, int numTimes)
 		{
-			StartCoroutine (CycleThroughAudio (idx, source, numTimes));
+			if (source == 0) {
+				StartCoroutine (CycleThroughAudio (idx, numTimes));			
+			} else {
+				StartCoroutine (CycleThroughSecondaryAudio (idx, numTimes));
+			}
 		}
 
-		private IEnumerator CycleThroughAudio (int idx, int source, int numTimes)
+		public IEnumerator CycleThroughSecondaryAudio(int idx, int numTimes)
+		{
+			for (int i = 0; i < numTimes; ++i) 
+			{
+				hudAudioController.playSecondaryAudio (idx);
+
+				yield return new WaitForSeconds (hudAudioController.audioModel.durations [idx]);
+			}
+		}
+
+		private IEnumerator CycleThroughAudio (int idx, int numTimes)
 		{
 			
 			for (int i = 0; i < numTimes; ++i) 
 			{
-				if (source > -1 && source < hudAudioController.NumberOfAudioSources) {
-					hudAudioController.playAudio (idx, source);
-				} else {
-					hudAudioController.playAudio (idx);
-				}
+				hudAudioController.playAudio (idx);
 
 				yield return new WaitForSeconds (hudAudioController.audioModel.durations [idx]);
 			}
