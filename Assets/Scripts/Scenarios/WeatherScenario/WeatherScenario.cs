@@ -37,11 +37,14 @@ namespace VRAVE {
 		private KeyValuePair<Vector3, Quaternion> movingAIStart2;
 		private KeyValuePair<Vector3, Quaternion> movingAIStart3;
 
+		private GameObject mirror;
+
 		/*private Vector3 staticAIStart0;
 		private Vector3 staticAIStart1;
 		private Vector3 staticAIStart2;
 		private Vector3 staticAIStart3;*/
 
+		private int mirrorFlag = 0;
 
 		public enum States 
 		{
@@ -71,9 +74,13 @@ namespace VRAVE {
 			ambientAudioSource = GameObject.FindGameObjectWithTag(VRAVEStrings.Ambient_Audio).GetComponent<AudioSource>();
 			ambientAudioSource.mute = true;
 
+			hudController.models = new HUDModel[2];
+			hudController.durations = new float[2];
+
 			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController> ();
 			hudAsyncController.Configure(audioController, hudController);
 
+			mirror = GameObject.FindWithTag (VRAVEStrings.Mirror);
 			audioController.audioModel = GameObject.FindObjectOfType<WeatherAudioModel> ();
 
 			spawnModel = new WeatherSpawnModel ();
@@ -153,7 +160,7 @@ namespace VRAVE {
 				break;
 			case 1: //increase fog
 				if (GetState ().Equals (States.UserApproachTraffic) || GetState ().Equals (States.AIApproachTraffic)) {
-					RenderSettings.fogDensity = 0.8f;
+					RenderSettings.fogDensity = 0.5f;
 					hudController.model.centerText = "Go straight";
 				}
 				break;
@@ -166,7 +173,12 @@ namespace VRAVE {
 				break;
 			case 3:
 				if (GetState ().Equals (States.UserDriveRoute) || GetState ().Equals (States.AIDriveRoute)) {
+					hudController.Clear ();
 					hudController.model.centerText = "Turn right";
+
+					hudController.FlashImage (Resources.Load (VRAVEStrings.Right_Turn, typeof(Material)) as Material,
+						0.5f, 0.5f, 0.75f, 5, hudAsyncController);
+					
 				}
 				break;
 			case 4:
@@ -185,7 +197,11 @@ namespace VRAVE {
 				break;
 			case 6:
 				if (GetState ().Equals (States.UserApproachTraffic) || GetState ().Equals (States.AIApproachTraffic)) {
+					hudController.Clear ();
 					hudController.model.centerText = "Turn left";
+					hudController.FlashImage (Resources.Load (VRAVEStrings.Left_Turn, typeof(Material)) as Material,
+						0.5f, 0.5f, 0.75f, 5, hudAsyncController);
+					
 				}
 				break;
 			case 7:
@@ -203,10 +219,13 @@ namespace VRAVE {
 
 		public void ScenarioBriefing_Enter() {
 			ambientAudioSource.mute = true;
+			mirrorFlag = 0;
 
 		}
 
 		public void ScenarioBriefing_Update() {
+			ResetMirror();
+
 			if (Input.GetButtonDown (VRAVEStrings.Right_Paddle)) {
 				ambientAudioSource.mute = false;
 				ChangeState (States.UserDriveRoute);
@@ -214,6 +233,10 @@ namespace VRAVE {
 		}
 
 		public void UserDriveRoute_Enter() {
+
+			hudController.EngageManualMode();
+
+			UserCar.GetComponent<CarController> ().MaxSpeed = 25f;
 			
 			movingAI0.GetComponent<CarAIControl> ().enabled = true;
 			movingAI1.GetComponent<CarAIControl> ().enabled = true;
@@ -229,7 +252,15 @@ namespace VRAVE {
 			//UserCar.GetComponent<CarUserControl> ().enabled = false;
 		}
 
+		public void AIDriveRoute_Update() {
+			ResetMirror ();
+		}
+
 		public void AIDriveRoute_Enter() {
+			mirrorFlag = 0;
+
+			UserCar.GetComponent<CarController> ().MaxSpeed = 30f;
+
 			//Debug.Log ("Entered AI Drive state");
 			spawnController.resetInitialSpawns ();
 			hudController.EngageAIMode();
@@ -250,20 +281,22 @@ namespace VRAVE {
 		public void UserApproachTraffic_Enter() {
 			//Debug.Log("Entered State UserApproachTraffic");
 			//increase fog in this state
-			RenderSettings.fogDensity = 0.3f;
+			RenderSettings.fogDensity = 0.2f;
 		}
 
 		public void AIApproachTraffic_Enter() {
-			RenderSettings.fogDensity = 0.3f;
+			RenderSettings.fogDensity = 0.2f;
 		}
 
 		public void UserWarnCollision_Enter() {
+			hudController.model.centerText = "Go straight";
 			hudController.model.leftBackingMaterial = Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material;
 			hudController.model.isLeftImageEnabled = true;
 			hudAsyncController.RepeatAudio (5, 1, 3);
 		}
 
 		public void AIWarnCollision_Enter() {
+			hudController.model.centerText = "Go straight";
 			hudController.model.leftBackingMaterial = Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material;
 			hudController.model.isLeftImageEnabled = true;
 			hudAsyncController.RepeatAudio (5, 1, 3);
@@ -326,6 +359,17 @@ namespace VRAVE {
 			if (!GetState ().Equals(States.UserDriveRoute)) {
 				hudController.EngageManualMode();
 				hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue; 
+			}
+		}
+
+		private void ResetMirror()
+		{
+			if (mirrorFlag == 0) {
+				mirrorFlag++; 
+				mirror.SetActive (false);
+			} else if (mirrorFlag == 1) {
+				mirror.SetActive (true);
+				mirrorFlag++;
 			}
 		}
 	}
