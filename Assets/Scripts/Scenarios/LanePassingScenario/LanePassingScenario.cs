@@ -25,8 +25,9 @@ namespace VRAVE
 
         private SpawnController manufacturer;
         private HUDController hudController;
-        private HUDAudioController audioController;
-		private AmbientAudioController ambientAudioController;
+		private HUDAsyncController hudAsyncController;
+		private HUDAudioController audioController;
+		private AudioSource ambientAudioSource;
         private Sensors userCarSensors;
         private CarAIControl userCarAI;
         private CarAIControl AIVehicleAI;
@@ -80,21 +81,33 @@ namespace VRAVE
 
             manufacturer = GetComponent<SpawnController>();
             hudController = UserCar.GetComponentInChildren<HUDController>();
-            audioController = UserCar.GetComponent<HUDAudioController>();
-			ambientAudioController = UserCar.GetComponentInChildren<AmbientAudioController>();
+			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController>();
+			audioController = UserCar.GetComponentInChildren<HUDAudioController>();
+			ambientAudioSource = GameObject.FindWithTag (VRAVEStrings.Ambient_Audio).GetComponent<AudioSource>();
 
             lanePassingHandler = UserCar.GetComponent<LanePassingSensorResponseHandler>();
             lanePassingHandler.Enable = false;
             followHandler = UserCar.GetComponent<FollowingSensorResponseHandler>();
 
-            userMode = true;
+			// configure HUD models
+			hudController.models = new HUDModel[2];
+			hudController.durations = new float[2];
+			hudController.models[0] = new HUDVRAVE_Default();
+			hudController.model = hudController.models[0];
+
+			// configure ASYNC controller
+			hudAsyncController.Configure(audioController, hudController);
+
+			//configure audio
+			audioController.audioModel = GameObject.FindObjectOfType<LanePassingAudioModel>();
+			ambientAudioSource.mute = true;
+
+			userMode = true;
 
             UserCar.SetActive(true);
             AIVehicle.SetActive(true);
 			
             mirror = GameObject.FindWithTag(VRAVEStrings.Mirror);
-
-            //triggers[2].gameObject.SetActive(false);
 
             ChangeState(States.InitState);
         }
@@ -106,11 +119,15 @@ namespace VRAVE
         {
             switch (id)
             {
-                case 0:
+                case 0:  //Back to original speed
                     AIVehicleCarController.MaxSpeed = 15;
-                    if (!userMode && !alreadyPassed)
+					if (userMode)
+					{
+						userCarController.MaxSpeed = 20;
+					}
+                    else if (!userMode && !alreadyPassed)
                     {
-                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
                     }
                     break;
 
@@ -118,34 +135,29 @@ namespace VRAVE
                     AIVehicleCarController.MaxSpeed = 10;
                     if (!userMode && !alreadyPassed)
                     {
-                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
                     }
                     break;
 
                 case 2:  //Speed Up
-                    AIVehicleCarController.MaxSpeed = 25;
+                    AIVehicleCarController.MaxSpeed = 15;
                     if (!userMode && !alreadyPassed)
                     {
-                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                        userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
                     }
                     break;
 
                 case 3: //Beginning of passing track
-                    //Debug.Log("Inside Case 3");
 
 
                     break;
                 case 4: //End of passing track
-                    //Debug.Log("Inside Case 4");
                     //userCarController.MaxSpeed = 30;
-                    //Debug.Log("Speeding up quickly!");
                     ChangeState(States.WaitToPass);
 
 
                     break;
                 case 5: //Speed up quickly
-                    //Debug.Log("Back to normal");
-                    //userCarController.MaxSpeed = 20;
                     userCarController.FullTorqueOverAllWheels = 750;
                     userCarAI.CautiousSpeedFactor = 0.4f;
                     alreadyPassed = true;
@@ -153,14 +165,72 @@ namespace VRAVE
 					userCarController.MaxSpeed = 20;
                     break;
 
-                case 10:
-                    //Debug.Log("Can Pass");
+				case 6: //Speed Up North
+					if(userMode)
+					{
+						AIVehicleCarController.MaxSpeed = 35;
+						userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
+					}
+					else if(!alreadyPassed)
+					{
+						AIVehicleCarController.MaxSpeed = 35;
+						userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
+					}
+					break;
+
+				case 7: //Slow Down North
+					if (userMode)
+					{
+						AIVehicleCarController.MaxSpeed = 5f;
+					}
+					else if (!userMode && !alreadyPassed)
+					{
+						//AIVehicleCarController.MaxSpeed = 10f;
+						//userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
+						StartCoroutine("UserCarSlowdown");
+					}
+					//Turn on brake lights.
+					AIVehicle.transform.GetChild(3).gameObject.SetActive(true);
+
+					//if (userMode)
+					//{
+						
+					//	AIVehicleCarController.MaxSpeed = 15f;
+					//	//Turn on brake lights.
+					//	AIVehicle.transform.GetChild(3).gameObject.SetActive(true);
+					//}
+					//else if(!alreadyPassed)
+					//{
+					//	AIVehicleCarController.MaxSpeed = 15f;
+					//	userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
+					//	//Turn on brake lights.
+					//	AIVehicle.transform.GetChild(3).gameObject.SetActive(true);
+					//}
+					break;
+
+				case 8:
+					//Turn of brakelights
+					AIVehicle.transform.GetChild(3).gameObject.SetActive(false);
+					break;
+
+				case 10:
+                    //Can Pass
                     canPass = true;
+					hudController.model.bottomText = "";
+					if (!alreadyPassed)
+					{
+						hudController.model.bottomText = VRAVEStrings.CanPass;
+					}
                     break;
                 case 11:
-                    //Debug.Log("Cannot Pass");
+                    //Cannot Pass
                     canPass = false;
-                    break;
+					hudController.model.bottomText = "";
+					if (!alreadyPassed)
+					{
+						hudController.model.bottomText = VRAVEStrings.CannotPass;
+					}
+					break;
 
                 case 20:
                     //AI Car gets to turn at 15 mph
@@ -173,9 +243,9 @@ namespace VRAVE
 
                 case 30:  
                     //User Vehicle slows down before right turn
-                    //Debug.Log("SLOW DOWN!");
-                    if (triggerToggle && !alreadyPassed)
+                    if (!userMode && triggerToggle && !alreadyPassed)
                     {
+						StartCoroutine("SlowingAtTurn");
                         //userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed - 10.0f;
                         userCarAI.AvoidOtherCarTime = Time.time + 3f;
                         userCarAI.AvoidOtherCarSlowdown = 0.5f;
@@ -183,21 +253,96 @@ namespace VRAVE
                     break;
                 case 31:
 					//User vehicle Speeds back up
-					//Debug.Log("Speed back up!");
-					if (triggerToggle && !alreadyPassed)
+					if (!userMode && triggerToggle && !alreadyPassed)
 					{
-						userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+						userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
+						StartCoroutine("SpeedingAfterTurn");
 					}
 					break;
 
                 case 32:
-                    triggerToggle = false;
+                    //triggerToggle = false;
                     break;
 
                 case 33:
-                    triggerToggle = true;
+                    //triggerToggle = true;
                     break;
-            }
+
+				case 101:
+					StartCoroutine("SpeedChangesBriefing");
+					break;
+
+				case 102:
+					// display right turn sign on HUD.
+					//hudController.Clear();
+					hudController.model.isLeftImageEnabled = false;
+					hudController.models[1] = hudController.model;
+					hudController.models[0] = hudController.model.Clone();
+					hudController.durations[0] = 0.3f;
+					hudController.durations[1] = 0.2f;
+					hudController.models[0].leftBackingMaterial = Resources.Load(VRAVEStrings.Right_Turn, typeof(Material)) as Material;
+					hudController.models[0].isLeftImageEnabled = true;
+					hudController.models[0].leftImagePosition = new Vector3(1.98f, 0.19f, -0.39f);
+					hudController.models[0].leftImageScale = new Vector3(0.5f * 0.1280507f, 0, 0.5f * 0.1280507f);
+					hudAsyncController.DoHUDUpdates(5, 0.5f);
+					break;
+
+				case 103:
+					// display left turn sign on HUD.
+					//hudController.Clear();
+					hudController.model.isLeftImageEnabled = false;
+					hudController.models[1] = hudController.model;
+					hudController.models[0] = hudController.model.Clone();
+					hudController.durations[0] = 0.3f;
+					hudController.durations[1] = 0.2f;
+					hudController.models[0].leftBackingMaterial = Resources.Load(VRAVEStrings.Left_Turn, typeof(Material)) as Material;
+					hudController.models[0].isLeftImageEnabled = true;
+					hudController.models[0].leftImagePosition = new Vector3(1.98f, 0.19f, -0.39f);
+					hudController.models[0].leftImageScale = new Vector3(0.5f * 0.1280507f, 0, 0.5f * 0.1280507f);
+					hudAsyncController.DoHUDUpdates(5, 0.5f);
+					break;
+
+				case 104:
+					//Passing Briefing
+					if (userMode)
+					{
+						StartCoroutine("PassingBriefing");
+					}
+					else
+					{
+						StartCoroutine("AIPassingBriefing");
+					}
+					break;
+
+				case 105:
+					//UserMode end and Scenario end
+					if(userMode)
+					{
+						StartCoroutine("UserConclusion");
+					}
+					else
+					{
+						StartCoroutine("ScenarioEnd");
+					}
+					break;
+
+				case 106:
+					//Adaptive Cruise Control
+					if (!userMode)
+					{
+						StartCoroutine("AdaptiveCruiseControl");
+					}
+					break;
+
+				case 107:
+					//AI Passing Command
+					if(!userMode)
+					{
+						StartCoroutine("AIPassingCommand");
+					}
+					break;
+
+			}
         }
 
 
@@ -213,6 +358,8 @@ namespace VRAVE
 
             userCarController.ResetSpeed();
             AIVehicleCarController.ResetSpeed();
+
+			hudController.Clear();
 
             if(mirror != null)
             {
@@ -244,25 +391,25 @@ namespace VRAVE
             if(userMode)
             {
                 userCarController.MaxSteeringAngle = 50f;
-            }
-            //Debug.Log("Enter: InitState");
-            //UseCar and AI Vehicles Created
-            //Display Scenario Information on HUD
+				(AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+				StartCoroutine("IntroBriefing");
+				//Welcome to the Adaptive Cruise Control and Lane Passing Scenario.
+				//Pull right trigger to continue.
+			}
+			//Display Scenario Information on HUD
 
-        }
+		}
 
         // Wait for the user to press OK
         public void InitState_Update()
         {
-
-            ChangeState(States.FollowingInstruction);
-
-            //POSSIBLY DONT NEED THIS
-            // 	Change to steering wheel paddle
-            //Debug.Log("Waiting for Input");
-            if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
+			if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
-                ChangeState(States.FollowingInstruction);
+				StopCoroutine("IntroBriefing");
+				StopCoroutine("IntroBriefAudio");
+				GameObject rightPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Right_Paddle);
+				(rightPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+				ChangeState(States.FollowingInstruction);
             }
 
         }
@@ -272,18 +419,21 @@ namespace VRAVE
         public void FollowingInstruction_Enter()
         {
 
-            //Debug.Log("Enter: FollowingInstruction");
-
-            //Play insructions here!!!
-            mirror.SetActive(true);
-            (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+			//You are inside a semi-autonomous vehicle. The glowing vehicle ahead of you is a fully autonomous.
+			//Please attempt to follow this vehicle at a safe, constant distance.
+			//HUD UPDATE after instructions. Start driving to begin scenario. 
+			mirror.SetActive(true);
+			//hudController.Clear();
+			hudController.model.centerText = "";
+			StartCoroutine(FollowBriefing());
             if (userMode)
             {
                 UserCar.GetComponent<CarUserControl>().StartCar();
-                (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
+                //(UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
                 userCarAI.enabled = false;
-            }
-            else
+				
+			}
+			else
             {
                 //followHandler.Enable = true;
             }
@@ -293,11 +443,12 @@ namespace VRAVE
         public void FollowingInstruction_Update()
         {
             if (userMode)
-            {
-                //Once user begins driving, start AI
+            {		
+                //Once user begins driving, start AI vehicle
                 if (userCarController.AccelInput >= 0.05f)  //Change to left trigger
                 {
-                    //Debug.Log("Update: FollowingInstruction");
+					//Remove HUD driving instructions.
+					ambientAudioSource.mute = false;
                     ChangeState(States.Following);
                 }
             }
@@ -316,7 +467,7 @@ namespace VRAVE
 
         public void Following_Enter()
         {
-            //Debug.Log("Entered: Following");
+            
             (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
             AIVehicleAI.Circuit = AITrack;
             AIVehicleAI.enabled = true;
@@ -327,13 +478,15 @@ namespace VRAVE
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
                 userCarAI.enabled = false;
+				alreadyPassed = true; //Turns off speed up and slow down triggers for user car during following.
             }
             else  //Not used
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
+				userCarController.FullTorqueOverAllWheels = 1000;
                 userCarAI.Circuit = UserTrack;
                 userCarAI.enabled = true;
-                userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
             }
 
         }
@@ -353,17 +506,47 @@ namespace VRAVE
             }
         }
 
+		public void ChangeMode_Enter()
+		{
+			if (userMode)
+			{
+				resetScenario();
+				userMode = false;
+				userCarController.MaxSteeringAngle = 35f;
+				AIVehicle.SetActive(true);
+				UserCar.SetActive(true);
+				//Show AI passing and following
+				ChangeState(States.PassingInstruction);
+			}
+			else  //End scenario
+			{
+				//Fades out to LobbyMenu.
+				SceneManager.LoadScene(VRAVEStrings.Lobby_Menu);
 
-        /* PASSING INSTRUCTION */
-        //The AI part of the simulation
-        public void PassingInstruction_Enter()
+				//userCarController.MaxSteeringAngle = 50f;
+				//AIVehicle.SetActive(true);
+				//UserCar.SetActive(true);
+				//userMode = true;
+				//ChangeState(States.FollowingInstruction);
+			}
+		}
+
+
+		/* PASSING INSTRUCTION */
+		//The AI part of the simulation
+		public void PassingInstruction_Enter()
         {
-            //CameraFade.StartAlphaFade(Color.black, true, 1.5f, 2f);   //Causes problems.
+			StartCoroutine("AIBriefing");
+
+
+			//CameraFade.StartAlphaFade(Color.black, true, 1.5f, 2f);   //Causes problems.
             mirror.SetActive(true);
             UserCar.GetComponent<CarUserControl>().StartCar();
+			userCarController.FullTorqueOverAllWheels = 750f;
             AIVehicleAI.enabled = false;
             userCarAI.enabled = false;
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;
+			alreadyPassed = false; //Reset if the car has already passed
         }
 
         public void PassingInstruction_Update()
@@ -371,7 +554,11 @@ namespace VRAVE
             //Move to WaitToPass
             if (Input.GetButtonDown((VRAVEStrings.Right_Paddle)))
             {
-                AIVehicleAI.enabled = true;
+				hudController.EngageAIMode();
+				GameObject rightPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Right_Paddle);
+				(rightPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+				hudController.model.centerText = "";
+				AIVehicleAI.enabled = true;
                 AIVehicleAI.Circuit = AITrack;
                 AIVehicleAI.IsCircuit = true;
                 ChangeState(States.WaitToPass);
@@ -382,10 +569,6 @@ namespace VRAVE
 
         public void WaitToPass_Enter()
         {
-            
-            //Debug.Log("Entered: WaitToPass");
-            //(AIVehicle.GetComponent("Halo") as Behaviour).enabled = true;  Already called in PassingInstruction
-
             if (userMode)
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
@@ -396,11 +579,9 @@ namespace VRAVE
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
                 circuitProgressNum = Mathf.CeilToInt((userCarAI.ProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
                 userCarAI.switchCircuit(UserTrack, circuitProgressNum);
-                //Debug.Log(circuitProgressNum);
-                //Debug.Log(initialTrack.ToString());
                 userCarAI.IsCircuit = true;
                 userCarAI.enabled = true;
-                userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+                userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
             }
 
         }
@@ -408,11 +589,10 @@ namespace VRAVE
 
         public void WaitToPass_Update()
         {
-            //Debug.Log("Update: WaitToPass");
 
             if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
-                CameraFade.StartAlphaFade(Color.black, false, 2f, 0f, () =>
+                CameraFade.StartAlphaFade(Color.black, false, 3f, 0f, () =>
 				{
 					ChangeState(States.ChangeMode);
 				});
@@ -421,8 +601,10 @@ namespace VRAVE
 
             if (Input.GetButton(VRAVEStrings.Left_Paddle) && (canPass == true))
             {
-                //Debug.Log("Should start passing");
-                getPassTrack();
+				//Should start passing
+				GameObject leftPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Left_Paddle);
+				(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+				getPassTrack();
                 lanePassingHandler.Enable = true;
             }
 
@@ -439,17 +621,18 @@ namespace VRAVE
         /* Wait while passing other vehicle as to not attempt to pass again until finished. */
         public void Passing_Enter()
         {
+			hudController.model.centerText = VRAVEStrings.PassingVehicle;
             //Move passing track to 2 units ahead of the UserCar and set rotation to forward.
             passingTrack.transform.position = (UserCar.transform.position + UserCar.transform.forward * 2f);
             float newAngle = Mathf.RoundToInt(UserCar.transform.eulerAngles.y / 90f) * 90f;
             passingTrack.transform.eulerAngles = new Vector3(0, newAngle, 0);
 
-            //Debug.Log("Enter: Passing");
             (AIVehicle.GetComponent("Halo") as Behaviour).enabled = false;  //Turn off glow as you pass.
             userCarAI.IsCircuit = false;
 
             circuitProgressNum = userCarAI.ProgressNum;
-            userCarAI.switchCircuit(passingTrack, 0);
+
+			userCarAI.switchCircuit(passingTrack, 0);
 
             (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
             userCarController.FullTorqueOverAllWheels = 1500;
@@ -463,12 +646,10 @@ namespace VRAVE
 
         public void Passing_Exit()
         {
-            //Debug.Log("Exit: Passing");
+			StartCoroutine("CompletedPass");
             userCarAI.IsPassing = false;
-            userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.5f;
+            userCarController.MaxSpeed = AIVehicleCarController.MaxSpeed + 0.6f;
             userCarAI.CautiousMaxAngle = 25f;
-            //float AISpeed = AIVehicleCarController.CurrentSpeed;
-            //userCarController.SetSpeed = new Vector3(0,0,40f);
 
 
             if (userMode)  //Should never be called
@@ -479,38 +660,12 @@ namespace VRAVE
             else
             {
                 (UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = false;
-                circuitProgressNum = Mathf.CeilToInt((userCarAI.ProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
+                circuitProgressNum = Mathf.CeilToInt((circuitProgressNum - 3) / 4) * 4 + 3; //Rounds the waypoints up to multiples of 3+4n
                 userCarAI.switchCircuit(UserTrack, circuitProgressNum);
-                //Debug.Log(circuitProgressNum);
                 userCarAI.IsCircuit = true;
                 userCarAI.enabled = true;
             }
 
-        }
-
-        public void ChangeMode_Enter()
-        {
-            resetScenario();
-            if(userMode)
-            {
-                userMode = false;
-                userCarController.MaxSteeringAngle = 35f;
-                AIVehicle.SetActive(true);
-                UserCar.SetActive(true);
-                //Show AI passing and following
-                ChangeState(States.PassingInstruction);
-            }
-            else  //End scenario
-            {
-				//Fade out.
-				//SceneManager.LoadScene(0);
-                //Debug.Log("End Scenario. Back to Lobby.");
-                userCarController.MaxSteeringAngle = 50f;
-                AIVehicle.SetActive(true);
-                UserCar.SetActive(true);
-                userMode = true;
-                ChangeState(States.FollowingInstruction);
-            }
         }
 
         private void getPassTrack()
@@ -524,19 +679,232 @@ namespace VRAVE
                     break;
                 case "10":
                 case "15":
-                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack10).GetComponent<WaypointCircuit>();
+                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack25).GetComponent<WaypointCircuit>();
                     passingSpeed = 25f;
                     break;
-                case "25":
+				case "20":
+					passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack25).GetComponent<WaypointCircuit>();
+					passingSpeed = 25f;
+					break;
+				case "25":
                     passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack25).GetComponent<WaypointCircuit>();
                     passingSpeed = 30f;
                     break;
                 default:
-                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack10).GetComponent<WaypointCircuit>();
-                    passingSpeed = 25f;
+                    passingTrack = (WaypointCircuit)GameObject.Find(VRAVEStrings.PassingTrack25).GetComponent<WaypointCircuit>();
+                    passingSpeed = 30f;
                     break;
 
             }
         }
-    }
+
+		private IEnumerator IntroBriefing()
+		{
+			//Actually start introduction audio briefing.
+			hudController.model.centerText = "Welcome to Bryce's Scenario!";
+			yield return new WaitForSeconds(2f);
+			ambientAudioSource.mute = true;
+			audioController.playAudio (0);
+			yield return new WaitForSeconds(5f);
+			//audioController.playAudio(10);
+			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
+			GameObject rightPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Right_Paddle);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			yield return new WaitForSeconds(0.5f);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+			yield return new WaitForSeconds(0.5f);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			yield return new WaitForSeconds(0.5f);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+			yield return new WaitForSeconds(0.5f);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+
+			//Ensure paddle glow is turned off.
+			yield return new WaitForSeconds(3f);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+		}
+
+		private IEnumerator FollowBriefing()
+		{
+			//hudController.Clear();
+			hudController.model.centerText = "";
+			StopCoroutine("IntroBriefing");
+			StopCoroutine("IntroBriefAudio");
+			//Actually start introduction audio briefing.
+			ambientAudioSource.mute = true;
+			audioController.playAudio(1);
+			yield return new WaitForSeconds(7f);
+			(UserCar.GetComponent<CarUserControl>() as CarUserControl).enabled = true;
+			hudController.model.centerText = VRAVEStrings.Follow_Car;
+			hudController.EngageManualMode();
+			yield return new WaitForSeconds(12f);
+			//hudController.Clear();
+			hudController.model.centerText = "";
+		}
+
+		private IEnumerator SpeedChangesBriefing()
+		{
+			//Notify the user of speed changes.
+			ambientAudioSource.mute = true;
+			audioController.playAudio(2);
+			yield return new WaitForSeconds(5f);
+			ambientAudioSource.mute = false;
+			triggers[3].SetActive(false);
+		}
+
+		private IEnumerator PassingBriefing()
+		{
+			//Instruct the user to pass on the next straightaway.
+			ambientAudioSource.mute = true;
+			audioController.playAudio(3);
+			userCarController.FullTorqueOverAllWheels = 1000f;
+			//userCarController.MaxSpeed = 25f;
+			yield return new WaitForSeconds(10f);
+			hudController.model.centerText = VRAVEStrings.SafelyPassVehicle;
+			ambientAudioSource.mute = false;
+			triggers[10].SetActive(false);
+			yield return new WaitForSeconds(4f);
+			//hudController.Clear();	
+			hudController.model.centerText = "";
+		}
+
+		private IEnumerator UserConclusion()
+		{
+			//End of the user part of the scenario.
+			//Allow user to enter AI scenario by pulling right trigger.
+
+			ambientAudioSource.mute = true;
+			audioController.playAudio(4);
+			yield return new WaitForSeconds(1f);
+			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
+			yield return new WaitForSeconds(5f);
+			ambientAudioSource.mute = false;
+			//triggers[11].SetActive(false);
+		}
+
+		private IEnumerator AIBriefing()
+		{
+			//Introduction to AI scenario
+			yield return new WaitForSeconds(2f);
+			ambientAudioSource.mute = true;
+			audioController.playAudio(5);
+			yield return new WaitForSeconds(5f);
+			//audioController.playAudio(10); // Pull the right paddle to continue.
+			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
+			GameObject rightPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Right_Paddle);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			yield return new WaitForSeconds(0.5f);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+			yield return new WaitForSeconds(0.5f);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			yield return new WaitForSeconds(0.5f);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+			yield return new WaitForSeconds(0.5f);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			
+			//Ensure paddle glow is turned off.
+			yield return new WaitForSeconds(3f);
+			(rightPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+
+			ambientAudioSource.mute = false;
+		}
+
+		private IEnumerator AIPassingBriefing()
+		{
+			ambientAudioSource.mute = true;
+			audioController.playAudio(6);
+			hudController.model.bottomText = VRAVEStrings.CannotPass;
+			yield return new WaitForSeconds(5f);
+		}
+
+		private IEnumerator AIPassingCommand()
+		{
+			//When allowed, pull the left trigger to initiate passing sequence.
+			ambientAudioSource.mute = true;
+			audioController.playAudio(8);
+			yield return new WaitForSeconds(2f);
+			GameObject leftPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Left_Paddle);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+			yield return new WaitForSeconds(0.5f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = true;
+			yield return new WaitForSeconds(2f);
+			//Ensure paddle glow is turned off.
+			yield return new WaitForSeconds(2f);
+			(leftPaddle.GetComponent("Halo") as Behaviour).enabled = false;
+		}
+
+		private IEnumerator CompletedPass()
+		{
+			hudController.model.centerText = VRAVEStrings.PassCompleted;
+			yield return new WaitForSeconds(2f);
+			hudController.model.centerText = "";
+		}
+
+		private IEnumerator ScenarioEnd()
+		{
+			//The AI vehicle has successfully demonstrated its adaptive cruise control, 
+			//following, and vehicle passing capabilities all with minimal to no human input required.
+			ambientAudioSource.mute = true;
+			audioController.playAudio(9);
+			yield return new WaitForSeconds(7f);
+			hudController.model.centerText = "Pull right paddle to return to menu.";
+			//Pull the right trigger to return to the lobby
+		}
+
+		private IEnumerator AdaptiveCruiseControl()
+		{
+			//Notice how your vehicle accelerates and decelerates as the leading vehicle varies in speed.
+			yield return new WaitForSeconds(2f);
+			audioController.playAudio(7);
+			yield return new WaitForSeconds(1f);
+			hudController.model.centerText = VRAVEStrings.Accelerating;
+			yield return new WaitForSeconds(5.5f);
+			hudController.model.centerText = VRAVEStrings.Decelerating;
+			yield return new WaitForSeconds(2f);
+			hudController.model.centerText = "";
+
+		}
+
+		private IEnumerator SlowingAtTurn()
+		{
+			hudController.model.centerText = VRAVEStrings.Decelerating;
+			yield return new WaitForSeconds(1f);
+			hudController.model.centerText = "";
+		}
+
+		//Not used at the moment.
+		private IEnumerator SpeedingAfterTurn()
+		{
+			hudController.model.centerText = VRAVEStrings.Accelerating;
+			yield return new WaitForSeconds(1f);
+			hudController.model.centerText = "";
+
+		}
+
+		private IEnumerator UserCarSlowdown()
+		{
+			AIVehicleCarController.MaxSpeed = 10f;
+			userCarController.MaxSpeed = 30f;
+			while (userCarController.MaxSpeed > 11f)
+			{
+				yield return new WaitForFixedUpdate();
+				userCarController.MaxSpeed--;
+			}
+
+		}
+	}
 }

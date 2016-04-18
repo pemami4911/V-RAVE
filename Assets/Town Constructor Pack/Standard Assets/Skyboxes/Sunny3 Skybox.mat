@@ -64,7 +64,15 @@ Material:
           m_Texture: {fileID: 2800000, guid: e3e214f8620f35a4cb4e415a4b8c19cf, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-    m_Floats: {}
+    m_Floats:
+      data:
+        first:
+          name: _Exposure
+        second: 1
+      data:
+        first:
+          name: _Rotation
+        second: 0
     m_Colors:
       data:
         first:

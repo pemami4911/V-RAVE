@@ -23,7 +23,7 @@ namespace VRAVE
             {
                 if(obstacles.ContainsKey(9) && obstacles[9].obstacleTag.Equals(VRAVEStrings.Obstacle) && (obstacles[9].Distance <= 25))
                 {
-                    Debug.Log("Don't Turn!");
+					//Don't turn
                     Enable = false;
                     controller.TooClose = false;
                     controller.TooFar = false;
