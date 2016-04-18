@@ -35,7 +35,7 @@ namespace VRAVE
 		private HUDController hudController;
 		private HUDAudioController audioController;
 		private HUDAsyncController hudAsyncController;
-		private AmbientAudioController ambientAudioController;
+		private AudioSource ambientAudioSource;
 		private CarAIControl carAI;
 		private CarAIControl unsuspectingCarAI;
 		private CarController carController;
@@ -77,12 +77,12 @@ namespace VRAVE
 
 			hudController = UserCar.GetComponentInChildren<HUDController> ();
 			audioController = UserCar.GetComponentInChildren<HUDAudioController> ();
-			ambientAudioController = UserCar.GetComponentInChildren<AmbientAudioController> ();
-			ambientAudioController.Mute ();
+			ambientAudioSource = GameObject.FindWithTag (VRAVEStrings.Ambient_Audio).GetComponent<AudioSource>();
+			ambientAudioSource.mute = true;
 			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController> ();
 
 			mirror = GameObject.FindWithTag (VRAVEStrings.Mirror);
-			audioController.audioModel = new ReactionTimeAudioModel ();
+			audioController.audioModel = GameObject.FindObjectOfType<ReactionTimeAudioModel> ();
 
 			// configure HUD models
 			hudController.models = new HUDModel[2];
@@ -102,8 +102,6 @@ namespace VRAVE
 			resetIntersectionScenario ();
 
 			//resetTrashCanScenario();
-
-			hudController.model.centerText = VRAVEStrings.Collision_Avoidance;
 
 			//ChangeState (States.TrashcanBriefing);
 			ChangeState (States.IntersectionBriefing);
@@ -216,9 +214,9 @@ namespace VRAVE
 					audioController.playAudio (7);
 				}
 				break;
-			case 3:
+			case 3: // post collision state change
 				UserCar.GetComponent<CarUserControl> ().enabled = false;
-				StartCoroutine (PostCollisionStateChange (4f));
+				StartCoroutine (PostCollisionStateChange (5f));
 				break;
 			case 4: // trash can trigger
 				hudController.Clear();
@@ -229,7 +227,7 @@ namespace VRAVE
 					trashCan.GetComponent<TrashCanAnimator> ().trashCanForce = 400;
 					hudController.FlashImage (Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material,
 						0.25f, 0.25f, 0.75f, 5, hudAsyncController);
-					hudAsyncController.RepeatAudio (10, -1, 5);
+					hudAsyncController.RepeatAudio (10,  1, 5);
 				}
 					
 				trashCan.SetActive (true);
@@ -293,7 +291,7 @@ namespace VRAVE
 		{
 			// 	Change to steering wheel paddle
 			if (Input.GetButtonDown (VRAVEStrings.Right_Paddle)) {
-				ambientAudioController.UnMute ();
+				ambientAudioSource.mute = false;
 				ChangeState (States.HumanDrivingToIntersection);
 			}
 		}
@@ -316,7 +314,7 @@ namespace VRAVE
 		public void AIDrivingToIntersectionBriefing_Enter() 
 		{
 			m_humanDrivingState = false;
-			ambientAudioController.Mute ();
+			ambientAudioSource.mute = true;
 			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
 		}
 
@@ -334,7 +332,7 @@ namespace VRAVE
 
 		public void AIDrivingToIntersection_Enter ()
 		{
-			ambientAudioController.UnMute ();
+			ambientAudioSource.mute = false;
 			audioController.playAudio (0);
 			hudController.EngageAIMode ();
 			carAI.enabled = true;
@@ -384,7 +382,7 @@ namespace VRAVE
 			UnsuspectingAI.GetComponent<CarController> ().MaxSpeed = 15f;
 			unsuspectingCarAI.ReachTargetThreshold = 5f;
 			unsuspectingCarAI.Circuit = ai_paths[1];
-			ambientAudioController.Mute ();
+			ambientAudioSource.mute = true;
 
 			hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue;
 			audioController.playAudio (11);
@@ -408,7 +406,7 @@ namespace VRAVE
 			UserCar.GetComponent<CarUserControl> ().enabled = true;
 			UserCar.GetComponent<CarUserControl> ().StartCar();
 			audioController.playAudio(1);
-			ambientAudioController.UnMute ();
+			ambientAudioSource.mute = false;
 			hudController.EngageManualMode ();
 			hudController.model.centerText = VRAVEStrings.Follow_Car;
 		}
@@ -445,7 +443,7 @@ namespace VRAVE
 
 		// change sensor angle to 100
 		public void AIDrivingToTrashcan_Enter() {
-			ambientAudioController.UnMute ();
+			ambientAudioSource.mute = false;
 			carAI.enabled = true;
 			unsuspectingCarAI.enabled = true;
 			audioController.playAudio (0);
@@ -506,6 +504,7 @@ namespace VRAVE
 
 		private IEnumerator PostIntersectionScenarioBriefingHUDChange() 
 		{
+			hudController.model.centerText = VRAVEStrings.Collision_Avoidance;
 			yield return new WaitForSeconds (10f);
 
 			if (!GetState ().Equals(States.HumanDrivingToIntersection)) {
@@ -532,7 +531,7 @@ namespace VRAVE
 
 		private IEnumerator TrashcanBriefing2()
 		{
-			ambientAudioController.Mute ();
+			ambientAudioSource.mute = true;
 			audioController.playAudio (9);
 			yield return new WaitForSeconds (6f);
 			audioController.playAudio (11);
