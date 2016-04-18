@@ -37,11 +37,14 @@ namespace VRAVE {
 		private KeyValuePair<Vector3, Quaternion> movingAIStart2;
 		private KeyValuePair<Vector3, Quaternion> movingAIStart3;
 
+		private GameObject mirror;
+
 		/*private Vector3 staticAIStart0;
 		private Vector3 staticAIStart1;
 		private Vector3 staticAIStart2;
 		private Vector3 staticAIStart3;*/
 
+		private int mirrorFlag = 0;
 
 		public enum States 
 		{
@@ -74,6 +77,7 @@ namespace VRAVE {
 			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController> ();
 			hudAsyncController.Configure(audioController, hudController);
 
+			mirror = GameObject.FindWithTag (VRAVEStrings.Mirror);
 			audioController.audioModel = GameObject.FindObjectOfType<WeatherAudioModel> ();
 
 			spawnModel = new WeatherSpawnModel ();
@@ -153,7 +157,7 @@ namespace VRAVE {
 				break;
 			case 1: //increase fog
 				if (GetState ().Equals (States.UserApproachTraffic) || GetState ().Equals (States.AIApproachTraffic)) {
-					RenderSettings.fogDensity = 0.8f;
+					RenderSettings.fogDensity = 0.5f;
 					hudController.model.centerText = "Go straight";
 				}
 				break;
@@ -203,10 +207,13 @@ namespace VRAVE {
 
 		public void ScenarioBriefing_Enter() {
 			ambientAudioSource.mute = true;
+			mirrorFlag = 0;
 
 		}
 
 		public void ScenarioBriefing_Update() {
+			ResetMirror();
+
 			if (Input.GetButtonDown (VRAVEStrings.Right_Paddle)) {
 				ambientAudioSource.mute = false;
 				ChangeState (States.UserDriveRoute);
@@ -214,6 +221,8 @@ namespace VRAVE {
 		}
 
 		public void UserDriveRoute_Enter() {
+
+			UserCar.GetComponent<CarController> ().MaxSpeed = 25f;
 			
 			movingAI0.GetComponent<CarAIControl> ().enabled = true;
 			movingAI1.GetComponent<CarAIControl> ().enabled = true;
@@ -229,7 +238,15 @@ namespace VRAVE {
 			//UserCar.GetComponent<CarUserControl> ().enabled = false;
 		}
 
+		public void AIDriveRoute_Update() {
+			ResetMirror ();
+		}
+
 		public void AIDriveRoute_Enter() {
+			mirrorFlag = 0;
+
+			UserCar.GetComponent<CarController> ().MaxSpeed = 30f;
+
 			//Debug.Log ("Entered AI Drive state");
 			spawnController.resetInitialSpawns ();
 			hudController.EngageAIMode();
@@ -250,11 +267,11 @@ namespace VRAVE {
 		public void UserApproachTraffic_Enter() {
 			//Debug.Log("Entered State UserApproachTraffic");
 			//increase fog in this state
-			RenderSettings.fogDensity = 0.3f;
+			RenderSettings.fogDensity = 0.2f;
 		}
 
 		public void AIApproachTraffic_Enter() {
-			RenderSettings.fogDensity = 0.3f;
+			RenderSettings.fogDensity = 0.2f;
 		}
 
 		public void UserWarnCollision_Enter() {
@@ -326,6 +343,17 @@ namespace VRAVE {
 			if (!GetState ().Equals(States.UserDriveRoute)) {
 				hudController.EngageManualMode();
 				hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue; 
+			}
+		}
+
+		private void ResetMirror()
+		{
+			if (mirrorFlag == 0) {
+				mirrorFlag++; 
+				mirror.SetActive (false);
+			} else if (mirrorFlag == 1) {
+				mirror.SetActive (true);
+				mirrorFlag++;
 			}
 		}
 	}
