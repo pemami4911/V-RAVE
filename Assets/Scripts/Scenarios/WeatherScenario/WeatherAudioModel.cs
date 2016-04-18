@@ -7,7 +7,7 @@ namespace VRAVE
 
 	public class WeatherAudioModel : HUDAudioModel {
 
-		public WeatherAudioModel() : base() {
+		void Awake() {
 			// #0
 			addClip ("changing-to-AI-mode", 2f);
 			// #1

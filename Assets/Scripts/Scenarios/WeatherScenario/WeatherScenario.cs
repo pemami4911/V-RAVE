@@ -25,7 +25,7 @@ namespace VRAVE {
 		private HUDController hudController;
 		private HUDAudioController audioController;
 		private HUDAsyncController hudAsyncController;
-		private AmbientAudioController ambientAudioController;
+		private AudioSource ambientAudioSource;
 
 		private Vector3 USER_STARTING_POSITION = new Vector3 (25.92f, 0.26f, 1.9f);
 		private Quaternion USER_STARTING_ROTATION = Quaternion.Euler (0f, 0f, 0f);
@@ -68,13 +68,13 @@ namespace VRAVE {
 			audioController = UserCar.GetComponentInChildren<HUDAudioController> ();
 
 
-			ambientAudioController = UserCar.GetComponentInChildren<AmbientAudioController> ();
-			ambientAudioController.Mute();
+			ambientAudioSource = GameObject.FindGameObjectWithTag(VRAVEStrings.Ambient_Audio).GetComponent<AudioSource>();
+			ambientAudioSource.mute = true;
 
 			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController> ();
 			hudAsyncController.Configure(audioController, hudController);
 
-			audioController.audioModel = new WeatherAudioModel ();
+			audioController.audioModel = GameObject.FindObjectOfType<WeatherAudioModel> ();
 
 			spawnModel = new WeatherSpawnModel ();
 			spawnController.spawnModel = spawnModel;
@@ -197,7 +197,7 @@ namespace VRAVE {
 		}
 
 		public void ScenarioBriefing_Enter() {
-			ambientAudioController.Mute ();
+			ambientAudioSource.mute = true;
 			hudController.EngageManualMode();
 			audioController.playAudio (3);
 
@@ -206,7 +206,7 @@ namespace VRAVE {
 
 		public void ScenarioBriefing_Update() {
 			if (Input.GetButtonDown (VRAVEStrings.Left_Paddle)) {
-				ambientAudioController.UnMute ();
+				ambientAudioSource.mute = false;
 				ChangeState (States.UserDriveRoute);
 			}
 		}
@@ -258,13 +258,13 @@ namespace VRAVE {
 		public void UserWarnCollision_Enter() {
 			hudController.model.leftBackingMaterial = Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material;
 			hudController.model.isLeftImageEnabled = true;
-			hudAsyncController.RepeatAudio (5, -1, 3);
+			hudAsyncController.RepeatAudio (5, 1, 3);
 		}
 
 		public void AIWarnCollision_Enter() {
 			hudController.model.leftBackingMaterial = Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material;
 			hudController.model.isLeftImageEnabled = true;
-			hudAsyncController.RepeatAudio (5, -1, 3);
+			hudAsyncController.RepeatAudio (5, 1, 3);
 		}
 
 		public void UserStopped_Enter() {
