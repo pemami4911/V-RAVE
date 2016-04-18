@@ -74,6 +74,9 @@ namespace VRAVE {
 			ambientAudioSource = GameObject.FindGameObjectWithTag(VRAVEStrings.Ambient_Audio).GetComponent<AudioSource>();
 			ambientAudioSource.mute = true;
 
+			hudController.models = new HUDModel[2];
+			hudController.durations = new float[2];
+
 			hudAsyncController = UserCar.GetComponentInChildren<HUDAsyncController> ();
 			hudAsyncController.Configure(audioController, hudController);
 
@@ -170,7 +173,12 @@ namespace VRAVE {
 				break;
 			case 3:
 				if (GetState ().Equals (States.UserDriveRoute) || GetState ().Equals (States.AIDriveRoute)) {
+					hudController.Clear ();
 					hudController.model.centerText = "Turn right";
+
+					hudController.FlashImage (Resources.Load (VRAVEStrings.Right_Turn, typeof(Material)) as Material,
+						0.5f, 0.5f, 0.75f, 5, hudAsyncController);
+					
 				}
 				break;
 			case 4:
@@ -189,7 +197,11 @@ namespace VRAVE {
 				break;
 			case 6:
 				if (GetState ().Equals (States.UserApproachTraffic) || GetState ().Equals (States.AIApproachTraffic)) {
+					hudController.Clear ();
 					hudController.model.centerText = "Turn left";
+					hudController.FlashImage (Resources.Load (VRAVEStrings.Left_Turn, typeof(Material)) as Material,
+						0.5f, 0.5f, 0.75f, 5, hudAsyncController);
+					
 				}
 				break;
 			case 7:
@@ -221,6 +233,8 @@ namespace VRAVE {
 		}
 
 		public void UserDriveRoute_Enter() {
+
+			hudController.EngageManualMode();
 
 			UserCar.GetComponent<CarController> ().MaxSpeed = 25f;
 			
@@ -275,12 +289,14 @@ namespace VRAVE {
 		}
 
 		public void UserWarnCollision_Enter() {
+			hudController.model.centerText = "Go straight";
 			hudController.model.leftBackingMaterial = Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material;
 			hudController.model.isLeftImageEnabled = true;
 			hudAsyncController.RepeatAudio (5, 1, 3);
 		}
 
 		public void AIWarnCollision_Enter() {
+			hudController.model.centerText = "Go straight";
 			hudController.model.leftBackingMaterial = Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material;
 			hudController.model.isLeftImageEnabled = true;
 			hudAsyncController.RepeatAudio (5, 1, 3);
