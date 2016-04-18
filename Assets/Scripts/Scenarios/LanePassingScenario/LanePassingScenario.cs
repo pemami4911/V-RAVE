@@ -505,6 +505,7 @@ namespace VRAVE
                 cameraFade.StartAlphaFade(Color.black, false, 2f, () =>
                 {
                     ChangeState(States.ChangeMode);
+					cameraFade.ResetPlane();
                 });
             }
         }
@@ -601,6 +602,7 @@ namespace VRAVE
                 cameraFade.StartAlphaFade(Color.black, false, 3f, () =>
 				{
 					ChangeState(States.ChangeMode);
+					cameraFade.ResetPlane();
 				});
                 
             }

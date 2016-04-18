@@ -48,6 +48,10 @@ namespace VRStandardAssets.Utils
             }
         }
 
+		public void ResetPlane()
+		{
+			m_FadeImage.color = m_FadeOutColor;
+		}
 
         private void OnLevelWasLoaded()
         {
@@ -73,9 +77,10 @@ namespace VRStandardAssets.Utils
             if (m_IsFading)
                 return;
             StartCoroutine(BeginFade(m_FadeOutColor, m_FadeColor, duration));
-            
-            // Fade out the audio over the same duration.
-            if(m_FadedSnapshot && fadeAudio)
+			//StartCoroutine(DelayedFadeIn(m_FadeDuration));
+
+			// Fade out the audio over the same duration.
+			if (m_FadedSnapshot && fadeAudio)
                 m_FadedSnapshot.TransitionTo (duration);
         }
 
@@ -88,6 +93,7 @@ namespace VRStandardAssets.Utils
 				FadeIn (false);
 			} else {
 				FadeOut (false);
+				
 			}
 		}
 
@@ -99,7 +105,14 @@ namespace VRStandardAssets.Utils
 				FadeIn (false);
 			} else {
 				FadeOut (false);
+				//StartCoroutine(DelayedFadeIn(fadeDuration));
 			}
+		}
+
+		private IEnumerator DelayedFadeIn(float time)
+		{
+			yield return new WaitForSeconds(time);
+			FadeIn(false);
 		}
 
         // Since no duration is specified with this overload use the default duration.
