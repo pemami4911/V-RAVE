@@ -45,6 +45,7 @@ namespace VRAVE
         private bool triggerToggle = true;  //Find a better way of toggling waypoint triggers
         private int circuitProgressNum = 0;
         private float passingSpeed;
+		private int mirrorFlag = 0;
 
 
 
@@ -403,6 +404,8 @@ namespace VRAVE
         // Wait for the user to press OK
         public void InitState_Update()
         {
+			ResetMirror();
+
 			if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
 				StopCoroutine("IntroBriefing");
@@ -511,6 +514,7 @@ namespace VRAVE
 			if (userMode)
 			{
 				resetScenario();
+				mirrorFlag = 0;
 				userMode = false;
 				userCarController.MaxSteeringAngle = 35f;
 				AIVehicle.SetActive(true);
@@ -551,6 +555,8 @@ namespace VRAVE
 
         public void PassingInstruction_Update()
         {
+			//ResetMirror();
+
             //Move to WaitToPass
             if (Input.GetButtonDown((VRAVEStrings.Right_Paddle)))
             {
@@ -905,6 +911,20 @@ namespace VRAVE
 				userCarController.MaxSpeed--;
 			}
 
+		}
+
+		private void ResetMirror()
+		{
+			if (mirrorFlag == 0)
+			{
+				mirrorFlag++;
+				mirror.SetActive(false);
+			}
+			else if (mirrorFlag == 1)
+			{
+				mirror.SetActive(true);
+				mirrorFlag++;
+			}
 		}
 	}
 }
