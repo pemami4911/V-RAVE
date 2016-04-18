@@ -29,7 +29,7 @@ namespace VRAVE {
 
 		private Vector3 USER_STARTING_POSITION = new Vector3 (25.92f, 0.26f, 1.9f);
 		private Quaternion USER_STARTING_ROTATION = Quaternion.Euler (0f, 0f, 0f);
-		private float INITIAL_FOG_DENSITY = 0.1f;
+		private float INITIAL_FOG_DENSITY = 0.07f;
 		private float END_SCENARIO_WAIT_TIME = 6.0f;
 
 		private KeyValuePair<Vector3, Quaternion> movingAIStart0;
@@ -103,6 +103,11 @@ namespace VRAVE {
 
 			resetScenario ();
 			ChangeState(States.ScenarioBriefing);
+
+			CameraFade.StartAlphaFade (Color.black, true, 3f, 0f, () => {
+				audioController.playAudio (3);
+				StartCoroutine (PostIntersectionScenarioBriefingHUDChange ());
+			});
 		}
 
 		private void resetScenario() {
@@ -131,7 +136,7 @@ namespace VRAVE {
 			staticAI3.transform.position = staticAIStart3;*/
 
 			RenderSettings.fog = true; //enable fog bruh
-			RenderSettings.fogMode = FogMode.Exponential;
+			RenderSettings.fogMode = FogMode.ExponentialSquared;
 			RenderSettings.fogDensity = INITIAL_FOG_DENSITY;
 			hudController.model = new WeatherHUDModel ();
 		}
@@ -185,7 +190,7 @@ namespace VRAVE {
 				break;
 			case 7:
 				if (GetState ().Equals (States.UserStopped)) { 
-					audioController.playAudio (2);
+					//audioController.playAudio (2);
 				}
 				else if (GetState ().Equals (States.AIStopped)) {
 					audioController.playAudio (4);
@@ -198,14 +203,11 @@ namespace VRAVE {
 
 		public void ScenarioBriefing_Enter() {
 			ambientAudioSource.mute = true;
-			hudController.EngageManualMode();
-			audioController.playAudio (3);
 
-			StartCoroutine (PostIntersectionScenarioBriefingHUDChange ());
 		}
 
 		public void ScenarioBriefing_Update() {
-			if (Input.GetButtonDown (VRAVEStrings.Left_Paddle)) {
+			if (Input.GetButtonDown (VRAVEStrings.Right_Paddle)) {
 				ambientAudioSource.mute = false;
 				ChangeState (States.UserDriveRoute);
 			}
@@ -322,7 +324,8 @@ namespace VRAVE {
 			yield return new WaitForSeconds (14f);
 
 			if (!GetState ().Equals(States.UserDriveRoute)) {
-				hudController.model.centerText = VRAVEStrings.Left_Paddle_To_Continue; 
+				hudController.EngageManualMode();
+				hudController.model.centerText = VRAVEStrings.Right_Paddle_To_Continue; 
 			}
 		}
 	}

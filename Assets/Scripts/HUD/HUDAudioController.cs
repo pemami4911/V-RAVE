@@ -9,6 +9,7 @@ namespace VRAVE
 	{
 
 		public HUDAudioModel audioModel { get; set; }
+		private AudioClip crashClip; 
 		//set this property with your own HUDAudioModel
 
 		public AudioSource primaryAudioSource;
@@ -16,6 +17,15 @@ namespace VRAVE
 
 		//the component that plays the sound
 
+		void Awake()
+		{
+			crashClip = Resources.Load ("crash", typeof(AudioClip)) as AudioClip;
+		}
+
+		public void playCrash()
+		{
+			playAudio (crashClip);
+		}
 
 		//plays audio from the HUDAudioModel
 		public void playAudio (int index)
