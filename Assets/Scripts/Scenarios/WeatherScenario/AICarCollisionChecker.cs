@@ -10,7 +10,7 @@ namespace VRAVE {
 		private HUDAudioController audioController;
 
 		//private HUDAudioController audioController;
-		[SerializeField] private float displayTime = 2.0f;
+		[SerializeField] private float displayTime = 6.0f;
 
 		// Use this for initialization
 		void Start () {
