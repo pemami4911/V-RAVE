@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using VRStandardAssets.Utils;
 
 namespace VRAVE
 {
@@ -26,6 +27,7 @@ namespace VRAVE
 		//Animation clip fading to color (black default) when changing scenes
 		[HideInInspector] public AnimationClip fadeAlphaAnimationClip;
 		//Animation clip fading out UI elements alpha
+		[SerializeField] private VRCameraFade cameraFade;
 
 
 		private PlayMusic playMusic;
@@ -53,28 +55,28 @@ namespace VRAVE
 		public void CollisionAvoidance ()
 		{
 			sceneToStart = 1;
-			CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
+			cameraFade.StartAlphaFade(Color.black, false, 3f);
 			StartButtonClicked ();
 		}
 
 		public void LanePassing ()
 		{
 			sceneToStart = 2;
-			CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
+			cameraFade.StartAlphaFade(Color.black, false, 3f);
 			StartButtonClicked ();
 		}
 
 		public void Weather ()
 		{
 			sceneToStart = 3;
-			CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
+			cameraFade.StartAlphaFade(Color.black, false, 3f);
 			StartButtonClicked ();
 		}
 
 		public void Lobby ()
 		{
 			sceneToStart = 4;
-			CameraFade.StartAlphaFade(Color.black, false, 3f, 0f);
+			cameraFade.StartAlphaFade(Color.black, false, 3f);
 			StartButtonClicked ();
 		}
 
