@@ -7,7 +7,7 @@ namespace VRAVE
 	public class LanePassingAudioModel : HUDAudioModel
 	{
 
-		public LanePassingAudioModel() : base()
+		private void Awake()
 		{
 			// #0
 			addClip("intro-briefing", 7f);

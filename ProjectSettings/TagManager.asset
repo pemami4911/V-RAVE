@@ -11,6 +11,7 @@ TagManager:
   - Mirror
   - LeftPaddle
   - RightPaddle
+  - AmbientAudio
   layers:
   - Default
   - TransparentFX
