@@ -4470,9 +4470,6 @@ GameObject:
   - 114: {fileID: 11446104}
   - 114: {fileID: 11499462}
   - 114: {fileID: 11445592}
-  - 114: {fileID: 11432734}
-  - 114: {fileID: 11462070}
-  - 114: {fileID: 11494620}
   m_Layer: 0
   m_Name: UserCar_4-15
   m_TagString: Player
@@ -16786,25 +16783,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b443fce499f364a719ceb001a5d2a3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 0}
+  models: []
   durations: []
---- !u!114 &11432734
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 190126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c4116df3441bf046b37881e17926f68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_sensorsStart: 1
-  m_shortSensorAngleDelta: 60
-  m_longSensorLength: 100
-  m_shortSensorLength: 10
-  m_shortRangeSensorsEnable: 1
-  m_longRangeSensorsEnable: 1
-  m_lateralSensorShift: 4
 --- !u!114 &11433934
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -16856,6 +16837,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15bc3db4572f433ebb8f1ddf656b27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  primaryAudioSource: {fileID: 0}
+  secondaryAudioSource: {fileID: 0}
 --- !u!114 &11445592
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -16883,7 +16866,7 @@ MonoBehaviour:
   m_StopWhenTargetReached: 0
   m_ReachTargetThreshold: 2
   circuit: {fileID: 0}
-  m_isCircuit: 1
+  m_isCircuit: 0
   m_isUser: 1
 --- !u!114 &11446104
 MonoBehaviour:
@@ -16908,17 +16891,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15bc3db4572f433ebb8f1ddf656b27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11462070
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 190126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ec6eba8208017140b7f5dfecef48691, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  primaryAudioSource: {fileID: 0}
+  secondaryAudioSource: {fileID: 0}
 --- !u!114 &11466362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -17007,18 +16981,6 @@ MonoBehaviour:
   m_RevRangeBoundary: 1000
   m_SlipLimit: 100
   m_BrakeTorque: 15000
---- !u!114 &11494620
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 190126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee590a3c1feffdd439339f377da88cfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  followDistance: 10
 --- !u!114 &11496900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -17274,7 +17236,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_isCircuit
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 190126}

@@ -289,6 +289,7 @@ namespace VRAVE
 		// Wait for the user to press OK
 		public void IntersectionBriefing_Update ()
 		{
+			ResetMirror();  //Resetting the mirror on scenario start -Bryce
 			// 	Change to steering wheel paddle
 			if (Input.GetButtonDown (VRAVEStrings.Right_Paddle)) {
 				ambientAudioSource.mute = false;
@@ -298,6 +299,8 @@ namespace VRAVE
 			
 		public void HumanDrivingToIntersection_Enter ()
 		{
+			mirrorFlag = 0;  //Reloading the mirror reset -Bryce
+
 			m_humanDrivingState = true;
 			UserCar.GetComponent<CarUserControl> ().enabled = true;
 			UserCar.GetComponent<CarUserControl> ().StartCar();
