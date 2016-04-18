@@ -261,7 +261,7 @@ namespace VRAVE {
 		public void AIDriveRoute_Enter() {
 			mirrorFlag = 0;
 
-			UserCar.GetComponent<CarController> ().MaxSpeed = 30f;
+			UserCar.GetComponent<CarController> ().MaxSpeed = 25f;
 
 			//Debug.Log ("Entered AI Drive state");
 			spawnController.resetInitialSpawns ();
