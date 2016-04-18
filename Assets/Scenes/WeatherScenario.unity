@@ -12917,7 +12917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3991959e2b72d841844ff931042d4ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CautiousSpeedFactor: 0.8
+  m_CautiousSpeedFactor: 0.7
   m_CautiousMaxAngle: 25
   m_CautiousMaxDistance: 70
   m_CautiousAngularVelocityFactor: 30

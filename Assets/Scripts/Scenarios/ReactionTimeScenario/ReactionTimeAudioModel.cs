@@ -34,6 +34,8 @@ public class ReactionTimeAudioModel : HUDAudioModel {
 			addClip ("beep", 0.5f);
 			// #11
 			addClip ("right-paddle", 2f); 
+			// #12
+			addClip ("crash", 2.5f);
 		}
 }
 }
