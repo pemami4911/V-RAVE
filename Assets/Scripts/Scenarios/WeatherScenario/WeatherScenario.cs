@@ -184,8 +184,11 @@ namespace VRAVE {
 				}
 				break;
 			case 7:
-				if (GetState ().Equals (States.UserStopped) || GetState ().Equals (States.AIStopped)) {
+				if (GetState ().Equals (States.UserStopped)) { 
 					audioController.playAudio (2);
+				}
+				else if (GetState ().Equals (States.AIStopped)) {
+					audioController.playAudio (4);
 				}
 				break;
 			default:
@@ -230,6 +233,11 @@ namespace VRAVE {
 			hudController.EngageAIMode();
 			audioController.playAudio (0);
 
+			movingAI0.SetActive (true);
+			movingAI1.SetActive (true);
+			movingAI2.SetActive (true);
+			movingAI3.SetActive (true);
+
 			hudController.model.centerText = "Proceed through intersection";
 
 			UserCar.GetComponent<CarAIControl> ().enabled = true;
@@ -248,11 +256,13 @@ namespace VRAVE {
 		}
 
 		public void UserWarnCollision_Enter() {
+			hudController.model.leftBackingMaterial = Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material;
 			hudController.model.isLeftImageEnabled = true;
 			hudAsyncController.RepeatAudio (5, -1, 3);
 		}
 
 		public void AIWarnCollision_Enter() {
+			hudController.model.leftBackingMaterial = Resources.Load (VRAVEStrings.Warning_Img, typeof(Material)) as Material;
 			hudController.model.isLeftImageEnabled = true;
 			hudAsyncController.RepeatAudio (5, -1, 3);
 		}
@@ -260,6 +270,15 @@ namespace VRAVE {
 		public void UserStopped_Enter() {
 			//Debug.Log ("Reached end of scenario for user drive");
 			StartCoroutine (postStopStateChange (END_SCENARIO_WAIT_TIME));
+
+		}
+
+		public void UserStopped_Exit() {
+			//Debug.Log ("Exiting user stopped state");
+			movingAI0.SetActive (false);
+			movingAI1.SetActive (false);
+			movingAI2.SetActive (false);
+			movingAI3.SetActive (false);
 
 		}
 
@@ -294,7 +313,7 @@ namespace VRAVE {
 		}
 
 		public void AIStopped_Enter() {
-			audioController.playAudio (4);
+			
 			StartCoroutine (postStopExitScenario (END_SCENARIO_WAIT_TIME));
 		}
 
