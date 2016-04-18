@@ -2718,7 +2718,7 @@ Prefab:
       objectReference: {fileID: 410110890}
     - target: {fileID: 463626, guid: 127c3b9839fcf3c4194e92b0890f1bc4, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -32.27
+      value: -32.594
       objectReference: {fileID: 0}
     - target: {fileID: 489810, guid: 127c3b9839fcf3c4194e92b0890f1bc4, type: 2}
       propertyPath: m_LocalPosition.x
@@ -18006,7 +18006,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 783116818}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071067}
-  m_LocalPosition: {x: 80.2, y: 11.7, z: 75.6}
+  m_LocalPosition: {x: 55.4, y: 11.7, z: 75.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 942650902}
@@ -45730,6 +45730,14 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 458446, guid: f80eff0dbd1f2f44b8a64fefa9d9899f, type: 2}
       propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8217496, guid: f80eff0dbd1f2f44b8a64fefa9d9899f, type: 2}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8217496, guid: f80eff0dbd1f2f44b8a64fefa9d9899f, type: 2}
+      propertyPath: BypassReverbZones
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
