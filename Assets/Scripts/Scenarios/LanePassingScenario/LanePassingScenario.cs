@@ -33,7 +33,7 @@ namespace VRAVE
         private CarAIControl AIVehicleAI;
         private CarController userCarController;
         private CarController AIVehicleCarController;
-
+	
         private LanePassingSensorResponseHandler lanePassingHandler;
         private FollowingSensorResponseHandler followHandler;
 
@@ -552,7 +552,7 @@ namespace VRAVE
         public void PassingInstruction_Update()
         {
             //Move to WaitToPass
-            if (Input.GetButtonDown((VRAVEStrings.Right_Paddle)))
+            if (Input.GetButtonDown(VRAVEStrings.Right_Paddle))
             {
 				hudController.EngageAIMode();
 				GameObject rightPaddle = GameObject.FindGameObjectWithTag(VRAVEStrings.Right_Paddle);
