@@ -326,9 +326,11 @@ namespace VRAVE {
 				if(GetState().Equals(States.UserStopped)) { //fix this so I'm not checking states all the time
 					//Debug.Log("Preparing to reset scenario...");
 					resetScenario ();
+					cameraFade.ResetPlane();
 					ChangeState (States.AIDriveRoute);
 				}
 				else {
+					cameraFade.ResetPlane();
 					//Debug.Log("Else statement reached in postStopStateChange()");
 				}
 			});
@@ -341,9 +343,11 @@ namespace VRAVE {
 				if(GetState().Equals(States.AIStopped)) { //fix this so I'm not checking states all the time
 					//Debug.Log("Preparing to reset scenario...");
 					resetScenario ();
+					cameraFade.ResetPlane();
 					SceneManager.LoadScene (VRAVEStrings.Lobby_Menu);
 				}
 				else {
+					cameraFade.ResetPlane();
 					//Debug.Log("Else statement reached in postStopStateChange()");
 				}
 			});

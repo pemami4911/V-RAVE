@@ -468,8 +468,11 @@ namespace VRAVE
 				if (m_humanDrivingState) {
 					UserCar.SetActive(false);
 					resetIntersectionScenario ();
+					cameraFade.ResetPlane();
 					ChangeState (States.AIDrivingToIntersectionBriefing);
-				} else {					
+					
+				} else {
+					cameraFade.ResetPlane();
 					ChangeState (States.TrashcanBriefing);
 				}
 			});
@@ -501,8 +504,10 @@ namespace VRAVE
 				if (m_humanDrivingState) {
 					UserCar.SetActive(false);
 					resetTrashCanScenario ();
+					cameraFade.ResetPlane();
 					ChangeState (States.AIDrivingToTrashcanBriefing);
-				} else {					
+				} else {
+					cameraFade.ResetPlane();
 					SceneManager.LoadScene (VRAVEStrings.Lobby_Menu);
 				}
 			});
