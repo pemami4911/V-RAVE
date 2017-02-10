@@ -19,16 +19,20 @@ in studies to assess whether people become more inclined to use a self-driving c
 of the safety and convenience features that they will come with.
 
 ### Demos
+Each demo consists of segments of "manual mode" driving, where the user has a physical steering wheel and accelerator/brakes and is controlling the vehicle, and an "autonomous mode" where the vehicle drives itself. 
 
-Collision Avoidance
+#### Collision Avoidance
+
 <a href="https://youtu.be/_ogoTW2wlFU" target="_blank"><img src="https://i.ytimg.com/vi/_ogoTW2wlFU/hqdefault.jpg" 
 alt="VRAVE: Collision Avoidance" width="480" height="360" border="10" /></a>
 
-Adaptive Cruise Control
+#### Adaptive Cruise Control
+
 <a href="https://youtu.be/8s4cNmBEWtQ" target="_blank"><img src="https://i.ytimg.com/vi/8s4cNmBEWtQ/hqdefault.jpg" 
 alt="VRAVE: Adaptive Cruise Control" width="480" height="360" border="10" /></a>
 
-Inclement Weather
+#### Inclement Weather
+
 <a href="https://youtu.be/wbIzuXSWszI" target="_blank"><img src="https://i.ytimg.com/vi/wbIzuXSWszI/hqdefault.jpg" 
 alt="VRAVE: Inclement Weather" width="480" height="360" border="10" /></a>
 
